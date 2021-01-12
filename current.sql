@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.1.7 (64 bit)
+SQLyog Community v13.1.5  (64 bit)
 MySQL - 10.4.17-MariaDB : Database - jspCommunity
 *********************************************************************
 */
@@ -28,10 +28,10 @@ CREATE TABLE `article` (
   `boardNum` int(10) unsigned NOT NULL,
   `title` char(100) NOT NULL,
   `body` longtext NOT NULL,
-  `views` int(10) unsigned NOT NULL,
-  `hitsCount` int(10) unsigned NOT NULL,
+  `views` int(10) unsigned NOT NULL DEFAULT 0,
+  `hitsCount` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`num`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article` */
 
