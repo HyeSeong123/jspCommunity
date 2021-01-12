@@ -1,15 +1,16 @@
 package com.sbs.example.jspCommunity.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dao.ArticleDao;
 import com.sbs.example.jspCommunity.Dto.Article;
-import com.sbs.example.jspCommunity.Dto.Member;
+import com.sbs.example.jspCommunity.Dto.Board;
 
 public class ArticleService {
 	private ArticleDao articleDao;
-	
+
 	public ArticleService() {
 		articleDao = Container.articleDao;
 	}
@@ -22,8 +23,20 @@ public class ArticleService {
 		return articleDao.getForPrintArticle(num);
 	}
 
-	public int doAdd(int memberNum, int boardNum, String title, String body) {
-		return articleDao.doAdd(memberNum,boardNum,title,body);
+	public Board getBoardNum(int boardNum) {
+		return articleDao.getBoardNum(boardNum);
+	}
+
+	public int doWrite(Map<String, Object> writeArgs) {
+		return articleDao.doWrite(writeArgs);
+	}
+
+	public int doModify(Map<String, Object> writeArgs) {
+		return articleDao.doModify(writeArgs);
+	}
+
+	public int doDelete(int articleNum) {
+		return articleDao.doDelete(articleNum);
 	}
 
 }

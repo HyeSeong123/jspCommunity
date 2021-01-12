@@ -1,7 +1,6 @@
 package com.sbs.example.jspCommunity;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,12 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mysql.cj.jdbc.ha.ReplicationMySQLConnection;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Controller.ArticleController;
 import com.sbs.example.jspCommunity.Controller.MemberController;
-import com.sbs.example.jspCommunity.Dto.Article;
-import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 
 /**
@@ -55,8 +51,16 @@ public class dispatcherServlet extends HttpServlet {
 				jspPath = articleController.showList(request, response);
 			} else if (actionMethodName.equals("detail")) {
 				jspPath = articleController.showDetail(request, response);
-			} else if (actionMethodName.equals("add")) {
-				jspPath = articleController.doAdd(request, response);
+			} else if (actionMethodName.equals("write")) {
+				jspPath = articleController.showWrite(request, response);
+			} else if (actionMethodName.equals("doWrite")) {
+				jspPath = articleController.doWrite(request, response);
+			} else if (actionMethodName.equals("modify")) {
+				jspPath = articleController.showModify(request, response);
+			} else if (actionMethodName.equals("doModify")) {
+				jspPath = articleController.doModify(request, response);
+			} else if (actionMethodName.equals("doDelete")) {
+				jspPath = articleController.doDelete(request, response);
 			}
 		}
 
@@ -66,4 +70,9 @@ public class dispatcherServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 
+	@Override  
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }

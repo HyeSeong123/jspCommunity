@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.mysql.cj.jdbc.exceptions.MySQLQueryInterruptedException;
 import com.sbs.example.jspCommunity.Dto.Article;
+import com.sbs.example.jspCommunity.Dto.Board;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 import com.sbs.example.jspCommunity.Util.SecSql;
 
 public class ArticleDao {
-
-	public List<Article> doAdd;
 
 	public List<Article> getForPringArticleByBoard(int boardNum) {
 		List<Article> articles = new ArrayList<>();
@@ -61,22 +59,54 @@ public class ArticleDao {
 		return new Article(articleMap);
 	}
 
-	public int doAdd(int memberNum, int boardNum, String title, String body) {
+	public Board getBoardNum(int boardNum) {
 
 		SecSql sql = new SecSql();
-		memberNum = 1;
-		boardNum = 1;
+
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE boardNum = ?", boardNum);
+
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
+
+		if (boardMap.isEmpty()) {
+			return null;
+		}
+		return new Board(boardMap);
+	}
+
+	public int doWrite(Map<String, Object> writeArgs) {
+
+		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO article");
 		sql.append("SET regDate = NOW(),");
 		sql.append("updateDate = NOW(),");
-		sql.append("memberNum = ?,", memberNum);
-		sql.append("boardNum = ?,", boardNum);
-		sql.append("title = ?,", title);
-		sql.append("body = ?,", body);
-		sql.append("views = 0,");
-		sql.append("hitsCount = 0");
+		sql.append("boardNum = ?,", writeArgs.get("boardNum"));
+		sql.append("memberNum = ?,", writeArgs.get("memberNum"));
+		sql.append("title = ?,", writeArgs.get("title"));
+		sql.append("body = ?", writeArgs.get("body"));
 
 		return MysqlUtil.insert(sql);
+	}
+
+	public int doModify(Map<String, Object> writeArgs) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE article");
+		sql.append("SET title =?,", writeArgs.get("title"));
+		sql.append("body =?", writeArgs.get("body"));
+		sql.append("WHERE num = ?", writeArgs.get("num"));
+
+		return MysqlUtil.update(sql);
+	}
+
+	public int doDelete(int articleNum) {
+		SecSql sql = new SecSql();
+
+		sql.append("DELETE FROM article");
+		sql.append("WHERE num = ?", articleNum);
+
+		return MysqlUtil.delete(sql);
 	}
 }

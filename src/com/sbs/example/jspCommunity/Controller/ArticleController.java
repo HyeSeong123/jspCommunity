@@ -1,12 +1,15 @@
 package com.sbs.example.jspCommunity.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
+import com.sbs.example.jspCommunity.Dto.Board;
 import com.sbs.example.jspCommunity.Service.ArticleService;
 
 public class ArticleController {
@@ -21,9 +24,14 @@ public class ArticleController {
 
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 
+		Board board = articleService.getBoardNum(boardNum);
+
+		request.setAttribute("board", board);
+
 		List<Article> articles = articleService.getForPrintArticlesByBoard(boardNum);
 
 		request.setAttribute("articles", articles);
+
 		return "usr/article/list";
 	}
 
@@ -43,16 +51,75 @@ public class ArticleController {
 		return "usr/article/detail";
 	}
 
-	public String doAdd(HttpServletRequest request, HttpServletResponse response) {
+	public String showWrite(HttpServletRequest request, HttpServletResponse response) {
+
+		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+
+		Board board = articleService.getBoardNum(boardNum);
+
+		request.setAttribute("board", board);
+
+		return "usr/article/write";
+	}
+
+	public String doWrite(HttpServletRequest request, HttpServletResponse response) {
 
 		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 		String title = request.getParameter("title");
 		String body = request.getParameter("body");
 
-		int articleNum = articleService.doAdd(memberNum, boardNum, title, body);
+		Map<String, Object> writeArgs = new HashMap<>();
 
-		request.setAttribute("articleNum", articleNum);
-		return "usr/article/add";
+		writeArgs.put("memberNum", memberNum);
+		writeArgs.put("boardNum", boardNum);
+		writeArgs.put("title", title);
+		writeArgs.put("body", body);
+
+		int newArticleNum = articleService.doWrite(writeArgs);
+
+		request.setAttribute("alertMsg", newArticleNum + "번 게시물이 생성되었습니다..");
+		request.setAttribute("replaceUrl", String.format("detail?num=%d", newArticleNum));
+		return "common/redirect";
+	}
+
+	public String showModify(HttpServletRequest request, HttpServletResponse response) {
+		int articleNum = Integer.parseInt(request.getParameter("num"));
+
+		Article article = articleService.getForPrintArticle(articleNum);
+
+		request.setAttribute("article", article);
+
+		return "usr/article/modify";
+	}
+
+	public String doModify(HttpServletRequest request, HttpServletResponse response) {
+		int articleNum = Integer.parseInt(request.getParameter("num"));
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
+
+		Map<String, Object> writeArgs = new HashMap<>();
+
+		writeArgs.put("num", articleNum);
+		writeArgs.put("title", title);
+		writeArgs.put("body", body);
+
+		articleService.doModify(writeArgs);
+
+		request.setAttribute("alertMsg", articleNum + "번 게시물이 변경되었습니다..");
+		request.setAttribute("replaceUrl", String.format("detail?num=%d", articleNum));
+		return "common/redirect";
+	}
+
+	public String doDelete(HttpServletRequest request, HttpServletResponse response) {
+		int articleNum = Integer.parseInt(request.getParameter("num"));
+
+		Article article = articleService.getForPrintArticle(articleNum);
+
+		articleService.doDelete(articleNum);
+
+		request.setAttribute("alertMsg", articleNum + "번 게시물이 삭제되었습니다..");
+		request.setAttribute("replaceUrl", String.format("list?boardNum=%d", article.boardNum));
+		return "common/redirect";
 	}
 }

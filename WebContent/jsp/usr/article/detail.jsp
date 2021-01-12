@@ -19,7 +19,7 @@
 <body>
 	<h1>게시판 이름: <%= article.extra__boardName %> </h1>
 	<h2>게시물 이름</h2>
-
+	<a href="doDelete?num=<%=article.num%>">게시글 삭제하기</a>
 	<div>
 		번호 :
 		<%=article.num%>
@@ -36,6 +36,12 @@
 		제목 :
 		<%=article.title%>
 		<hr />
+		내용 :
+		<%=article.body%>
+		<hr />
+		<a href="modify?num=<%=article.num%>">글 수정하기</a>
+		<a href="list?boardNum=<%=article.boardNum%>">목록으로 이동</a>
+		<button type="button" onclick="history.back()">뒤로가기</button>
 	</div>
 
 </body>

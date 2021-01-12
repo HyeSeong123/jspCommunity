@@ -3,10 +3,12 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.sbs.example.jspCommunity.Dto.Article"%>
+<%@ page import="com.sbs.example.jspCommunity.Dto.Board"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.List"%>
 
 <%
+	Board board = (Board) request.getAttribute("board");
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 %>
 
@@ -17,8 +19,10 @@
 <title>게시물 리스트</title>
 </head>
 <body>
-	<h1>게시판 이름: <%= articles.get(0).extra__boardName %> </h1>
+	<h1>게시판 이름: <%=board.name%> </h1>
 	<h2>게시물 리스트</h2>
+	<a href="write?boardNum=<%=request.getParameter("boardNum")%>">글 쓰기</a>
+	
 	<%
 		for (Article article : articles) {
 	%>
@@ -37,7 +41,7 @@
 		<%=article.extra__writer%>
 		<br />
 		제목 :
-		<%=article.title%>
+		<a href="detail?num=<%=article.num%>"><%=article.title%></a>  
 		<hr />
 	</div>
 
