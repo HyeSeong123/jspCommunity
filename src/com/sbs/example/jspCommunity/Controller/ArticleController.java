@@ -66,6 +66,7 @@ public class ArticleController {
 
 		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+		Board board = articleService.getBoardNum(boardNum);
 		String title = request.getParameter("title");
 		String body = request.getParameter("body");
 
@@ -77,7 +78,7 @@ public class ArticleController {
 		writeArgs.put("body", body);
 
 		int newArticleNum = articleService.doWrite(writeArgs);
-
+		request.setAttribute("board", board);
 		request.setAttribute("alertMsg", newArticleNum + "번 게시물이 생성되었습니다..");
 		request.setAttribute("replaceUrl", String.format("detail?num=%d", newArticleNum));
 		return "common/redirect";
@@ -95,16 +96,29 @@ public class ArticleController {
 
 	public String doModify(HttpServletRequest request, HttpServletResponse response) {
 		int articleNum = Integer.parseInt(request.getParameter("num"));
+		Article article = articleService.getForPrintArticle(articleNum);
+		if (article == null) {
+			request.setAttribute("alertMsg", articleNum + "번 게시물은 존재하지 않습니다.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+
+		if (article.getMemberNum() != memberNum) {
+			request.setAttribute("alertMsg", articleNum + "번 글의 수정 권한이 없습니다..");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
 		String title = request.getParameter("title");
 		String body = request.getParameter("body");
 
-		Map<String, Object> writeArgs = new HashMap<>();
+		Map<String, Object> modifyArgs = new HashMap<>();
 
-		writeArgs.put("num", articleNum);
-		writeArgs.put("title", title);
-		writeArgs.put("body", body);
+		modifyArgs.put("num", articleNum);
+		modifyArgs.put("title", title);
+		modifyArgs.put("body", body);
 
-		articleService.doModify(writeArgs);
+		articleService.doModify(modifyArgs);
 
 		request.setAttribute("alertMsg", articleNum + "번 게시물이 변경되었습니다..");
 		request.setAttribute("replaceUrl", String.format("detail?num=%d", articleNum));
@@ -119,7 +133,7 @@ public class ArticleController {
 		articleService.doDelete(articleNum);
 
 		request.setAttribute("alertMsg", articleNum + "번 게시물이 삭제되었습니다..");
-		request.setAttribute("replaceUrl", String.format("list?boardNum=%d", article.boardNum));
+		request.setAttribute("replaceUrl", String.format("list?boardNum=%d", article.getBoardNum()));
 		return "common/redirect";
 	}
 }

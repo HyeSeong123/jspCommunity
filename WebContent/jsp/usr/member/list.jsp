@@ -21,11 +21,11 @@
 	%>
 	
 	<div>
-		회원 번호 : <%= member.memberNum %>
-		아이디 : <%= member.loginId %>
-		이름 : <%= member.name %>
-		닉네임 : <%= member.nickname %>
-		가입 일자 : <%= member.regDate %>
+		회원 번호 : <%=member.getMemberNum()%>
+		아이디 : <%= member.getLoginId() %>
+		이름 : <%= member.getName() %>
+		닉네임 : <%= member.getNickname() %>
+		가입 일자 : <%= member.getRegDate() %>
 		<hr />
 	</div>
 

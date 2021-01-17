@@ -86,19 +86,34 @@ public class ArticleDao {
 		sql.append("memberNum = ?,", writeArgs.get("memberNum"));
 		sql.append("title = ?,", writeArgs.get("title"));
 		sql.append("body = ?", writeArgs.get("body"));
-
 		return MysqlUtil.insert(sql);
 	}
 
-	public int doModify(Map<String, Object> writeArgs) {
+	public int doModify(Map<String, Object> modifyArgs) {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE article");
-		sql.append("SET title =?,", writeArgs.get("title"));
-		sql.append("body =?", writeArgs.get("body"));
-		sql.append("WHERE num = ?", writeArgs.get("num"));
+		sql.append("SET updateDate =NOW(),");
+
+		boolean needToFalse = false;
+
+		if (modifyArgs.get("title") != null) {
+			needToFalse = true;
+			sql.append("title =?,", modifyArgs.get("title"));
+		}
+
+		if (modifyArgs.get("body") != null) {
+			needToFalse = true;
+			sql.append("`body` =?", modifyArgs.get("body"));
+		}
+
+		sql.append("WHERE num = ?", modifyArgs.get("num"));
+		if (needToFalse == false) {
+			return 0;
+		}
 
 		return MysqlUtil.update(sql);
+
 	}
 
 	public int doDelete(int articleNum) {
