@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.1.5  (64 bit)
+SQLyog Community v13.1.7 (64 bit)
 MySQL - 10.4.17-MariaDB : Database - jspCommunity
 *********************************************************************
 */
@@ -31,15 +31,14 @@ CREATE TABLE `article` (
   `views` int(10) unsigned NOT NULL DEFAULT 0,
   `hitsCount` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`num`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article` */
 
 insert  into `article`(`num`,`regDate`,`updateDate`,`memberNum`,`boardNum`,`title`,`body`,`views`,`hitsCount`) values 
-(1,'2021-01-07 12:34:25','2021-01-07 12:34:25',1,1,'제목1','내용1',0,0),
-(2,'2021-01-07 12:34:47','2021-01-07 12:34:47',1,1,'제목2','내용2',0,0),
-(3,'2021-01-07 12:35:03','2021-01-07 12:35:03',1,1,'제목3','내용3',0,0),
-(4,'2021-01-11 09:27:27','2021-01-11 09:27:29',1,2,'제목4','내용4',0,0);
+(5,'2021-01-16 17:46:48','2021-01-16 17:46:48',1,1,'가나다라','가나다라',0,0),
+(7,'2021-01-16 23:25:11','2021-01-16 23:25:13',2,1,'가나다','가나다라',0,0),
+(8,'2021-01-16 23:41:54','2021-01-16 23:42:02',1,1,'DGGDSA','aSFAFAFS',0,0);
 
 /*Table structure for table `board` */
 
