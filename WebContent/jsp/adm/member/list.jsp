@@ -4,7 +4,9 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.sbs.example.jspCommunity.Dto.Member"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	List<Member> members = (List<Member>)request.getAttribute("members");
+%>
 
 <!doctype html>
 <html lang="ko">
@@ -14,21 +16,21 @@
 </head>
 <body>
 	<h1>회원리스트</h1>
-	<a href="join">회원가입</a>
-	<c:forEach var="member" items="${members}">
-		<div>
-			회원 번호 :
-			${member.memberNum}
-			아이디 :
-			${member.loginId}
-			이름 :
-			${member.name}
-			닉네임 :
-			${member.nickname}
-			가입 일자 :
-			${member.regDate}
-			<hr />
-		</div>
-	</c:forEach>
+	<%
+	for(Member member : members){
+	%>
+	
+	<div>
+		회원 번호 : <%=member.getMemberNum()%>
+		아이디 : <%= member.getLoginId() %>
+		이름 : <%= member.getName() %>
+		닉네임 : <%= member.getNickname() %>
+		가입 일자 : <%= member.getRegDate() %>
+		<hr />
+	</div>
+
+	<%
+	}
+	%>
 </body>
 </html>

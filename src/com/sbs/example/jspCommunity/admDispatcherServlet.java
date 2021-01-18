@@ -17,8 +17,8 @@ import com.sbs.example.jspCommunity.Util.MysqlUtil;
 /**
  * Servlet implementation class HomeServlet
  */
-@WebServlet("/usr/*")
-public class dispatcherServlet extends HttpServlet {
+@WebServlet("/adm/*")
+public class admDispatcherServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -44,10 +44,6 @@ public class dispatcherServlet extends HttpServlet {
 			MemberController memberController = Container.memberController;
 			if (actionMethodName.equals("list")) {
 				jspPath = memberController.showList(request, response);
-			} else if (actionMethodName.equals("join")) {
-				jspPath = memberController.showJoin(request, response);
-			} else if (actionMethodName.equals("doJoin")) {
-				jspPath = memberController.doJoin(request, response);
 			}
 		} else if (ControllerName.equals("article")) {
 			ArticleController articleController = Container.articleController;
@@ -74,7 +70,7 @@ public class dispatcherServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	@Override
+	@Override  
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
