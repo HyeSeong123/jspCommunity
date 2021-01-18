@@ -2,6 +2,9 @@ package com.sbs.example.jspCommunity.Dto;
 
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class Board {
 	private int boardNum;
 	private String regDate;
@@ -16,51 +19,5 @@ public class Board {
 		this.setCode((String) map.get("code"));
 		this.setName((String) map.get("name"));
 
-	}
-
-	@Override
-	public String toString() {
-		return "Board [boardNum=" + getBoardNum() + ", regDate=" + getRegDate() + ", updateDate=" + getUpdateDate() + ", code=" + getCode()
-				+ ", name=" + getName() + "]";
-	}
-
-	public int getBoardNum() {
-		return boardNum;
-	}
-
-	public void setBoardNum(int boardNum) {
-		this.boardNum = boardNum;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(String updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }
