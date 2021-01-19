@@ -1,20 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.sbs.example.jspCommunity.Dto.Member"%>
+	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<title>회원리스트</title>
-</head>
+<c:set var="pageTitle" value="회원가입" />
+
+<%@ include file="../../part/head.jspf"%>
 <body>
 	<h1>회원리스트</h1>
-	<a href="join">회원가입</a>
+	<a href="join">${pageTitle}</a>
 	<c:forEach var="member" items="${members}">
 		<div>
 			회원 번호 :
@@ -30,5 +24,4 @@
 			<hr />
 		</div>
 	</c:forEach>
-</body>
-</html>
+<%@ include file="../../part/foot.jspf"%>

@@ -11,11 +11,11 @@ import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Service.MemberService;
 
-public class MemberController {
+public class AdmMemberController {
 
 	private MemberService memberService;
 
-	public MemberController() {
+	public AdmMemberController() {
 		memberService = Container.memberService;
 	}
 

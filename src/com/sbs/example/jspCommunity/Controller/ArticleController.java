@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
@@ -52,7 +53,12 @@ public class ArticleController {
 	}
 
 	public String showWrite(HttpServletRequest request, HttpServletResponse response) {
-
+		HttpSession session = request.getSession();
+		if (session.getAttribute("loginedMemberId") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 
 		Board board = articleService.getBoardNum(boardNum);
@@ -85,6 +91,13 @@ public class ArticleController {
 	}
 
 	public String showModify(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("loginedMemberId") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 
 		Article article = articleService.getForPrintArticle(articleNum);

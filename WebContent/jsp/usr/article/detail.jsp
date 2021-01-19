@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.sbs.example.jspCommunity.Dto.Article"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%@ include file="../../part/head.jspf" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="pageTitle" value="${article.extra__boardName}" />
+
+<%@ include file="../../part/head.jspf"%>
 <body>
-	<h1>게시판 이름: ${article.extra__boardName}</h1>
+	<h1>게시판 이름: ${pageTitle}</h1>
 	<h2>게시물 이름</h2>
 	<a onclick="if ( confirm('정말 삭제하시겠습니까?') == false) {return false; };"
 		href="doDelete?num=${article.num}">글 삭제</a>
@@ -28,4 +27,4 @@
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>
 		<button type="button" onclick="history.back()">뒤로가기</button>
 	</div>
-<%@ include file="../../part/foot.jspf" %>
+	<%@ include file="../../part/foot.jspf"%>

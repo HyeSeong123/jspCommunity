@@ -6,5 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>${board.name}</title>
+<title>${pageTitle}</title>
 </head>
+
+<div> ${sessionScope.loginMemberId}</div>

@@ -76,16 +76,19 @@ CREATE TABLE `member` (
   `loginId` char(50) NOT NULL,
   `loginPw` varchar(200) NOT NULL,
   `authLevel` tinyint(2) unsigned NOT NULL DEFAULT 2 COMMENT '등록자 코멘트: 0= 탈퇴/1=정지회원/2=일반/3=인증된회원/4관리자',
+  `phNum` char(30) NOT NULL,
   PRIMARY KEY (`memberNum`),
   UNIQUE KEY `loginId` (`loginId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `member` */
 
-insert  into `member`(`memberNum`,`regDate`,`updateDate`,`name`,`nickname`,`email`,`loginId`,`loginPw`,`authLevel`) values 
-(1,'2021-01-07 12:27:17','2021-01-07 12:27:17','홍길동','의적홍길동','banggu1997@gamil.com','baobab612','baobab0612',2),
-(2,'2021-01-07 12:28:32','2021-01-07 12:28:32','홍길순','홍길동동생','banggu1997@gamil.com','hong','hong',2),
-(3,'2021-01-08 20:37:49','2021-01-08 20:37:52','임꺽정','잭더리퍼','banggu1997@gmail.com','jack','쟤가걔야',2);
+insert  into `member`(`memberNum`,`regDate`,`updateDate`,`name`,`nickname`,`email`,`loginId`,`loginPw`,`authLevel`,`phNum`) values 
+(1,'2021-01-07 12:27:17','2021-01-07 12:27:17','홍길동','의적홍길동','banggu1997@gamil.com','baobab612','baobab0612',2,'010-3370-2345'),
+(2,'2021-01-07 12:28:32','2021-01-07 12:28:32','홍길순','홍길동동생','banggu1997@gamil.com','hong','hong',2,'045-3322-1111'),
+(3,'2021-01-08 20:37:49','2021-01-08 20:37:52','임꺽정','잭더리퍼','banggu1997@gmail.com','jack','쟤가걔야',2,'030-3333-1215'),
+(5,'2021-01-18 09:41:00','2021-01-18 09:41:00','방혜성','1234','banggu1997@gmail.com','banggu1997@gmail.com','1111111111',2,'123124'),
+(6,'2021-01-19 10:25:00','2021-01-19 10:25:00','홍길동','bangg','banggu1997@gmail.com','홍길동','1111',2,'1234');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

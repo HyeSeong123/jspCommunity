@@ -9,7 +9,7 @@ import com.sbs.example.jspCommunity.Dto.Member;
 
 public class MemberService {
 	private MemberDao memberDao;
-	
+
 	public MemberService() {
 		memberDao = Container.memberDao;
 	}
@@ -18,9 +18,15 @@ public class MemberService {
 		return memberDao.getForPrintMembers();
 	}
 
-	public int doJoin(Map<String, Object> writeArgs) {
-		return memberDao.doJoin(writeArgs);
+	public int doJoin(Map<String, Object> joinArgs) {
+		return memberDao.doJoin(joinArgs);
 	}
 
-	
+	public Member getForPrintMember(String id) {
+		return memberDao.getForPrintMember(id);
+	}
+
+	public Member getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId);
+	}
 }

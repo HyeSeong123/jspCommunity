@@ -27,50 +27,48 @@ public class MemberDao {
 		return members;
 	}
 
-	public int doJoin(Map<String, Object> writeArgs) {
+	public Member getForPrintMember(String id) {
+		List<Member> members = getForPrintMembers();
 
-		String id = (String) writeArgs.get("loginId");
-
-		int num = idCheck(id);
-
-		if (num != 1) {
-			return num;
+		for (int i = 0; i < members.size(); i++) {
+			Member member = members.get(i);
+			if (member.getLoginId().equals(id)) {
+				return member;
+			}
 		}
+		return null;
+	}
+
+	public int doJoin(Map<String, Object> joinArgs) {
+
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO `member`");
 		sql.append("SET regDate=DATE_FORMAT(NOW(), '%Y-%m-%d %h:%i'),");
 		sql.append("updateDate=DATE_FORMAT(NOW(), '%Y-%m-%d %h:%i'),");
-		sql.append("name=?,", writeArgs.get("name"));
-		sql.append("nickname=?,", writeArgs.get("nickname"));
-		sql.append("email=?,", writeArgs.get("email"));
-		sql.append("loginId=?,", writeArgs.get("loginId"));
-		sql.append("loginPw=?", writeArgs.get("loginPw"));
+		sql.append("name=?,", joinArgs.get("name"));
+		sql.append("nickname=?,", joinArgs.get("nickname"));
+		sql.append("email=?,", joinArgs.get("email"));
+		sql.append("loginId=?,", joinArgs.get("loginId"));
+		sql.append("loginPw=?,", joinArgs.get("loginPw"));
+		sql.append("phNum=?", joinArgs.get("phNum"));
 
 		return MysqlUtil.insert(sql);
 	}
 
-	private int idCheck(String id) {
-		List<Member> members = getForPrintMembers();
+	public Member getMemberByLoginId(String loginId) {
 
-		for (int i = 0; i < members.size(); i++) {
-			if (members.get(i).getLoginId().equals(id)) {
-				return -1;
-			}
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM `member`");
+		sql.append("WHERE loginId = ?", loginId);
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return null;
 		}
-		String[] idBytes = id.split("");
-
-		if (idBytes.length <= 5) {
-			return -2;
-		}
-
-		for (int i = 0; i < idBytes.length; i++) {
-			if (idBytes[i].equals(" ")) {
-				return -3;
-			}
-		}
-
-		return 1;
+		return new Member(map);
 	}
 
 }
