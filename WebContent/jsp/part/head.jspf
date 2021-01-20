@@ -7,6 +7,65 @@
 <head>
 <meta charset="UTF-8" />
 <title>${pageTitle}</title>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/css/common.css">
 </head>
 
-<div> ${sessionScope.loginMemberId}</div>
+<header>
+	<div class="con-min-width">
+		<div class="con">
+			<div class="top-bar flex flex-jc-sb flex-ai-c">
+
+				<div class="top-bar__logo">
+					<a href="#"><img src="${pageContext.request.contextPath}/resource/logo.png" alt=""> </a> <span>지나가다 쉬어가는 곳</span>
+				</div>
+
+				<div class="top-bar__search-form">
+					<form action="">
+						<input type="text" placeholder="  search">
+						<div class="top-bar__search-icon">
+							<a href="#"> <i class="fas fa-search"></i>
+							</a>
+						</div>
+					</form>
+				</div>
+				
+				<c:if test="${sessionScope.loginedMemberId == null}">
+					<div class="top-bar__button flex">
+						<a href="../member/join" class="top-bar__button-join flex flex-ai-c">
+							<span>회원가입</span>
+						</a>
+						<a href="../member/login" class="top-bar__button-login flex flex-ai-c">
+							<span>로그인</span>
+						</a>
+					</div>
+				</c:if>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<%--
+			<div class="main__header flex">
+				<c:if test="${sessionScope.loginedMemberId == null}">
+
+					<div class="main__join">
+						<a href="../member/join">회원 가입</a>
+					</div>
+					<div class="main__login">
+						<a href="../member/login">로그인</a>
+					</div>
+				</c:if>
+
+				<c:if test="${sessionScope.loginedMemberId > 0}">
+					<div class="main__logout">
+						<a href="../member/doLogout">로그아웃</a>
+					</div>
+				</c:if>
+			</div>
+			--%>

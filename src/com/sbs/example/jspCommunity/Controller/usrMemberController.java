@@ -104,6 +104,7 @@ public class usrMemberController {
 
 		request.setAttribute("alertMsg", String.format("%s님의 방문을 환영합니다.", member.getNickname()));
 		request.setAttribute("replaceUrl", "../home/main");
+		System.out.println(member.getMemberNum());
 		return "common/redirect";
 	}
 

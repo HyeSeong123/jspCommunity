@@ -11,7 +11,7 @@
 
 	<div>
 		<form action="doWrite" method="POST">
-			<input type="hidden" name="memberNum" value="1"> <input
+			<input type="hidden" name="memberNum" value="${sessionScope.loginMemberId}"> <input
 				type="hidden" name="boardNum" value="${board.boardNum}"> <input
 				type="text" name="title" placeholder="제목을 입력해주세요">
 			<hr />

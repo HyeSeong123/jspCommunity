@@ -9,14 +9,6 @@
 	<h1>게시판 이름: ${pageTitle}</h1>
 	<h2>게시물 리스트</h2>
 	<a href="../home/main">메인</a>
-	<c:if test="${sessionScope.loginedMemberId > 0}">
-		<a href="<c:url value="write?boardNum="/>${param.boardNum}">글 쓰기</a>
-		<a href="../member/doLogout">로그아웃</a>
-	</c:if>
-	<c:if test="${sessionScope.loginedMemberId == null}">
-		<a href="../member/join">회원 가입</a>
-		<a href="../member/login">로그인</a>
-	</c:if>
 	<br>
 	<br>
 	<c:forEach var="article" items="${articles}"> 
