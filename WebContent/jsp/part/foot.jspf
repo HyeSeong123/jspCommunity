@@ -1,2 +1,34 @@
+</div>
+<%-- 본문 끝나는 div --%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<section class="bottom">
+	<div class="con-min-width">
+		<div class="con">
+			<div class="bottom-cover flex flex-jc-ar flex-ai-c height-100p">
+				<div class="bottom__logo logo height-100p flex flex-ai-c">
+					<a href="../home/main">휴게소</a>
+				</div>
+
+				<div class="bottom__sentence1 height-100p flex flex-ai-c">
+					<a href="#" class="about_site">사이트 소개</a>
+					<a href="#" class="my_page">마이 페이지</a>
+					<a href="#" class="report">게시물 신고</a>
+				</div>
+				
+				<div class="bottom__sentence2 flex flex-column">
+					<span>등록된 손님: </span>
+					<span>등록안된 손님: </span>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</section>
+
+</div>
+<%--한 페이지 범위 지정해주는 div --%>
 </body>
 </html>

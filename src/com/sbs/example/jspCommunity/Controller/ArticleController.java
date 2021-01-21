@@ -75,7 +75,8 @@ public class ArticleController {
 			request.setAttribute("historyBack", true);
 			return "common/redirect";
 		}
-		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+
+		int memberNum = (int) session.getAttribute("loginedMemberId");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 		Board board = articleService.getBoardNum(boardNum);
 		String title = request.getParameter("title");
@@ -129,8 +130,8 @@ public class ArticleController {
 			return "common/redirect";
 		}
 
-		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
-		
+		int memberNum = (int)session.getAttribute("loginedMemberId");
+
 		if (article.getMemberNum() != memberNum) {
 			request.setAttribute("alertMsg", articleNum + "번 글의 수정 권한이 없습니다.");
 			request.setAttribute("historyBack", true);
@@ -163,7 +164,7 @@ public class ArticleController {
 
 		Article article = articleService.getForPrintArticle(articleNum);
 
-		int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+		int memberNum = (int)session.getAttribute("loginedMemberId");
 
 		if (article.getMemberNum() != memberNum) {
 

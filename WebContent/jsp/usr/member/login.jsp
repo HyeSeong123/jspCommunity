@@ -7,9 +7,7 @@
 
 <%@ include file="../../part/head.jspf"%>
 <body>
-	<h1>${pageTitle}</h1>
-	<hr>
-	<div>
+	<section class="login-page height-100p flex flex-jc-c">
 		<script>
 			function DoLoginForm__submit(form) {
 				let DoLoginForm_submited = false;
@@ -39,23 +37,27 @@
 				DoLoginForm_submited = true;
 			}
 		</script>
-		<form action="doLogin" method="POST"
-			onsubmit="DoLoginForm__submit(this); return false;">
-			<div>아이디 :</div>
-			<div>
-				<input type="text" name="loginId" />
-			</div>
-			<div>패스워드 :</div>
-			<div>
-				<input type="password" name="loginPw" />
-			</div>
-			<hr />
-			<div>
-				<input type="submit" value="로그인" />
-				<button type="button" onclick="history.back()">뒤로가기</button>
-			</div>
-		</form>
-	</div>
-	<a href="join">회원 가입</a>
-	
-<%@ include file="../../part/foot.jspf"%>
+		<section class="form__login-box height-100p">
+			<div class="logo form__logo">주차장</div>
+			<form action="doLogin" method="POST"
+				onsubmit="DoLoginForm__submit(this); return false;">
+				<div class="input__login-form login_input">
+					<input type="text" name="loginId" placeholder="아이디 입력" />
+				</div>
+
+				<div class="input__password-form login_input">
+					<input type="password" name="loginPw" placeholder="비밀번호 입력" />
+				</div>
+				<div class="login__buttons">
+					<div class="login__login-button">
+						<input type="submit" value="로그인" />
+					</div>
+					<div class="login__back-button">
+						<button type="button" onclick="history.back()">뒤로가기</button>
+					</div>
+				</div>
+			</form>
+		</section>
+	</section>
+
+	<%@ include file="../../part/foot.jspf"%>

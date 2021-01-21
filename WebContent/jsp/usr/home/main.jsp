@@ -6,11 +6,7 @@
 
 <%@ include file="../../part/head.jspf"%>
 <body>
-	<h1>게시판 이름: ${pageTitle}</h1>
-
-	<a href="../article/list?boardNum=1">공지사항</a>
-	<a href="../article/list?boardNum=2">방명록</a>
-	<a href="../article/list?boardNum=3">자유게시판</a>
-
-
+	
+	<h1>인포 데스크</h1>
 	<%@ include file="../../part/foot.jspf"%>
+	

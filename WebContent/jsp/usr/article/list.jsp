@@ -9,6 +9,7 @@
 	<h1>게시판 이름: ${pageTitle}</h1>
 	<h2>게시물 리스트</h2>
 	<a href="../home/main">메인</a>
+	<a href="<c:url value="write?boardNum="/>${param.boardNum}">글 쓰기</a>
 	<br>
 	<br>
 	<c:forEach var="article" items="${articles}"> 

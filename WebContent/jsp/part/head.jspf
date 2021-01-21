@@ -13,59 +13,91 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resource/css/common.css">
+<script src="${pageContext.request.contextPath}/resource/js/common.js"
+	defer></script>
 </head>
 
-<header>
-	<div class="con-min-width">
-		<div class="con">
-			<div class="top-bar flex flex-jc-sb flex-ai-c">
+<div class="min-height-100vh flex flex-column">
+	<header>
+		<div class="con-min-width">
+			<div class="con">
+				<div class="top-bar flex flex-jc-sb flex-ai-c height-100p">
 
-				<div class="top-bar__logo">
-					<a href="#"><img src="${pageContext.request.contextPath}/resource/logo.png" alt=""> </a> <span>지나가다 쉬어가는 곳</span>
-				</div>
+					<div class="top-bar__logo logo">
+						<a href="../home/main">휴게소</a>
+						<span>지나가다 쉬어가는 곳</span>
+					</div>
 
-				<div class="top-bar__search-form">
-					<form action="">
-						<input type="text" placeholder="  search">
-						<div class="top-bar__search-icon">
-							<a href="#"> <i class="fas fa-search"></i>
+					<div class="top-bar__search-form">
+						<form action="" class="top-bar__form">
+							<input type="text" placeholder="  search" class="form-search">
+							<div class="top-bar__search-icon">
+								<a href="#">
+									<i class="fas fa-search"></i>
+								</a>
+							</div>
+						</form>
+					</div>
+
+					<c:if test="${sessionScope.loginedMemberId == null}">
+						<div class="top-bar__button flex">
+							<a href="../member/join"
+								class="top-bar__button-join flex flex-ai-c">
+								<span>회원가입</span>
+							</a>
+							<a href="../member/login"
+								class="top-bar__button-login flex flex-ai-c">
+								<span>로그인</span>
 							</a>
 						</div>
-					</form>
+					</c:if>
+
+					<c:if test="${sessionScope.loginedMemberId != null}">
+						<div class="top-bar__button flex">
+							<a href="../member/doLogout"
+								class="top-bar__button-login flex flex-ai-c">
+								<span>로그아웃</span>
+							</a>
+						</div>
+					</c:if>
 				</div>
-				
-				<c:if test="${sessionScope.loginedMemberId == null}">
-					<div class="top-bar__button flex">
-						<a href="../member/join" class="top-bar__button-join flex flex-ai-c">
-							<span>회원가입</span>
-						</a>
-						<a href="../member/login" class="top-bar__button-login flex flex-ai-c">
-							<span>로그인</span>
-						</a>
-					</div>
-				</c:if>
 			</div>
 		</div>
-	</div>
-</header>
+	</header>
+	
+	<header class="home-main">
+		<div class="con-min-width">
+			<div class="con">	
+				<div class="bird-container bird-container--one">
+					<div class="bird bird--one"></div>
+				</div>
 
+				<div class="bird-container bird-container--two">
+					<div class="bird bird--two"></div>
+				</div>
 
-<%--
-			<div class="main__header flex">
-				<c:if test="${sessionScope.loginedMemberId == null}">
+				<div class="bird-container bird-container--three">
+					<div class="bird bird--three"></div>
+				</div>
 
-					<div class="main__join">
-						<a href="../member/join">회원 가입</a>
+				<div class="bird-container bird-container--four">
+					<div class="bird bird--four"></div>
+				</div>
+				<div class="home-main__board flex flex-jc-ar">
+					<div>
+						<a href="../article/list?boardNum=1">휴게소 방송실</a>
 					</div>
-					<div class="main__login">
-						<a href="../member/login">로그인</a>
+					<div>
+						<a href="../article/list?boardNum=2">자유휴게소</a>
 					</div>
-				</c:if>
-
-				<c:if test="${sessionScope.loginedMemberId > 0}">
-					<div class="main__logout">
-						<a href="../member/doLogout">로그아웃</a>
+					<div>
+						<a href="../article/list?boardNum=3">휴게소 글마당</a>
 					</div>
-				</c:if>
+					<div>
+						<a href="../article/list?boardNum=3">휴게소 포토존</a>
+					</div>
+				</div>
 			</div>
-			--%>
+		</div>
+	</header>
+	<div class="flex-grow-1">
