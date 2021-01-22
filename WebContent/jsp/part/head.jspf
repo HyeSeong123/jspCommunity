@@ -13,8 +13,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resource/css/common.css">
-<script src="${pageContext.request.contextPath}/resource/js/common.js"
-	defer></script>
+<script src="${pageContext.request.contextPath}/resource/js/common.js" defer></script>
 </head>
 
 <div class="min-height-100vh flex flex-column">
@@ -25,7 +24,7 @@
 
 					<div class="top-bar__logo logo">
 						<a href="../home/main">휴게소</a>
-						<span>지나가다 쉬어가는 곳</span>
+						<span>쉬어가는 곳</span>
 					</div>
 
 					<div class="top-bar__search-form">

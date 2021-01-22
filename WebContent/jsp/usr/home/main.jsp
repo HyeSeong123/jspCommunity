@@ -6,7 +6,6 @@
 
 <%@ include file="../../part/head.jspf"%>
 <body>
-	
-	<h1>인포 데스크</h1>
+
 	<%@ include file="../../part/foot.jspf"%>
 	

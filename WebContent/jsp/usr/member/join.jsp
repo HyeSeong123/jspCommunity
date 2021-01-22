@@ -12,7 +12,23 @@
 		<script>
 			function DoJoinForm__submit(form) {
 				let doJoinForm_submited = false;
-
+				let doJoinForm_checkedLoginId = "";
+				
+				function DoJoinForm__checkLoginDup(el){
+					const from = $(el).closest('form').get(0);
+					const loginId = from.loginId.value;
+					
+					$.get(
+						"getloginIdDup",
+						{
+							loginId
+						},
+						function(data){
+							console.log(data);
+						},
+						"html"
+					);
+				}
 				form.name.value = form.name.value.trim();
 
 				if (doJoinForm_submited) {
@@ -38,6 +54,12 @@
 					return;
 				}
 
+				if (form.loginId.value != doJoinForm_checkedLoginId) {
+					alert('아이디 중복검사를 해주세요.');
+					btnLoginIdDupCheck.focus();
+					return false;
+				}
+				
 				form.loginPw.value = form.loginPw.value.trim();
 
 				if (form.loginPw.value.length == 0) {
@@ -67,7 +89,7 @@
 
 				if (form.nickname.value.length == 0) {
 					alert('닉네임을 입력해주세요.');
-					form.loginId.focus();
+					form.nickname.focus();
 					return;
 				}
 
@@ -101,6 +123,7 @@
 			<div>아이디 :</div>
 			<div>
 				<input type="text" name="loginId" />
+				<button onclick="DoJoinForm__checkLoginDup(this)" type="button" name="btnLoginIdDupCheck">중복 체크</button>
 			</div>
 			<div>패스워드 :</div>
 			<div>
@@ -130,4 +153,4 @@
 		</form>
 	</div>
 
-<%@ include file="../../part/foot.jspf"%>
+	<%@ include file="../../part/foot.jspf"%>

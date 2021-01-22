@@ -328,7 +328,7 @@ a{
 		animation-duration: 11s;
 		animation-delay: 5.25s;
 	}
-
+}
 @keyframes fly-cycle {
 	
 	100% {
@@ -453,6 +453,33 @@ a{
 	cursor : pointer;
 	font-size : 18px;
 	color : black;
+}
+.login__check-box{
+	margin-bottom : 15px;
+}
+.login__add-buttons{
+	margin-bottom : 15px;
+}
+.login__add-buttons > div{
+	width : 50%;
+	text-align : center;
+	position : relative;
+}
+.login__add-buttons > div::before{
+	content : "";
+	width : 5px;
+	height : 25px;
+	background-color : white;
+	position:absolute;
+	left : 0;
+}
+.login__add-buttons > div:last-child::after{
+	content : "";
+	width : 5px;
+	height : 25px;
+	background-color : white;
+	position:absolute;
+	right : 0;
 }
 /* 로그인 화면 */
 /* 바텀 */

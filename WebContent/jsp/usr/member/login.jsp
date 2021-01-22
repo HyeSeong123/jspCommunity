@@ -52,9 +52,23 @@
 					<div class="login__login-button">
 						<input type="submit" value="로그인" />
 					</div>
-					<div class="login__back-button">
-						<button type="button" onclick="history.back()">뒤로가기</button>
+				</div>
+
+				<div class="login__check-box check-box">
+					<input type="checkbox" name="auto_login" value="1"> 자동 로그인
+				</div>
+				
+				<div class="login__add-buttons flex flex-jc-c">
+					<div class="find-loginId">
+						<a href="#">아이디 찾기</a>
 					</div>
+					<div class="find-loginId">
+						<a href="#">비밀번호 찾기</a>
+					</div>
+				</div>
+				
+				<div class="login__back-button">
+					<button type="button" onclick="history.back()">되돌아가기</button>
 				</div>
 			</form>
 		</section>
