@@ -38,7 +38,7 @@
 						</form>
 					</div>
 
-					<c:if test="${sessionScope.loginedMemberId == null}">
+					<c:if test="${isLogined == false}">
 						<div class="top-bar__button flex">
 							<a href="../member/join"
 								class="top-bar__button-join flex flex-ai-c">
@@ -51,7 +51,7 @@
 						</div>
 					</c:if>
 
-					<c:if test="${sessionScope.loginedMemberId != null}">
+					<c:if test="${isLogined}">
 						<div class="top-bar__button flex">
 							<a href="../member/doLogout"
 								class="top-bar__button-login flex flex-ai-c">

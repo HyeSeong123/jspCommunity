@@ -53,12 +53,7 @@ public class ArticleController {
 	}
 
 	public String showWrite(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		if (session.getAttribute("loginedMemberId") == null) {
-			request.setAttribute("alertMsg", "로그인 후 진행해주세요.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
-		}
+		
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 
 		Board board = articleService.getBoardNum(boardNum);
@@ -69,14 +64,8 @@ public class ArticleController {
 	}
 
 	public String doWrite(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		if (session.getAttribute("loginedMemberId") == null) {
-			request.setAttribute("alertMsg", "로그인 후 진행해주세요.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
-		}
-
-		int memberNum = (int) session.getAttribute("loginedMemberId");
+		
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 		Board board = articleService.getBoardNum(boardNum);
 		String title = request.getParameter("title");
@@ -97,13 +86,6 @@ public class ArticleController {
 	}
 
 	public String showModify(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-
-		if (session.getAttribute("loginedMemberId") == null) {
-			request.setAttribute("alertMsg", "로그인 후 진행해주세요.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
-		}
 
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 
@@ -115,12 +97,6 @@ public class ArticleController {
 	}
 
 	public String doModify(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		if (session.getAttribute("loginedMemberId") == null) {
-			request.setAttribute("alertMsg", "로그인 후 진행해주세요.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
-		}
 
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 		Article article = articleService.getForPrintArticle(articleNum);
@@ -130,7 +106,7 @@ public class ArticleController {
 			return "common/redirect";
 		}
 
-		int memberNum = (int)session.getAttribute("loginedMemberId");
+		int memberNum = (int)request.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
 			request.setAttribute("alertMsg", articleNum + "번 글의 수정 권한이 없습니다.");
@@ -155,16 +131,12 @@ public class ArticleController {
 
 	public String doDelete(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("loginedMemberId") == null) {
-			request.setAttribute("alertMsg", "로그인 후 진행해주세요.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
-		}
+
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 
 		Article article = articleService.getForPrintArticle(articleNum);
 
-		int memberNum = (int)session.getAttribute("loginedMemberId");
+		int memberNum = (int)session.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
 

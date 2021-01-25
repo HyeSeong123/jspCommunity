@@ -7,27 +7,34 @@ import com.sbs.example.jspCommunity.Controller.usrMemberController;
 import com.sbs.example.jspCommunity.Dao.ArticleDao;
 import com.sbs.example.jspCommunity.Dao.MemberDao;
 import com.sbs.example.jspCommunity.Service.ArticleService;
+import com.sbs.example.jspCommunity.Service.EmailService;
 import com.sbs.example.jspCommunity.Service.MemberService;
 
 public class Container {
-
-	public static MemberDao memberDao;
+	
 	public static ArticleDao articleDao;
 	public static ArticleService articleService;
+	public static ArticleController articleController;
+	
+	public static EmailService emailService;
+	public static MemberDao memberDao;
 	public static MemberService memberService;
+	
 	public static usrMemberController usrMemberController;
 	public static AdmMemberController admMemberController;
-	public static ArticleController articleController;
 	public static UsrHomeController homeController;
-
+	
 	static {
 		memberDao = new MemberDao();
 		articleDao = new ArticleDao();
-		articleService = new ArticleService();
+		
+		emailService = new EmailService();
 		memberService = new MemberService();
-		homeController = new UsrHomeController();
-		usrMemberController = new usrMemberController();
+		articleService = new ArticleService();
+		
 		admMemberController = new AdmMemberController();
+		usrMemberController = new usrMemberController();
 		articleController = new ArticleController();
+		homeController = new UsrHomeController();
 	}
 }

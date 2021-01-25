@@ -2,43 +2,43 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <c:set var="pageTitle" value="회원가입" />
 
 <%@ include file="../../part/head.jspf"%>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <body>
 	<h1>${pageTitle}</h1>
 	<div>
 		<script>
+		let doJoinForm_submited = false;
+		let doJoinForm_checkedLoginId = "";
+		
+		function DoJoinForm__checkLoginDup(el){
+			const from = $(el).closest('form').get(0);
+			const loginId = from.loginId.value;
+
+			
+			$.get(
+				"getLoginIdDup",
+				{
+					loginId
+				},
+				function(data){
+					if(data.msg){
+						alert(data.msg);
+					}
+					if(data.resultCode.substr(0, 2) == "S-"){
+						doJoinForm_checkedLoginId = data.loginId;
+					}
+				},	
+				"json"
+			);
+		}
 			function DoJoinForm__submit(form) {
-				let doJoinForm_submited = false;
-				let doJoinForm_checkedLoginId = "";
-				
-				function DoJoinForm__checkLoginDup(el){
-					const from = $(el).closest('form').get(0);
-					const loginId = from.loginId.value;
-					
-					$.get(
-						"getloginIdDup",
-						{
-							loginId
-						},
-						function(data){
-							console.log(data);
-						},
-						"html"
-					);
-				}
-				form.name.value = form.name.value.trim();
 
 				if (doJoinForm_submited) {
 					alert('처리중입니다.');
-					return;
-				}
-				if (form.name.value.length == 0) {
-					alert('이름을 입력해주세요.');
-					form.name.focus();
-
 					return;
 				}
 
@@ -49,7 +49,7 @@
 					form.loginId.focus();
 					return;
 				} else if (form.loginId.value.length <= 4) {
-					alert('아이디는 5글자 이상이어야 합니다.')
+					alert('아이디는 5글자 이상이어야 합니다.');
 					form.loginId.focus();
 					return;
 				}
@@ -72,6 +72,8 @@
 					return;
 				}
 
+				form.confirmPw.value = form.confirmPw.value.trim();
+
 				if (form.confirmPw.value.length == 0) {
 					alert('패스워드 확인을 입력해주세요.');
 					form.confirmPw.focus();
@@ -84,7 +86,14 @@
 
 					return;
 				}
+				form.name.value = form.name.value.trim();
+				
+				if (form.name.value.length == 0) {
+					alert('이름을 입력해주세요.');
+					form.name.focus();
 
+					return;
+				}
 				form.nickname.value = form.nickname.value.trim();
 
 				if (form.nickname.value.length == 0) {
@@ -108,7 +117,10 @@
 					form.phNum.focus();
 					return;
 				}
-
+				form.loginPwReal.value = sha256(form.loginPw.value);
+				form.loginPw.value = "";
+				form.confirmPw.value = "";
+				
 				form.submit();
 				doJoinForm_submited = true;
 			}
@@ -116,23 +128,30 @@
 
 		<form action="doJoin" method="POST"
 			onsubmit="DoJoinForm__submit(this); return false;">
+			<input type="text" name="loginPwReal" />
+
+			<div>아이디 :</div>
+			<div>
+				<input type="text" name="loginId" />
+				<button onclick="DoJoinForm__checkLoginDup(this);"
+					name="btnLoginIdDupCheck" type="button">중복 체크</button>
+			</div>
+			
+			<div>패스워드 :</div>
+			<div>
+				<input name="loginPw" type="password" />
+			</div>
+			
+			<div>패스워드 확인 :</div>
+			<div>
+				<input name="confirmPw" type="password" />
+			</div>
+				
 			<div>이 름 :</div>
 			<div>
 				<input type="text" name="name" />
 			</div>
-			<div>아이디 :</div>
-			<div>
-				<input type="text" name="loginId" />
-				<button onclick="DoJoinForm__checkLoginDup(this)" type="button" name="btnLoginIdDupCheck">중복 체크</button>
-			</div>
-			<div>패스워드 :</div>
-			<div>
-				<input type="password" name="loginPw" />
-			</div>
-			<div>패스워드 확인 :</div>
-			<div>
-				<input type="password" name="confirmPw" />
-			</div>
+
 			<div>닉네임 :</div>
 			<div>
 				<input type="text" name="nickname" />
@@ -143,7 +162,7 @@
 			</div>
 			<div>휴대전화 번호 :</div>
 			<div>
-				<input type="number" name="phNum" />
+				<input type="tel" name="phNum" />
 			</div>
 			<hr />
 			<div>

@@ -2,4 +2,5 @@
 .project
 .settings/
 build/
+WebContent/META-INF/config.json
 
