@@ -31,7 +31,7 @@ CREATE TABLE `article` (
   `views` int(10) unsigned NOT NULL DEFAULT 0,
   `hitsCount` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`num`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article` */
 
@@ -39,7 +39,8 @@ insert  into `article`(`num`,`regDate`,`updateDate`,`memberNum`,`boardNum`,`titl
 (5,'2021-01-16 17:46:48','2021-01-16 17:46:48',1,1,'가나다라','가나다라',0,0),
 (7,'2021-01-16 23:25:11','2021-01-16 23:25:13',2,1,'가나다','가나다라',0,0),
 (8,'2021-01-16 23:41:54','2021-01-16 23:42:02',1,1,'DGGDSA','aSFAFAFS',0,0),
-(9,'2021-01-20 23:53:48','2021-01-20 23:54:02',25,3,'아니','아니',0,0);
+(9,'2021-01-20 23:53:48','2021-01-20 23:54:02',25,3,'아니','아니',0,0),
+(10,'2021-01-23 02:38:29','2021-01-23 02:38:29',27,3,'rrrr','rrrrr',0,0);
 
 /*Table structure for table `board` */
 
@@ -80,18 +81,12 @@ CREATE TABLE `member` (
   `phNum` char(30) NOT NULL,
   PRIMARY KEY (`memberNum`),
   UNIQUE KEY `loginId` (`loginId`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `member` */
 
 insert  into `member`(`memberNum`,`regDate`,`updateDate`,`name`,`nickname`,`email`,`loginId`,`loginPw`,`authLevel`,`phNum`) values 
-(1,'2021-01-07 12:27:17','2021-01-07 12:27:17','홍길동','의적홍길동','banggu1997@gamil.com','baobab612','baobab0612',2,'010-3370-2345'),
-(2,'2021-01-07 12:28:32','2021-01-07 12:28:32','홍길순','홍길동동생','banggu1997@gamil.com','hong','hong',2,'045-3322-1111'),
-(3,'2021-01-08 20:37:49','2021-01-08 20:37:52','임꺽정','잭더리퍼','banggu1997@gmail.com','jack','쟤가걔야',2,'030-3333-1215'),
-(5,'2021-01-18 09:41:00','2021-01-18 09:41:00','방혜성','1234','banggu1997@gmail.com','banggu1997@gmail.com','1111111111',2,'123124'),
-(6,'2021-01-19 10:25:00','2021-01-19 10:25:00','홍길동','bangg','banggu1997@gmail.com','홍길동','1111',2,'1234'),
-(7,'2021-01-20 11:43:00','2021-01-20 11:43:00','abcde','1234','banggu1997@gmail.com','abcde','12345678',2,'123412341234'),
-(25,'2021-01-20 11:53:00','2021-01-20 11:53:00','방혜성','banggu1997','baobab0612@naver.com','baobab0612','baobab0612!',2,'123412341234');
+(1,'2021-01-25 12:44:00','2021-01-26 01:01:14','qqq','qqq','banggu1997@gmail.com','baobab612','3dc314f501078158f1b0cd4c9fa9851579838c17387d9fe4479e3c9359ea50d4',2,'010100');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
