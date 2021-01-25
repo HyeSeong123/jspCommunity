@@ -40,7 +40,6 @@ public class usrMemberController {
 			return "common/redirect";
 		}
 
-		
 		return "usr/member/join";
 	}
 
@@ -143,8 +142,86 @@ public class usrMemberController {
 		rs.put("resultCode", resultCode);
 		rs.put("msg", msg);
 		rs.put("loginId", loginId);
-		
+
 		request.setAttribute("data", Util.getJsonText(rs));
 		return "common/pure";
+	}
+
+	public String showFindLoginId(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("loginedMemberNum") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		return "usr/member/findLoginId";
+	}
+
+	public String doFindLoginId(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("loginedMemberNum") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+
+		if (member == null) {
+			request.setAttribute("alertMsg", "일치하는 회원이 없습니다.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		request.setAttribute("alertMsg", String.format("로그인아이디는 %s 입니다.", member.getLoginId()));
+		request.setAttribute("replaceUrl", "../member/login");
+		return "common/redirect";
+	}
+
+	public String showFindLoginPw(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("loginedMemberNum") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		return "usr/member/findLoginPw";
+	}
+
+	public String doFindLoginPw(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("loginedMemberNum") != null) {
+			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		String loginId = request.getParameter("loginId");
+		String email = request.getParameter("email");
+
+		Member member = memberService.getMemberByLoginId(loginId);
+
+		if (member == null) {
+			request.setAttribute("alertMsg", "일치하는 회원이 없습니다.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		if (member.getEmail().equals(email) == false) {
+			request.setAttribute("alertMsg", "회원님의 이메일 주소와 아이디가 일치하지 않습니다.");
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		memberService.sendTempLoginPwToEmail(member);
+
+		request.setAttribute("alertMsg", String.format("고객님의 새 임시 ㅣ패스워드가 %s(으)로 발송 되었습니다..", member.getEmail()));
+		request.setAttribute("replaceUrl", "../member/login");
+		return "common/redirect";
 	}
 }

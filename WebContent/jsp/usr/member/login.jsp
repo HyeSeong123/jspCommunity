@@ -42,7 +42,7 @@
 		</script>
 		<section class="form__login-box height-100p">
 			<div class="logo form__logo">주차장</div>
-			<form action="doLogin" method="POST"
+			<form action="doFindLoginId" method="POST"
 				onsubmit="DoLoginForm__submit(this); return false;">
 				<input type="hidden" name="loginPwReal" /> 
 				<div class="input__login-form login_input">
@@ -64,10 +64,10 @@
 				
 				<div class="login__add-buttons flex flex-jc-c">
 					<div class="find-loginId">
-						<a href="#">아이디 찾기</a>
+						<a href="findLoginId">아이디 찾기</a>
 					</div>
-					<div class="find-loginId">
-						<a href="#">비밀번호 찾기</a>
+					<div class="find-loginPw">
+						<a href="findLoginPw">비밀번호 찾기</a>
 					</div>
 				</div>
 				
