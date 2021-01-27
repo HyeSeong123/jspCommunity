@@ -42,18 +42,18 @@
 		</script>
 		<section class="form__login-box height-100p">
 			<div class="logo form__logo">주차장</div>
-			<form action="doFindLoginId" method="POST"
+			<form action="doLogin" method="POST"
 				onsubmit="DoLoginForm__submit(this); return false;">
 				<input type="hidden" name="loginPwReal" /> 
-				<div class="input__login-form login_input">
+				<div class="input__login-form login_input input_opt1">
 					<input type="text" name="loginId" placeholder="아이디 입력" />
 				</div>
 
-				<div class="input__password-form login_input">
+				<div class="input__password-form login_input input_opt1">
 					<input type="password" name="loginPw" placeholder="비밀번호 입력" />
 				</div>
 				<div class="login__buttons">
-					<div class="login__login-button">
+					<div class="login__login-button input_opt2">
 						<input type="submit" value="로그인" />
 					</div>
 				</div>

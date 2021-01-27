@@ -42,15 +42,15 @@
 			<form action="doFindLoginId" method="POST"
 				onsubmit="DoFindLoginIdForm__submit(this); return false;">
 				
-				<div class="input__findLogin-form findLogin_input">
+				<div class="input__findLogin-form findLogin_input input_opt1">
 					<input type="text" name="name" placeholder="이름을 입력해주세요" />
 				</div>
 
-				<div class="input__findLoginEmail-form findLogin_input">
+				<div class="input__findLoginEmail-form findLogin_input input_opt1">
 					<input type="email" name="email" placeholder="가입시 입력한이메일을 입력해주세요" />
 				</div>
 				<div class="findLogin__buttons">
-					<div class="findLogin__find-button">
+					<div class="findLogin__find-button input_opt2">
 						<input type="submit" value="아이디 찾기" />
 					</div>
 				</div>

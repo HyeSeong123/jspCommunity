@@ -8,6 +8,7 @@ import com.sbs.example.jspCommunity.App;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dao.MemberDao;
 import com.sbs.example.jspCommunity.Dto.Member;
+import com.sbs.example.jspCommunity.Dto.ResultData;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class MemberService {
@@ -43,7 +44,7 @@ public class MemberService {
 		return memberDao.getMemberByNameAndEmail(name, email);
 	}
 
-	public void sendTempLoginPwToEmail(Member actor) {
+	public ResultData sendTempLoginPwToEmail(Member actor) {
 		String siteName = App.getSite();
 		String siteLoginUrl = App.getLoginUrl();
 		String title = "[" + siteName + "] 임시 패스워드 발송";
@@ -51,9 +52,15 @@ public class MemberService {
 		String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
 		body += "<a href=\"" + siteLoginUrl + "\" target=\"_blank\"> 로그인 하러가기</a>";
 
-		emailService.send(actor.getEmail(), title, body);
+		Map<String, Object> rs = new HashMap<>();
+		int sendRs = emailService.send(actor.getEmail(), title, body);
 
 		setTempPassword(actor, tempPassword);
+		if (sendRs != 1) {
+			return new ResultData("F-1", "메일방송에 실패하였습니다.");
+		}
+		String resultMsg = String.format("고객님의 새 임시 패스워드가 %s (으)로 발송되었습니다.", actor.getEmail());
+		return new ResultData("S-1", resultMsg, "email",actor.getEmail());
 	}
 
 	private void setTempPassword(Member actor, String tempPassword) {

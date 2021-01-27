@@ -5,6 +5,7 @@
 <c:set var="pageTitle" value="${article.extra__boardName}" />
 
 <%@ include file="../../part/head.jspf"%>
+
 <body>
 	<h1>게시판 이름: ${pageTitle}</h1>
 	<h2>게시물 이름</h2>
@@ -19,9 +20,15 @@
 		<br />
 		작성자 : ${article.extra__writer}
 		<br />
-		제목 : ${article.title}
-		<hr />
-		내용 : ${article.body}
+		<section class="detail__article-head">
+			<script type="text/x-template"># 제목: ${article.title}</script>
+			<div class="toast-ui-viewer"></div>
+		</section>
+		<section class="detail__article-head">
+			<script type="text/x-template">내용 : ${article.body}</script>
+			<div class="toast-ui-viewer"></div>
+		</section>
+		
 		<hr />
 		<a href="modify?num=${article.num}">글 수정하기</a>
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>

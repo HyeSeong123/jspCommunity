@@ -11,7 +11,7 @@ import com.sbs.example.jspCommunity.Util.SecSql;
 
 public class ArticleDao {
 
-	public List<Article> getForPringArticleByBoard(int boardNum) {
+	public List<Article> getForPrintArticlesByBoard(int boardNum, int limitStart, int limitCount, String searchKeyword, String searchKeywordType) {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
@@ -27,8 +27,22 @@ public class ArticleDao {
 		if (boardNum != 0) {
 			sql.append("WHERE A.boardNum =?", boardNum);
 		}
-		sql.append("ORDER BY A.num DESC");
 
+		if (searchKeywordType != null) {
+			if (searchKeywordType == null || searchKeywordType.equals("title")) {
+				sql.append("AND A.title LIKE CONCAT('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
+				sql.append("AND A.body LIKE CONCAT('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("titleAndBody")) {
+				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
+			}
+		}
+		sql.append("ORDER BY A.num DESC");
+		
+		if(limitCount != -1) {
+			sql.append("LIMIT ?, ?", limitStart,limitCount);
+		}
+		
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleMapList) {
@@ -124,4 +138,27 @@ public class ArticleDao {
 
 		return MysqlUtil.delete(sql);
 	}
+
+	public int getArticlesCountByBoardNum(int boardNum, String searchKeyword, String searchKeywordType) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article AS A");
+		sql.append("WHERE 1");
+		if (boardNum != 0) {
+			sql.append("AND A.boardNum = ?", boardNum);
+		}
+		if (searchKeywordType != null) {
+			if (searchKeywordType == null || searchKeywordType.equals("title")) {
+				sql.append("AND A.title LIKE CONCAT('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
+				sql.append("AND A.body LIKE CONCAT('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("titleAndBody")) {
+				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
+				
+			}
+		}
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
 }

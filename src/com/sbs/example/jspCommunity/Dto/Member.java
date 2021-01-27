@@ -15,6 +15,7 @@ public class Member {
 	private String nickname;
 	private String email;
 	private int authLevel;
+	private String phNum;
 	
 	public Member(Map<String, Object> memberMap) {
 		this.setMemberNum((int)memberMap.get("memberNum"));
@@ -26,5 +27,6 @@ public class Member {
 		this.setNickname((String)memberMap.get("nickname"));
 		this.setEmail((String)memberMap.get("email"));
 		this.setAuthLevel((int)memberMap.get("authLevel"));
+		this.setPhNum((String)memberMap.get("phNum"));
 	}
 }

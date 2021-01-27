@@ -42,15 +42,15 @@
 			<form action="doFindLoginPw" method="POST"
 				onsubmit="DoFindLoginPwForm__submit(this); return false;">
 				
-				<div class="input__findLogin-form findLogin_input">
+				<div class="input__findLogin-form findLogin_input input_opt1">
 					<input type="text" name="loginId" placeholder="아이디를 입력해주세요" />
 				</div>
 
-				<div class="input__findLoginEmail-form findLogin_input">
+				<div class="input__findLoginEmail-form findLogin_input input_opt1">
 					<input type="email" name="email" placeholder="회워님의 이메일주소를 입력해주세요" />
 				</div>
 				<div class="findLogin__buttons">
-					<div class="findLogin__find-button">
+					<div class="findLogin__find-button input_opt2">
 						<input type="submit" value="비밀번호 찾기" />
 					</div>
 				</div>

@@ -43,6 +43,10 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = memberController.showFindLoginPw(request, response);
 			} else if (actionMethodName.equals("doFindLoginPw")) {
 				jspPath = memberController.doFindLoginPw(request, response);
+			} else if (actionMethodName.equals("whoami")) {
+				jspPath = memberController.showWhoAmI(request, response);
+			} else if (actionMethodName.equals("modifyAccount")) {
+				jspPath = memberController.showModifyAccount(request, response);
 			}
 		} else if (ControllerName.equals("article")) {
 			ArticleController articleController = Container.articleController;

@@ -4,16 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Member;
-import com.sbs.example.jspCommunity.Service.ArticleService;
+import com.sbs.example.jspCommunity.Dto.ResultData;
 import com.sbs.example.jspCommunity.Service.MemberService;
-import com.sbs.example.jspCommunity.Util.Util;
 
 public class usrMemberController {
 
@@ -34,7 +32,7 @@ public class usrMemberController {
 	public String showJoin(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute("loginedMemberId") != null) {
+		if (session.getAttribute("loginedMemberNum") != null) {
 			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
 			request.setAttribute("historyBack", true);
 			return "common/redirect";
@@ -46,7 +44,7 @@ public class usrMemberController {
 	public String doJoin(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute("loginedMemberId") != null) {
+		if (session.getAttribute("loginedMemberNum") != null) {
 			request.setAttribute("alertMsg", "로그아웃 후 진행해주세요.");
 			request.setAttribute("historyBack", true);
 			return "common/redirect";
@@ -104,7 +102,7 @@ public class usrMemberController {
 		}
 
 		HttpSession session = request.getSession();
-		session.setAttribute("loginedMemberId", member.getMemberNum());
+		session.setAttribute("loginedMemberNum", member.getMemberNum());
 
 		request.setAttribute("alertMsg", String.format("%s님의 방문을 환영합니다.", member.getNickname()));
 		request.setAttribute("replaceUrl", "../home/main");
@@ -115,7 +113,7 @@ public class usrMemberController {
 	public String doLogout(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
-		session.removeAttribute("loginedMemberId");
+		session.removeAttribute("loginedMemberNum");
 
 		request.setAttribute("alertMsg", "로그아웃 되었습니다.");
 		request.setAttribute("replaceUrl", "../home/main");
@@ -127,8 +125,6 @@ public class usrMemberController {
 
 		Member member = memberService.getMemberByLoginId(loginId);
 
-		Map<String, Object> rs = new HashMap<>();
-
 		String resultCode = null;
 		String msg = null;
 
@@ -139,12 +135,9 @@ public class usrMemberController {
 			resultCode = "S-1";
 			msg = "사용 가능한 로그인 아이디 입니다.";
 		}
-		rs.put("resultCode", resultCode);
-		rs.put("msg", msg);
-		rs.put("loginId", loginId);
 
-		request.setAttribute("data", Util.getJsonText(rs));
-		return "common/pure";
+		request.setAttribute("data", new ResultData(resultCode, msg, "loginId", loginId));
+		return "common/json";
 	}
 
 	public String showFindLoginId(HttpServletRequest request, HttpServletResponse response) {
@@ -218,10 +211,36 @@ public class usrMemberController {
 			return "common/redirect";
 		}
 
-		memberService.sendTempLoginPwToEmail(member);
+		ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
 
-		request.setAttribute("alertMsg", String.format("고객님의 새 임시 ㅣ패스워드가 %s(으)로 발송 되었습니다..", member.getEmail()));
+		if (sendTempLoginPwToEmailRs.isFail()) {
+			request.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
+			request.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		request.setAttribute("alertMsg", String.format(sendTempLoginPwToEmailRs.getMsg()));
 		request.setAttribute("replaceUrl", "../member/login");
 		return "common/redirect";
+	}
+
+	public String showWhoAmI(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+
+		Member member = memberService.getMemberByLoginNum(memberNum);
+		request.setAttribute("memberNum", memberNum);
+		request.setAttribute("name", member.getName());
+		request.setAttribute("nickName", member.getNickname());
+		request.setAttribute("email", member.getEmail());
+		request.setAttribute("regDate", member.getRegDate());
+		request.setAttribute("updateDate", member.getUpdateDate());
+		request.setAttribute("loginId", member.getLoginId());
+		request.setAttribute("phNum", member.getPhNum());
+		
+		return "usr/member/whoami";
+	}
+
+	public String showModifyAccount(HttpServletRequest request, HttpServletResponse response) {
+		return "usr/member/modifyAccount";
 	}
 }

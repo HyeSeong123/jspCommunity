@@ -57,7 +57,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 			response.getWriter().append("올바른 요청이 아닙니다.");
 			return null;
 		}
-		System.out.println(requestUri);
+		
 		
 		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "jspCommunity");
 		
@@ -66,7 +66,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 		String actionMethodName = requestUriBits[4];
 		
 		String actionUrl = "/" + ControllerTypeName + "/" + ControllerName + "/" + actionMethodName;
-		
+		System.out.printf("actionUrl=%s\n",actionUrl);
  		
 		
 		// 데이터 추가 인터셉터 끝
@@ -99,9 +99,10 @@ public abstract class dispatcherServlet extends HttpServlet {
 		needToLoginactionUrls.add("/usr/article/modify");
 		needToLoginactionUrls.add("/usr/article/doModify");
 		needToLoginactionUrls.add("/usr/article/doDelete");
-		
+		needToLoginactionUrls.add("/usr/member/whoami");
+		needToLoginactionUrls.add("/usr/member/modifyAccount");
 		if(needToLoginactionUrls.contains(actionUrl) ) {
-			if ((boolean) request.getAttribute("isLogined")) {
+			if ((boolean) request.getAttribute("isLogined") == false) {
 				request.setAttribute("alertMsg", "로그인 후 이용해주세요.");
 				request.setAttribute("replaceUrl", "../member/login");
 				

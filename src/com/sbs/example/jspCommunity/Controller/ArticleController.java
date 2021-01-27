@@ -12,6 +12,7 @@ import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
 import com.sbs.example.jspCommunity.Service.ArticleService;
+import com.sbs.example.jspCommunity.Util.Util;
 
 public class ArticleController {
 
@@ -22,17 +23,58 @@ public class ArticleController {
 	}
 
 	public String showList(HttpServletRequest request, HttpServletResponse response) {
-
+		String searchKeyword = request.getParameter("searchKeyword");
+		String searchKeywordType = request.getParameter("searchKeywordType");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 
 		Board board = articleService.getBoardNum(boardNum);
 
 		request.setAttribute("board", board);
+		int totalCount = articleService.getArticlesCountByBoardNum(boardNum, searchKeyword, searchKeywordType);
 
-		List<Article> articles = articleService.getForPrintArticlesByBoard(boardNum);
+		int page = Util.getAsInt(request.getParameter("page"), 1);
+		int itemsInAPage = 30;
+		int limitStart = (page - 1) * itemsInAPage;
 
+		List<Article> articles = articleService.getForPrintArticlesByBoard(boardNum, limitStart, itemsInAPage,
+				searchKeyword, searchKeywordType);
+
+		int totalPage = (int) Math.ceil(totalCount / (double) itemsInAPage);
+
+		int pageBoxSize = 10;
+
+		int previousPageBoxesCount = (page - 1) / pageBoxSize;
+		int pageBoxStartPage = pageBoxSize * previousPageBoxesCount + 1;
+		int pageBoxEndPage = pageBoxStartPage + pageBoxSize - 1;
+
+		if (pageBoxEndPage > totalPage) {
+			pageBoxEndPage = totalPage;
+		}
+
+		int pageBoxStartBeforePage = pageBoxStartPage - 1;
+		if (pageBoxStartBeforePage < 1) {
+			pageBoxStartBeforePage = 1;
+		}
+
+		int pageBoxEndAfterPage = pageBoxEndPage + 1;
+		if (pageBoxEndAfterPage > totalPage) {
+			pageBoxEndAfterPage = totalPage;
+		}
+		
+		boolean pageBoxStartBeforeBtnNeedToShow = pageBoxStartBeforePage != pageBoxStartPage;
+		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
+		
+		request.setAttribute("page", page);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("articles", articles);
-
+		request.setAttribute("pageBoxStartBeforeBtnNeedToShow", pageBoxStartBeforeBtnNeedToShow);
+		request.setAttribute("pageBoxEndAfterBtnNeedToShow", pageBoxEndAfterBtnNeedToShow);
+		request.setAttribute("pageBoxStartBeforePage", pageBoxStartBeforePage);
+		request.setAttribute("pageBoxEndAfterPage", pageBoxEndAfterPage);
+		request.setAttribute("pageBoxEndPage", pageBoxEndPage);
+		request.setAttribute("pageBoxStartPage", pageBoxStartPage);
+		
 		return "usr/article/list";
 	}
 
@@ -53,7 +95,7 @@ public class ArticleController {
 	}
 
 	public String showWrite(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 
 		Board board = articleService.getBoardNum(boardNum);
@@ -64,7 +106,7 @@ public class ArticleController {
 	}
 
 	public String doWrite(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		int memberNum = (int) request.getAttribute("loginedMemberNum");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
 		Board board = articleService.getBoardNum(boardNum);
@@ -106,7 +148,7 @@ public class ArticleController {
 			return "common/redirect";
 		}
 
-		int memberNum = (int)request.getAttribute("loginedMemberNum");
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
 			request.setAttribute("alertMsg", articleNum + "번 글의 수정 권한이 없습니다.");
@@ -136,7 +178,7 @@ public class ArticleController {
 
 		Article article = articleService.getForPrintArticle(articleNum);
 
-		int memberNum = (int)session.getAttribute("loginedMemberNum");
+		int memberNum = (int) session.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
 

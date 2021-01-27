@@ -28,8 +28,8 @@
 					if(data.msg){
 						alert(data.msg);
 					}
-					if(data.resultCode.substr(0, 2) == "S-"){
-						doJoinForm_checkedLoginId = data.loginId;
+					if(data.success){
+						doJoinForm_checkedLoginId = data.body.loginId;
 					}
 				},	
 				"json"
@@ -128,7 +128,7 @@
 
 		<form action="doJoin" method="POST"
 			onsubmit="DoJoinForm__submit(this); return false;">
-			<input type="text" name="loginPwReal" />
+			<input type="hidden" name="loginPwReal" />
 
 			<div>아이디 :</div>
 			<div>
@@ -136,17 +136,17 @@
 				<button onclick="DoJoinForm__checkLoginDup(this);"
 					name="btnLoginIdDupCheck" type="button">중복 체크</button>
 			</div>
-			
+
 			<div>패스워드 :</div>
 			<div>
 				<input name="loginPw" type="password" />
 			</div>
-			
+
 			<div>패스워드 확인 :</div>
 			<div>
 				<input name="confirmPw" type="password" />
 			</div>
-				
+
 			<div>이 름 :</div>
 			<div>
 				<input type="text" name="name" />

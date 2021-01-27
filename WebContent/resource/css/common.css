@@ -126,21 +126,36 @@ a{
 .top-bar__search-form{
   position : relative;
 }
+.fas-search{
+    font-family: "Font Awesome 5 Free";
+	font-weight : 900;
+	background-color : transparent;
+	border : none; 
+	font-size : 20px;
+}
 .top-bar__search-icon{
   position : absolute;
   top : 50%;
-  right : 10px;
   transform : translatey(-50%);
+  right : 10px;   
 }
 .top-bar__search-form{
 	width :700px;
 	min-width : 350px;
 }
+.search__select{
+	margin-right : 20px;
+	margin-top : 2px;
+}
+.search__select > select{
+	height : 30px;
+	font-size : 17px;
+}
 .top-bar__search-form > form{
 	width : 100%;
 	font-family: 'ImcreSoojin';
 }
-.top-bar__search-form > form > input{
+.top-bar__search-form > form > div > input{
   height : 30px;
   width : 100%;
   border : 2px solid;
@@ -149,8 +164,8 @@ a{
   outline : none;
   transition : all 0.5s;
 }
-.top-bar__search-form > form > input.active,
-.top-bar__search-form > form > input.active-hold{
+.top-bar__search-form > form > div > input.active,
+.top-bar__search-form > form > div > input.active-hold{
 	background-color : #ffffff;
 	border : 2px solid #35B45A;
 }
@@ -181,11 +196,20 @@ a{
   background : #48DD37;
   min-width:50px;
 }
+.top-bar__button-whoami{
+  background : #9161BF;
+  color : white;
+  border-color : black;
+  min-width:50px;
+}
 .top-bar__button-join:hover{
   background : #CC934E;
 }
 .top-bar__button-login:hover{
   background : #81B273;
+}
+.top-bar__button-whoami:hover{
+  background : #B88FDE;
 }
 /* 탑바 끝 */
 
@@ -328,7 +352,6 @@ a{
 		animation-duration: 11s;
 		animation-delay: 5.25s;
 	}
-}
 @keyframes fly-cycle {
 	
 	100% {
@@ -410,6 +433,12 @@ a{
 }
 /* 새 애니메이션 */
 
+/* 리스트 페이징 */
+.red{
+	color : red;
+}
+/* 리스트 페이징 */
+
 /* 로그인 화면 */
 .login-page{
 	position : relative;
@@ -424,12 +453,12 @@ a{
 	background-color : #2C2E36;
 	color : white;
 }
-.login_input{
+.input_opt1{
 	margin-bottom: 20px;
 	padding : 20px;
 	border : 5px solid white;
 }
-.login_input > input{
+.input_opt1 > input{
 	height: 35px;
 	width : 450px;
 	font-size : 20px;
@@ -439,12 +468,12 @@ a{
 	text-align: center;
 	margin-bottom : 30px;
 }
-.login__login-button{
+.input_opt2 {
 	padding : 20px;
 	border : 5px solid white;
 	margin-bottom : 20px;
 }
-.login__login-button > input{
+.input_opt2 > input{
 	height : 40px;
 	width : 457px;
 	background-color : white;

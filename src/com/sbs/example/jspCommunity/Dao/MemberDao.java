@@ -110,43 +110,43 @@ public class MemberDao {
 		sql.append("SET updateDate = NOW()");
 
 		boolean needToUpdate = false;
-		
+
 		if (args.get("loginPw") != null) {
 			needToUpdate = true;
 			sql.append(", loginPw =?", args.get("loginPw"));
 		}
-		
+
 		if (args.get("name") != null) {
 			needToUpdate = true;
 			sql.append(", name =?", args.get("name"));
 		}
-		
+
 		if (args.get("nickname") != null) {
 			needToUpdate = true;
 			sql.append(", loginPw =?", args.get("loginPw"));
 		}
-		
+
 		if (args.get("email") != null) {
 			needToUpdate = true;
 			sql.append(", loginPw =?", args.get("loginPw"));
 		}
-		
+
 		if (args.get("cellphoneNo") != null) {
 			needToUpdate = true;
 			sql.append(", loginPw =?", args.get("loginPw"));
 		}
-		
+
 		if (args.get("authLevel") != null) {
 			needToUpdate = true;
 			sql.append(", loginPw =?", args.get("loginPw"));
 		}
-		
-		if(needToUpdate == false) {
+
+		if (needToUpdate == false) {
 			return 0;
 		}
-		
+
 		sql.append("WHERE memberNum = ?", args.get("memberNum"));
-		
+
 		return MysqlUtil.update(sql);
 	}
 }
