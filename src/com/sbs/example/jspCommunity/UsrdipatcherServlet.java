@@ -47,6 +47,8 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = memberController.showWhoAmI(request, response);
 			} else if (actionMethodName.equals("modifyAccount")) {
 				jspPath = memberController.showModifyAccount(request, response);
+			} else if (actionMethodName.equals("doModifyAccount")) {
+				jspPath = memberController.doModifyAccount(request, response);
 			}
 		} else if (ControllerName.equals("article")) {
 			ArticleController articleController = Container.articleController;

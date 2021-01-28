@@ -47,7 +47,7 @@
 				</div>
 
 				<div class="input__findLoginEmail-form findLogin_input input_opt1">
-					<input type="email" name="email" placeholder="회워님의 이메일주소를 입력해주세요" />
+					<input type="email" name="email" placeholder="회원님의 이메일주소를 입력해주세요" />
 				</div>
 				<div class="findLogin__buttons">
 					<div class="findLogin__find-button input_opt2">

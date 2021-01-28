@@ -2,6 +2,7 @@ package com.sbs.example.jspCommunity.Service;
 
 import com.sbs.example.jspCommunity.Util.Util;
 
+
 public class EmailService {
 	private String gmailId;
 	private String gmailPw;

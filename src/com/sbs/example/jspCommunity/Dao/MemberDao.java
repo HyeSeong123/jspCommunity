@@ -44,8 +44,8 @@ public class MemberDao {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO `member`");
-		sql.append("SET regDate=DATE_FORMAT(NOW(), '%Y-%m-%d %h:%i'),");
-		sql.append("updateDate=DATE_FORMAT(NOW(), '%Y-%m-%d %h:%i'),");
+		sql.append("SET regDate=DATE_FORMAT(NOW(), '%Y-%m-%d'),");
+		sql.append("updateDate=DATE_FORMAT(NOW(), '%Y-%m-%d'),");
 		sql.append("name=?,", joinArgs.get("name"));
 		sql.append("nickname=?,", joinArgs.get("nickname"));
 		sql.append("email=?,", joinArgs.get("email"));
@@ -107,7 +107,7 @@ public class MemberDao {
 	public int modify(Map<String, Object> args) {
 		SecSql sql = new SecSql();
 		sql.append("UPDATE member");
-		sql.append("SET updateDate = NOW()");
+		sql.append("SET updateDate = DATE_FORMAT(NOW(), '%Y-%m-%d %h')");
 
 		boolean needToUpdate = false;
 
@@ -121,24 +121,19 @@ public class MemberDao {
 			sql.append(", name =?", args.get("name"));
 		}
 
-		if (args.get("nickname") != null) {
+		if (args.get("nickName") != null) {
 			needToUpdate = true;
-			sql.append(", loginPw =?", args.get("loginPw"));
+			sql.append(", nickname =?", args.get("nickName"));
 		}
 
 		if (args.get("email") != null) {
 			needToUpdate = true;
-			sql.append(", loginPw =?", args.get("loginPw"));
+			sql.append(", email =?", args.get("email"));
 		}
 
-		if (args.get("cellphoneNo") != null) {
+		if (args.get("phNum") != null) {
 			needToUpdate = true;
-			sql.append(", loginPw =?", args.get("loginPw"));
-		}
-
-		if (args.get("authLevel") != null) {
-			needToUpdate = true;
-			sql.append(", loginPw =?", args.get("loginPw"));
+			sql.append(", phNum =?", args.get("phNum"));
 		}
 
 		if (needToUpdate == false) {

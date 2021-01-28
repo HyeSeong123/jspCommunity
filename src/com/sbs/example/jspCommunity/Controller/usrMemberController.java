@@ -236,11 +236,42 @@ public class usrMemberController {
 		request.setAttribute("updateDate", member.getUpdateDate());
 		request.setAttribute("loginId", member.getLoginId());
 		request.setAttribute("phNum", member.getPhNum());
-		
+
 		return "usr/member/whoami";
 	}
 
 	public String showModifyAccount(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+
+		request.setAttribute("memberNum", memberNum);
+
+		Member member = memberService.getMemberByLoginNum(memberNum);
+
+		request.setAttribute("nickName", member.getNickname());
+		request.setAttribute("email", member.getEmail());
+		request.setAttribute("phNum", member.getPhNum());
+
 		return "usr/member/modifyAccount";
+	}
+
+	public String doModifyAccount(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+		String nickName = request.getParameter("nickName");
+		String email = request.getParameter("email");
+		String phNum = request.getParameter("phNum");
+
+		Map<String, Object> modifyArgs = new HashMap<>();
+
+		modifyArgs.put("memberNum", memberNum);
+		modifyArgs.put("nickName", nickName);
+		modifyArgs.put("email", email);
+		modifyArgs.put("phNum", phNum);
+
+		memberService.modifyAccount(modifyArgs);
+
+		request.setAttribute("alertMsg", "회원님의 정보가 변경 완료되었습니다.");
+		request.setAttribute("replaceUrl", "whoami");
+
+		return "common/redirect";
 	}
 }

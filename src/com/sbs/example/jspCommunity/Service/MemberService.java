@@ -9,6 +9,8 @@ import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dao.MemberDao;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Dto.ResultData;
+import com.sbs.example.jspCommunity.Util.MysqlUtil;
+import com.sbs.example.jspCommunity.Util.SecSql;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class MemberService {
@@ -72,5 +74,9 @@ public class MemberService {
 
 	private void modify(Map<String, Object> param) {
 		memberDao.modify(param);
+	}
+
+	public void modifyAccount(Map<String, Object> modifyArgs) {
+		modify(modifyArgs);
 	}
 }

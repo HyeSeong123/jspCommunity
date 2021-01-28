@@ -13,6 +13,7 @@
 		<div class="회원 번호">회원번호 : ${memberNum}</div>
 		<div class="회원 이름">회원이름 : ${name}</div>
 		<div class="닉네임">닉네임 : ${nickName}</div>
+		<div class="전화번호">휴대전화 번호 : ${phNum}</div>
 		<div class="아이디">아이디 : ${loginId}</div>
 		<div class="이메일">이메일: ${email}</div>
 		<div class="생성 일자">계정 생성 일자 : ${regDate}</div>
