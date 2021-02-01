@@ -9,16 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sbs.example.jspCommunity.Container.Container;
+import com.sbs.example.jspCommunity.Dto.Attr;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Dto.ResultData;
+import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Service.MemberService;
 
 public class usrMemberController {
 
 	private MemberService memberService;
+	private AttrService attrService;
 
 	public usrMemberController() {
 		memberService = Container.memberService;
+		attrService = Container.attrService;
 	}
 
 	public String showList(HttpServletRequest request, HttpServletResponse response) {
@@ -104,9 +108,24 @@ public class usrMemberController {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginedMemberNum", member.getMemberNum());
 
+		Attr attr = attrService.getAttr("member", member.getMemberNum(), "extra", "tempPassword");
+
+		request.setAttribute("attr", attr);
+		if (attr != null) {
+			if (attr.getType2Code().equals("tempPassword")) {
+				if (attr.getRelId() == member.getMemberNum()) {
+					if (attr.getValue().equals("1")) {
+						request.setAttribute("tempPassword", attr.getValue());
+						System.out.printf("tempPassword=%s\n", attr.getValue());
+						request.setAttribute("alertMsg", "비밀번호 변경이 필요합니다.");
+						request.setAttribute("replaceUrl", "../member/whoami");
+						return "common/redirect";
+					}
+				}
+			}
+		}
 		request.setAttribute("alertMsg", String.format("%s님의 방문을 환영합니다.", member.getNickname()));
 		request.setAttribute("replaceUrl", "../home/main");
-		System.out.println(member.getMemberNum());
 		return "common/redirect";
 	}
 
@@ -218,7 +237,6 @@ public class usrMemberController {
 			request.setAttribute("historyBack", true);
 			return "common/redirect";
 		}
-
 		request.setAttribute("alertMsg", String.format(sendTempLoginPwToEmailRs.getMsg()));
 		request.setAttribute("replaceUrl", "../member/login");
 		return "common/redirect";
@@ -227,30 +245,15 @@ public class usrMemberController {
 	public String showWhoAmI(HttpServletRequest request, HttpServletResponse response) {
 		int memberNum = (int) request.getAttribute("loginedMemberNum");
 
-		Member member = memberService.getMemberByLoginNum(memberNum);
-		request.setAttribute("memberNum", memberNum);
-		request.setAttribute("name", member.getName());
-		request.setAttribute("nickName", member.getNickname());
-		request.setAttribute("email", member.getEmail());
-		request.setAttribute("regDate", member.getRegDate());
-		request.setAttribute("updateDate", member.getUpdateDate());
-		request.setAttribute("loginId", member.getLoginId());
-		request.setAttribute("phNum", member.getPhNum());
+		if (memberNum != 0) {
+			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
 
+			request.setAttribute("tempPassword", attr.getValue());
+		} 
 		return "usr/member/whoami";
 	}
 
 	public String showModifyAccount(HttpServletRequest request, HttpServletResponse response) {
-		int memberNum = (int) request.getAttribute("loginedMemberNum");
-
-		request.setAttribute("memberNum", memberNum);
-
-		Member member = memberService.getMemberByLoginNum(memberNum);
-
-		request.setAttribute("nickName", member.getNickname());
-		request.setAttribute("email", member.getEmail());
-		request.setAttribute("phNum", member.getPhNum());
-
 		return "usr/member/modifyAccount";
 	}
 
@@ -259,9 +262,21 @@ public class usrMemberController {
 		String nickName = request.getParameter("nickName");
 		String email = request.getParameter("email");
 		String phNum = request.getParameter("phNum");
+		String loginPw = (String) request.getParameter("loginPwReal");
+
+		Member member = memberService.getMemberByLoginNum(memberNum);
+
+		if (loginPw != null && loginPw.length() == 0) {
+			loginPw = null;
+		}
+
+		if (member.getLoginPw().equals(loginPw) == false) {
+			attrService.updatePwValue("member", memberNum, "extra", "tempPassword", "2");
+		}
 
 		Map<String, Object> modifyArgs = new HashMap<>();
 
+		modifyArgs.put("loginPw", loginPw);
 		modifyArgs.put("memberNum", memberNum);
 		modifyArgs.put("nickName", nickName);
 		modifyArgs.put("email", email);

@@ -10,14 +10,14 @@
 <body>
 	<h1>${pageTitle}</h1>
 	<div>
-		<div class="회원 번호">회원번호 : ${memberNum}</div>
-		<div class="회원 이름">회원이름 : ${name}</div>
-		<div class="닉네임">닉네임 : ${nickName}</div>
-		<div class="전화번호">휴대전화 번호 : ${phNum}</div>
-		<div class="아이디">아이디 : ${loginId}</div>
-		<div class="이메일">이메일: ${email}</div>
-		<div class="생성 일자">계정 생성 일자 : ${regDate}</div>
-		<div class="수정 일자">계정 정보 수정 일자 : ${updateDate}</div>
+		<div class="회원 번호">회원번호 : ${loginedMember.memberNum}</div>
+		<div class="회원 이름">회원이름 : ${loginedMember.name}</div>
+		<div class="닉네임">닉네임 : ${loginedMember.nickname}</div>
+		<div class="전화번호">휴대전화 번호 : ${loginedMember.phNum}</div>
+		<div class="아이디">아이디 : ${loginedMember.loginId}</div>
+		<div class="이메일">이메일: ${loginedMember.email}</div>
+		<div class="생성 일자">계정 생성 일자 : ${loginedMember.regDate}</div>
+		<div class="수정 일자">계정 정보 수정 일자 : ${loginedMember.updateDate}</div>
 	</div>
 	<div>
 		<a href="modifyAccount">정보 수정</a>

@@ -8,8 +8,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <body>
-	<h1>${pageTitle}</h1>
-	<div>
+	<div class="join_page flex flex-jc-c">
 		<script>
 		let doJoinForm_submited = false;
 		let doJoinForm_checkedLoginId = "";
@@ -125,51 +124,70 @@
 				doJoinForm_submited = true;
 			}
 		</script>
+		<div class="join-cover flex flex-ai-c flex-column"> 
+			<h1>${pageTitle}</h1>
+			
+			<form action="doJoin" method="POST"
+				onsubmit="DoJoinForm__submit(this); return false;">
+				<input type="hidden" name="loginPwReal" />
+				
+				<div id="id" class="">
+					<div>아이디</div>
+					<div class="dupCheck_button">
+						<input type="text" name="loginId" />
+						<button onclick="DoJoinForm__checkLoginDup(this);"
+							name="btnLoginIdDupCheck" type="button">중복 체크</button>
+					</div>
+				</div>
 
-		<form action="doJoin" method="POST"
-			onsubmit="DoJoinForm__submit(this); return false;">
-			<input type="hidden" name="loginPwReal" />
+				<div id="password" class="">
+					<div>패스워드</div>
+					<div>
+						<input name="loginPw" type="password" />
+					</div>
+				</div>
 
-			<div>아이디 :</div>
-			<div>
-				<input type="text" name="loginId" />
-				<button onclick="DoJoinForm__checkLoginDup(this);"
-					name="btnLoginIdDupCheck" type="button">중복 체크</button>
-			</div>
+				<div id="confirm_Pw" class="">
+					<div>패스워드 확인</div>
+					<div>
+						<input name="confirmPw" type="password" />
+					</div>
+				</div>
 
-			<div>패스워드 :</div>
-			<div>
-				<input name="loginPw" type="password" />
-			</div>
+				<div id="name" class="">
+					<div>이 름 </div>
+					<div>
+						<input type="text" name="name" />
+					</div>
+				</div>
 
-			<div>패스워드 확인 :</div>
-			<div>
-				<input name="confirmPw" type="password" />
-			</div>
+				<div id="nickname" class="">
+					<div>닉네임 </div>
+					<div>
+						<input type="text" name="nickname" />
+					</div>
+				</div>
 
-			<div>이 름 :</div>
-			<div>
-				<input type="text" name="name" />
-			</div>
+				<div id="email" class="">
+					<div>이메일 </div>
+					<div>
+						<input type="email" name="email" />
+					</div>
+				</div>
 
-			<div>닉네임 :</div>
-			<div>
-				<input type="text" name="nickname" />
-			</div>
-			<div>이메일 :</div>
-			<div>
-				<input type="email" name="email" />
-			</div>
-			<div>휴대전화 번호 :</div>
-			<div>
-				<input type="tel" name="phNum" />
-			</div>
-			<hr />
-			<div>
-				<input type="submit" value="가입" />
-				<button type="button" onclick="history.back()">뒤로가기</button>
-			</div>
-		</form>
+				<div id="phNum" class="">
+					<div>휴대전화 번호 </div>
+					<div>
+						<input type="tel" name="phNum" />
+					</div>
+				</div>
+				<hr />
+				<div id="join__buttons" class="">
+					<input type="submit" value="가입" />
+					<button type="button" onclick="history.back()">뒤로가기</button>
+				</div>
+			</form>
+		</div>
 	</div>
 
 	<%@ include file="../../part/foot.jspf"%>

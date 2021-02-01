@@ -57,20 +57,18 @@ public abstract class dispatcherServlet extends HttpServlet {
 			response.getWriter().append("올바른 요청이 아닙니다.");
 			return null;
 		}
-		
-		
+
 		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "jspCommunity");
-		
+
 		String ControllerTypeName = requestUriBits[2];
 		String ControllerName = requestUriBits[3];
 		String actionMethodName = requestUriBits[4];
-		
+
 		String actionUrl = "/" + ControllerTypeName + "/" + ControllerName + "/" + actionMethodName;
-		System.out.printf("actionUrl=%s\n",actionUrl);
- 		
-		
+		System.out.printf("actionUrl=%s\n", actionUrl);
+
 		// 데이터 추가 인터셉터 끝
-		
+
 		boolean isLogined = false;
 		int loginedMemberNum = 0;
 		Member loginedMember = null;
@@ -79,7 +77,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 
 		if (session.getAttribute("loginedMemberNum") != null) {
 			isLogined = true;
-			loginedMemberNum= (int)session.getAttribute("loginedMemberNum");
+			loginedMemberNum = (int) session.getAttribute("loginedMemberNum");
 			loginedMember = Container.memberService.getMemberByLoginNum(loginedMemberNum);
 		}
 
@@ -88,11 +86,11 @@ public abstract class dispatcherServlet extends HttpServlet {
 		request.setAttribute("loginedMember", loginedMember);
 
 		// 데이터 추가 인터셉터 끝
-		
+
 		// 로그인 필요 필터링 인터셉터 시작
-		
+
 		List<String> needToLoginactionUrls = new ArrayList<>();
-		
+
 		needToLoginactionUrls.add("/usr/article/doLogout");
 		needToLoginactionUrls.add("/usr/article/write");
 		needToLoginactionUrls.add("/usr/article/doWrite");
@@ -101,19 +99,38 @@ public abstract class dispatcherServlet extends HttpServlet {
 		needToLoginactionUrls.add("/usr/article/doDelete");
 		needToLoginactionUrls.add("/usr/member/whoami");
 		needToLoginactionUrls.add("/usr/member/modifyAccount");
-		if(needToLoginactionUrls.contains(actionUrl) ) {
+		if (needToLoginactionUrls.contains(actionUrl)) {
 			if ((boolean) request.getAttribute("isLogined") == false) {
 				request.setAttribute("alertMsg", "로그인 후 이용해주세요.");
 				request.setAttribute("replaceUrl", "../member/login");
-				
+
 				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(request, response);
 			}
 		}
-		
-		
+
+		List<String> needToLogoutactionUrls = new ArrayList<>();
+
+		needToLogoutactionUrls.add("/usr/member/join");
+		needToLogoutactionUrls.add("/usr/member/doJoin");
+		needToLogoutactionUrls.add("/usr/member/login");
+		needToLogoutactionUrls.add("/usr/member/doLogin");
+		needToLogoutactionUrls.add("/usr/member/findLoginId");
+		needToLogoutactionUrls.add("/usr/member/doFindLoginId");
+		needToLogoutactionUrls.add("/usr/member/findLoginPw");
+		needToLogoutactionUrls.add("/usr/member/doFindLoginPw");
+		if (needToLogoutactionUrls.contains(actionUrl)) {
+			if ((boolean) request.getAttribute("isLogined")) {
+				request.setAttribute("alertMsg", "로그아웃 후 이용해주세요.");
+				request.setAttribute("historyBack", true);
+
+				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
+				rd.forward(request, response);
+			}	
+		}
+
 		// 로그인 필요 필터링 인터셉터 끝
-		
+
 		Map<String, Object> rs = new HashMap<>();
 		rs.put("ControllerName", ControllerName);
 		rs.put("actionMethodName", actionMethodName);

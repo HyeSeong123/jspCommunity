@@ -7,35 +7,50 @@
 <head>
 <meta charset="UTF-8" />
 <title>${pageTitle}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- 폰트어썸 불러오기 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
 <!-- 토스트 UI 시작 -->
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
 
 <!-- 토스트 UI 에디터, 자바스크립트 코어 -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
+<script
+	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"
+	defer></script>
 
 <!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
 <!-- 토스트 UI 에디터, CSS 코어 -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 <!-- 토스트 UI 에디터, 신택스 하이라이트 플러그인 추가 -->
-<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js" defer></script>
+<script
+	src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js"
+	defer></script>
 <!-- 토스트 UI 끝 -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/common.css">
-<script src="${pageContext.request.contextPath}/resource/js/common.js" defer></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/css/common.css">
+<script src="${pageContext.request.contextPath}/resource/js/common.js"
+	defer></script>
 </head>
 
-<div class="min-height-100vh flex flex-column">
+<div class="bodycontent min-height-100vh flex flex-column">
 
 	<script>
 		let DoSearchForm__submited = false;
@@ -59,114 +74,220 @@
 			DoSearchForm__submited = true;
 		}
 	</script>
-	<header>
-		<div class="con-min-width">
-			<div class="con">
-				<div class="top-bar flex flex-jc-sb flex-ai-c height-100p">
 
-					<div class="top-bar__logo logo">
-						<a href="../home/main">휴게소</a>
-						<span>쉬어가는 곳</span>
-					</div>
+	<header class="top-bar con-min-width">
+		<div class="con height-100p">
+			<c:if test="${tempPassword == 1}">
+				<div class="temp-password flex flex-jc-c">
+					<span class="tempPassword-bar">회원님은 현재 임시비밀번호 사용중 입니다. 비밀번호
+						변경이 필요합니다.</span>
+					<a href="../member/modifyAccount">변경</a>
+				</div>
+			</c:if>
+			<section class="top-bar__top height-100p flex flex-ai-c flex-jc-sb">
+				<div class="top-bar__logo height-100p flex flex-ai-c">
+					<a href="../home/main" class="logo"> 휴게소 </a>
+					<span>쉬어가는 곳</span>
+				</div>
 
-					<div class="top-bar__search-form">
+				<div class="top-bar__search-form visible-md-up">
+					<form action=""
+						onsubmit="DoSearchForm__submit(this); return false;">
+						<input type="hidden" name="boardNum" value="${param.boardNum}" />
 
-						<form action=""
-							onsubmit="DoSearchForm__submit(this); return false;"
-							class="top-bar__form">
-							<div class="flex">
-								<div class="search__input">
-									<input type="hidden" name="boardNum" value="${param.boardNum}" />
-								</div>
-								<div class="search__select">
-									<select name="searchKeywordType">
-										<option value="titleAndBody">제목+본문</option>
-										<option value="title">제목</option>
-										<option value="body">본문</option>
-									</select>
-								</div>
+						<div class="search__select flex">
+							<select name="searchKeywordType">
+								<option value="titleAndBody">제목+본문</option>
+								<option value="title">제목</option>
+								<option value="body">본문</option>
+							</select>
 
-								<script>
-									const param__searchKeywordType = '${param.searchKeywordType}';
+							<script>
+								const param__searchKeywordType = '${param.searchKeywordType}';
+	
+								if (param__searchKeywordType) {
+									$('select[name="searchKeywordType"]').val(${param__searchKeywordType});
+								}
+							</script>
 
-									if (param__searchKeywordType) {
-										$('select[name="searchKeywordType"]').val(${param__searchKeywordType});
-									}
-								</script>
-
-								<input value="${param.searchKeyword}" type="text"
-									name="searchKeyword" placeholder="  search" class="form-search">
-
-								<div class="top-bar__search-icon">
-									<input type="submit" value="&#xf002;" class="fas-search" />
-								</div>
-							</div>
-						</form>
-					</div>
-
-					<c:if test="${isLogined == false}">
-						<div class="top-bar__button flex">
-							<a href="../member/join"
-								class="top-bar__button-join flex flex-ai-c">
-								<span>회원가입</span>
-							</a>
-							<a href="../member/login"
-								class="top-bar__button-login flex flex-ai-c">
-								<span>로그인</span>
-							</a>
+							<input value="${param.searchKeyword}" name="searchKeyword"
+								placeholder="검색어를 입력하세요" type="text" class="input_form">
+							<input type="submit" value="&#xf002;" class="search_submit">
 						</div>
+					</form>
+				</div>
+				<div class="top-bar__buttons visible-md-up">
+					<c:if test="${isLogined == false}">
+
+						<a href="../member/login" class="top-bar__login">
+							<span>로그인</span>
+						</a>
+
+						<a href="../member/join" class="top-bar__join">
+							<span>회원가입</span>
+						</a>
+
+					</c:if>
+					<c:if test="${isLogined}">
+						<a href="../member/doLogout" class="top-bar__logout">
+							<span>로그아웃</span>
+						</a>
+						<a href="../member/whoami" class="top-bar__whoami">
+							<span>내 정보</span>
+						</a>
+
+					</c:if>
+				</div>
+				<div class="top-bar__menu-mobile visible-sm-down">
+					<a class="menu-trigger type11" href="#">
+						<span></span>
+						<span></span>
+						<span></span>
+					</a>
+				</div>
+
+			</section>
+
+			<section>
+				<div class="top-menu-bar visible-md-up">
+					<ul class="flex flex-jc-ar flex-ai-c height-100p"
+						style="z-index: 1">
+						<li class="">
+							<a href="../article/list?boardNum=1&page=1"
+								class="flex flex-column top-menu-bar__content">
+								<span>
+									<i class="fas fa-info"></i>
+								</span>
+								<span>인포데스크</span>
+							</a>
+						</li>
+						<li>
+							<a href="../article/list?boardNum=2&page=1"
+								class="flex flex-column top-menu-bar__content">
+								<span>
+									<i class="fas fa-road"></i>
+								</span>
+								<span>휴게소정보</span>
+							</a>
+						</li>
+						<li>
+							<a href="../article/list?boardNum=3&page=1"
+								class="flex flex-column top-menu-bar__content">
+								<span>
+									<i class="fas fa-cannabis"></i>
+								</span>
+								<span>글그림마당</span>
+							</a>
+						</li>
+						<li>
+							<a href="../article/list?boardNum=3&page=1"
+								class="flex flex-column top-menu-bar__content">
+								<span>
+									<i class="fas fa-feather-alt"></i>
+								</span>
+								<span>자유게시판</span>
+							</a>
+						</li>
+					</ul>
+
+				</div>
+			</section>
+		</div>
+	</header>
+
+	<main class="middle-content con-min-width flex-grow-1 height-100p">
+		<div class="con height-100p">
+
+			<div class="mobile-sidemenu-bar visible-sm-down height-100p"
+				style="z-index: 999">
+
+				<div class="side-bar__search-form">
+					<form action=""
+						onsubmit="DoSearchForm__submit(this); return false;">
+
+						<div class="search__select flex">
+
+							<select name="searchKeywordType">
+								<option value="titleAndBody">제목+본문</option>
+								<option value="title">제목</option>
+								<option value="body">본문</option>
+							</select>
+
+
+							<script>
+								const param__searchKeywordType = '${param.searchKeywordType}';
+	
+								if (param__searchKeywordType) {
+									$('select[name="searchKeywordType"]').val(${param__searchKeywordType});
+								}
+							</script>
+
+							<input value="${param.searchKeyword}" name="searchKeyword"
+								placeholder="검색어를 입력하세요" type="text" class="input_form">
+							<input type="submit" value="&#xf002;" class="search_submit">
+						</div>
+
+					</form>
+				</div>
+
+				<div class="side-bar__buttons">
+					<c:if test="${isLogined == false}">
+						<a href="../member/login"
+							class="side-bar__login flex flex-ai-c flex-jc-c">
+							<span>로그인</span>
+						</a>
+
+						<a href="../member/join"
+							class="side-bar__join flex flex-ai-c flex-jc-c">
+							<span>회원가입</span>
+						</a>
 					</c:if>
 
 					<c:if test="${isLogined}">
-						<div class="top-bar__button flex">
-							<a href="../member/doLogout"
-								class="top-bar__button-login flex flex-ai-c">
-								<span>로그아웃</span>
-							</a>
-							<a href="../member/whoami"
-								class="top-bar__button-whoami flex flex-ai-c">
-								<span>내 정보</span>
-							</a>
-						</div>
+						<a href="../member/doLogout"
+							class="side-bar__logout flex flex-ai-c flex-jc-c">
+							<span>로그아웃</span>
+						</a>
+						<a href="../member/whoami"
+							class="side-bar__whoami flex flex-ai-c flex-jc-c">
+							<span>내 정보</span>
+						</a>
 					</c:if>
 				</div>
+
+				<div class="side-menu-bar">
+					<a href="../article/list?boardNum=1&page=1"
+						class="block flex flex-ai-c flex-jc-c height-100p">
+						<span>
+							<i class="fas fa-info"></i>
+						</span>
+						<span>인포데스크</span>
+					</a>
+
+					<a href="../article/list?boardNum=1&page=2"
+						class="block flex flex-ai-c flex-jc-c height-100p">
+						<span>
+							<i class="fas fa-road"></i>
+						</span>
+						<span>휴게소정보</span>
+					</a>
+
+					<a href="../article/list?boardNum=1&page=3"
+						class="block flex flex-ai-c flex-jc-c height-100p">
+						<span>
+							<i class="fas fa-cannabis"></i>
+						</span>
+						<span>글그림마당</span>
+					</a>
+
+					<a href="../article/list?boardNum=1&page=4"
+						class="block flex flex-ai-c flex-jc-c height-100p">
+						<span>
+							<i class="fas fa-feather-alt"></i>
+						</span>
+						<span>자유게시판</span>
+					</a>
+
+				</div>
+				<div class="menu-remain"></div>
 			</div>
-		</div>
-	</header>
-
-	<header class="home-main">
-		<div class="con-min-width">
-			<div class="con">
-				<div class="bird-container bird-container--one">
-					<div class="bird bird--one"></div>
-				</div>
-
-				<div class="bird-container bird-container--two">
-					<div class="bird bird--two"></div>
-				</div>
-
-				<div class="bird-container bird-container--three">
-					<div class="bird bird--three"></div>
-				</div>
-
-				<div class="bird-container bird-container--four">
-					<div class="bird bird--four"></div>
-				</div>
-				<div class="home-main__board flex flex-jc-ar">
-					<div>
-						<a href="../article/list?boardNum=1&page=1">인포데스크</a>
-					</div>
-					<div>
-						<a href="../article/list?boardNum=2&page=1">자유휴게소</a>
-					</div>
-					<div>
-						<a href="../article/list?boardNum=3&page=1">휴게소 글마당</a>
-					</div>
-					<div>
-						<a href="../article/list?boardNum=3&page=1">휴게소 포토존</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	<div class="flex-grow-1">

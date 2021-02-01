@@ -1,16 +1,16 @@
 function TopBar__init() {
-	$('.top-bar__form > input').click(function() {
+	$('.top-bar__search-form > form > div > input').click(function() {
 		$(this).addClass('active-hold');
 	});
-	$('.top-bar__form > input').mouseenter(function() {
+	$('.top-bar__search-form > form > div > input').mouseenter(function() {
 		$(this).addClass('active');
 	});
-	$('.top-bar__form > input').mouseleave(function() {
+	$('.top-bar__search-form > form > div > input').mouseleave(function() {
 		$(this).removeClass('active');
 	});
 	$('html').click(function(e) {
 		if (!$(e.target).hasClass('active')) {
-			$('.top-bar__form > input').removeClass('active-hold');
+			$('.top-bar__search-form > form > div > input').removeClass('active-hold');
 		}
 	});
 }
@@ -86,5 +86,35 @@ function EditorViewer__init() {
 	});
 }
 
+/* 메뉴 애니메이션 시작 */
+var burger = $('.menu-trigger');
+
+burger.each(function(index) {
+	var $this = $(this);
+
+	$this.on('click', function(e) {
+		e.preventDefault();
+		$(this).toggleClass('active-' + (index + 1));
+	})
+});
+function mobile_init() {
+	$('.menu-trigger').click(function() {
+		$('.mobile-sidemenu-bar').toggleClass('mobile-active');
+	});
+}
+mobile_init();
+
+let mobile__menu1 = $('.middle-content').height();
+let mobile__menu2 = $('.side-bar__search-form').height();
+let mobile__menu3 = $('.side-bar__buttons').height();
+let mobile__menu4 = $('.side-menu-bar').height();
+
+let mobile__menu = mobile__menu1 - (mobile__menu2 + mobile__menu3 + mobile__menu4) - 4;
+
+
+$('.menu-remain').height(mobile__menu);
+
+/* 메뉴 애니메이션 끝 */
+TopBar__init();
 EditorViewer__init();
 Editor__init(); 

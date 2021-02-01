@@ -7,17 +7,18 @@ import java.util.Map;
 import com.sbs.example.jspCommunity.App;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dao.MemberDao;
+import com.sbs.example.jspCommunity.Dto.Attr;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Dto.ResultData;
-import com.sbs.example.jspCommunity.Util.MysqlUtil;
-import com.sbs.example.jspCommunity.Util.SecSql;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class MemberService {
 	private MemberDao memberDao;
 	private EmailService emailService;
+	private AttrService attrService;
 
 	public MemberService() {
+		attrService = Container.attrService;
 		memberDao = Container.memberDao;
 		emailService = Container.emailService;
 	}
@@ -62,7 +63,7 @@ public class MemberService {
 			return new ResultData("F-1", "메일방송에 실패하였습니다.");
 		}
 		String resultMsg = String.format("고객님의 새 임시 패스워드가 %s (으)로 발송되었습니다.", actor.getEmail());
-		return new ResultData("S-1", resultMsg, "email",actor.getEmail());
+		return new ResultData("S-1", resultMsg, "email", actor.getEmail());
 	}
 
 	private void setTempPassword(Member actor, String tempPassword) {
@@ -70,6 +71,15 @@ public class MemberService {
 		modifyParam.put("memberNum", actor.getMemberNum());
 		modifyParam.put("loginPw", Util.sha256(tempPassword));
 		modify(modifyParam);
+
+		Attr attr = attrService.getAttr("member", actor.getMemberNum(), "extra", "tempPassword");
+
+		if (attr == null) {
+			attrService.setValue(actor.getMemberNum(), "member", "extra", "tempPassword", "1");
+		}
+		else if(attr!= null) {
+			attrService.updatePwValue("member", actor.getMemberNum(), "extra", "tempPassword","1");
+		}
 	}
 
 	private void modify(Map<String, Object> param) {

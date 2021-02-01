@@ -8,21 +8,32 @@
 <body>
 
 	<h1>게시판 이름: ${pageTitle}</h1>
-	<h2>게시물 리스트</h2>
+	
 	<a href="../home/main">메인</a>
 	<a href="<c:url value="write?boardNum="/>${param.boardNum}">글 쓰기</a>
 	<br>
 	<br>
-	<c:forEach var="article" items="${articles}"> 
-		번호 : ${article.num}<br>
-		작성날짜 : ${article.regDate}<br>
-		갱신날짜 : ${article.updateDate}<br>
-		작성자 : ${article.extra__writer}<br>
-		제목 : <a href="detail?num=${article.num}"> ${article.title}</a>
-		<hr>
+	<section class="info-list">
+	<ul class="news-list">
+	<c:forEach var="article" items="${articles}">
+		<li class="determine-hover enable-hover" data-type="article">
+		<a class="hystory-link" href="detail?num=${article.num}" title="${article.title}" >
+			<div class="canvas-background">
+				<div class="stalker-wrap"></div>
+			</div>
+			<div class="gradient-hover gradient-1"></div>
+			<div class="constrain">
+				<span class="date">${article.regDate}</span>
+				<span class="writer">${article.extra__writer}</span>
+				<p>${article.title}</p>
+			</div>
+			<div class="gradient-hover gradient-2"></div>
+		</a>
+		</li> 
 	</c:forEach>
-
-	<div>
+	</ul>
+	</section>
+	<div class="pagebox-cover flex flex-jc-c">
 		<c:if test= "${totalCount != 0 && page != 1}">
 		<c:set var="href"
 			value="?page=1&boardNum=${param.boardNum}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}" />
@@ -53,4 +64,5 @@
 		<a href="${href}">▶▶</a>
 		</c:if>
 	</div>
+
 	<%@ include file="../../part/foot.jspf"%>

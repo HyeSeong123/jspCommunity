@@ -10,15 +10,19 @@ import javax.servlet.http.HttpSession;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
+import com.sbs.example.jspCommunity.Dto.Attr;
 import com.sbs.example.jspCommunity.Dto.Board;
 import com.sbs.example.jspCommunity.Service.ArticleService;
+import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class ArticleController {
 
 	private ArticleService articleService;
+	private AttrService attrService;
 
 	public ArticleController() {
+		attrService = Container.attrService;
 		articleService = Container.articleService;
 	}
 
@@ -26,6 +30,14 @@ public class ArticleController {
 		String searchKeyword = request.getParameter("searchKeyword");
 		String searchKeywordType = request.getParameter("searchKeywordType");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+
+		if (memberNum != 0) {
+			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
+
+			request.setAttribute("tempPassword", attr.getValue());
+		}
 
 		Board board = articleService.getBoardNum(boardNum);
 
@@ -60,10 +72,10 @@ public class ArticleController {
 		if (pageBoxEndAfterPage > totalPage) {
 			pageBoxEndAfterPage = totalPage;
 		}
-		
+
 		boolean pageBoxStartBeforeBtnNeedToShow = pageBoxStartBeforePage != pageBoxStartPage;
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
-		
+
 		request.setAttribute("page", page);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("totalCount", totalCount);
@@ -74,7 +86,7 @@ public class ArticleController {
 		request.setAttribute("pageBoxEndAfterPage", pageBoxEndAfterPage);
 		request.setAttribute("pageBoxEndPage", pageBoxEndPage);
 		request.setAttribute("pageBoxStartPage", pageBoxStartPage);
-		
+
 		return "usr/article/list";
 	}
 

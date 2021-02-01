@@ -11,7 +11,8 @@ import com.sbs.example.jspCommunity.Util.SecSql;
 
 public class ArticleDao {
 
-	public List<Article> getForPrintArticlesByBoard(int boardNum, int limitStart, int limitCount, String searchKeyword, String searchKeywordType) {
+	public List<Article> getForPrintArticlesByBoard(int boardNum, int limitStart, int limitCount, String searchKeyword,
+			String searchKeywordType) {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
@@ -34,15 +35,16 @@ public class ArticleDao {
 			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
 				sql.append("AND A.body LIKE CONCAT('%', ? '%')", searchKeyword);
 			} else if (searchKeywordType == null || searchKeywordType.equals("titleAndBody")) {
-				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
+				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword,
+						searchKeyword);
 			}
 		}
 		sql.append("ORDER BY A.num DESC");
-		
-		if(limitCount != -1) {
-			sql.append("LIMIT ?, ?", limitStart,limitCount);
+
+		if (limitCount != -1) {
+			sql.append("LIMIT ?, ?", limitStart, limitCount);
 		}
-		
+
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> articleMap : articleMapList) {
@@ -107,24 +109,23 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE article");
-		sql.append("SET updateDate =NOW(),");
+		sql.append("SET updateDate =NOW()");
 
 		boolean needToFalse = false;
 
 		if (modifyArgs.get("title") != null) {
 			needToFalse = true;
-			sql.append("title =?,", modifyArgs.get("title"));
+			sql.append(", title =?", modifyArgs.get("title"));
 		}
 
 		if (modifyArgs.get("body") != null) {
 			needToFalse = true;
-			sql.append("`body` =?", modifyArgs.get("body"));
+			sql.append(", `body` =?", modifyArgs.get("body"));
 		}
-
-		sql.append("WHERE num = ?", modifyArgs.get("num"));
 		if (needToFalse == false) {
 			return 0;
 		}
+		sql.append("WHERE num = ?", modifyArgs.get("num"));
 
 		return MysqlUtil.update(sql);
 
@@ -154,8 +155,9 @@ public class ArticleDao {
 			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
 				sql.append("AND A.body LIKE CONCAT('%', ? '%')", searchKeyword);
 			} else if (searchKeywordType == null || searchKeywordType.equals("titleAndBody")) {
-				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
-				
+				sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword,
+						searchKeyword);
+
 			}
 		}
 		return MysqlUtil.selectRowIntValue(sql);

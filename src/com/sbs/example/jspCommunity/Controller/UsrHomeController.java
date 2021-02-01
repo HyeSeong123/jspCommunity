@@ -1,25 +1,30 @@
 package com.sbs.example.jspCommunity.Controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.jspCommunity.Container.Container;
-import com.sbs.example.jspCommunity.Dto.Board;
-import com.sbs.example.jspCommunity.Service.ArticleService;
-import com.sbs.example.jspCommunity.Service.MemberService;
+import com.sbs.example.jspCommunity.Dto.Attr;
+import com.sbs.example.jspCommunity.Service.AttrService;
 
 public class UsrHomeController {
 
-	private MemberService memberService;
-	private ArticleService articleService;
+	private AttrService attrService;
 
 	public UsrHomeController() {
-		memberService = Container.memberService;
+		attrService = Container.attrService;
 	}
 
 	public String showMain(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+
+		System.out.printf("loginedId=%d\n", memberNum);
+
+		if (memberNum != 0) {
+			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
+
+			request.setAttribute("tempPassword", attr.getValue());
+		}
 		return "usr/home/main";
 	}
 }

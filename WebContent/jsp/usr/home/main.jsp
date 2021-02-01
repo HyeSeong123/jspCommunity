@@ -8,4 +8,3 @@
 <body>
 
 	<%@ include file="../../part/foot.jspf"%>
-	

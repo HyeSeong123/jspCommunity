@@ -6,8 +6,10 @@
 <c:set var="pageTitle" value="회원가입" />
 
 <%@ include file="../../part/head.jspf"%>
+	
 <body>
 	<h1>회원리스트</h1>
+	<section class="info-list gray">
 	<a href="join">${pageTitle}</a>
 	<c:forEach var="member" items="${members}">
 		<div>
@@ -24,4 +26,5 @@
 			<hr />
 		</div>
 	</c:forEach>
+	</section>
 <%@ include file="../../part/foot.jspf"%>

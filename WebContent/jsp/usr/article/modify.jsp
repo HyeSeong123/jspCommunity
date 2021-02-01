@@ -34,23 +34,32 @@
 
 			form.body.value = form.body.value.trim();
 
-			if (form.body.value.length == 0) {
+			const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+			const body = editor.getMarkdown().trim();
+			
+			if (body.length == 0) {
 				alert('내용을 입력해주세요.');
 				form.body.focus();
 				return;
 			}
-
+			form.body.value = body;
+			
 			form.submit();
 			DoModifyForm_submited = true;
 		}
 	</script>
 	<span>수정</span> <br> <br>
 	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
-		<input type="hidden" name="memberNum" value="${sessionScope.loginedMemberId}"> <input
-			type="hidden" name="num" value="${article.num}"> <input
-			type="text" name="title" placeholder="수정할 제목을 입력해주세요">
+		<input type="hidden" name="memberNum" value="${sessionScope.loginedMemberId}">
+		<input type="hidden" name="num" value="${article.num}" />	
+		<input type="hidden" name="body" />
+		
+		<input	type="text" name="title" placeholder="수정할 제목을 입력해주세요">
 		<hr>
-		<textarea name="body" placeholder="수정할 내용을 입력해주세요."></textarea>
+		<div class="modify_body">
+				<script type="text/x-template">${article.body}</script>
+				<div class="toast-ui-editor"></div>
+			</div>
 		<hr>
 		<input type="submit" value="변경">
 		<button type="button" onclick="history.back()">뒤로가기</button>
