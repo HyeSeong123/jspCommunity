@@ -53,12 +53,12 @@
 					<input type="email" name="email" placeholder="회원님의 이메일주소를 입력해주세요" />
 				</div>
 				<div class="findLogin__buttons">
-					<div class="findLogin__find-button input_opt2">
+					<div class="findLoginId__submit">
 						<input type="submit" value="비밀번호 찾기" />
 					</div>
 				</div>
 
-				<div class="login__back-button">
+				<div class="return_button">
 					<button type="button" onclick="history.back()">되돌아가기</button>
 				</div>
 			</form>

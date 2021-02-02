@@ -104,12 +104,12 @@ function mobile_init() {
 }
 mobile_init();
 
-let mobile__menu1 = $('.middle-content').height();
+let mobile__menu1 = $('.mobile-sidemenu-bar').height();
 let mobile__menu2 = $('.side-bar__search-form').height();
 let mobile__menu3 = $('.side-bar__buttons').height();
 let mobile__menu4 = $('.side-menu-bar').height();
 
-let mobile__menu = mobile__menu1 - (mobile__menu2 + mobile__menu3 + mobile__menu4) - 4;
+let mobile__menu = mobile__menu1 - (mobile__menu2 + mobile__menu3 + mobile__menu4);
 
 
 $('.menu-remain').height(mobile__menu);

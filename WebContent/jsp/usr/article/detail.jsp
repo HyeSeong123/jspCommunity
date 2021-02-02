@@ -24,8 +24,10 @@
 			<script type="text/x-template"># 제목: ${article.title}</script>
 			<div class="toast-ui-viewer"></div>
 		</section>
-		<section class="detail__article-head">
-			<script type="text/x-template">내용 : ${article.body}</script>
+		
+		<section class="detail__article-body">
+			<h1>내용:</h1>  
+			<script type="text/x-template">${article.body}</script>
 			<div class="toast-ui-viewer"></div>
 		</section>
 		

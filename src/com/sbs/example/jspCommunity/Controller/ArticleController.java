@@ -16,7 +16,7 @@ import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 
 	private ArticleService articleService;
 	private AttrService attrService;
@@ -96,10 +96,16 @@ public class ArticleController {
 
 		Article article = articleService.getForPrintArticle(num);
 
+		int memberNum = (int) request.getAttribute("loginedMemberNum");
+
+		if (memberNum != 0) {
+			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
+
+			request.setAttribute("tempPassword", attr.getValue());
+		}
+
 		if (article == null) {
-			request.setAttribute("alertMsg", num + "번 게시물은 존재하지 않습니다.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
+			return msgAndBack(request, num + "번 게시물은 존재하지 않습니다.");
 
 		}
 		request.setAttribute("article", article);
@@ -120,11 +126,21 @@ public class ArticleController {
 	public String doWrite(HttpServletRequest request, HttpServletResponse response) {
 
 		int memberNum = (int) request.getAttribute("loginedMemberNum");
-		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+		
+		int boardNum = Util.getAsInt(request.getParameter("boardNum"),0);
+		
+		if(boardNum ==0) {
+			return msgAndBack(request, "게시판 번호를 입력해주세요.");
+		}
 		Board board = articleService.getBoardNum(boardNum);
 		String title = request.getParameter("title");
+		if(Util.isEmpty(title)) {
+			return msgAndBack(request, "제목을 입력해주세요.");
+		}
 		String body = request.getParameter("body");
-
+		if(Util.isEmpty(body)) {
+			return msgAndBack(request, "내용을 입력해주세요.");
+		}
 		Map<String, Object> writeArgs = new HashMap<>();
 
 		writeArgs.put("memberNum", memberNum);
@@ -134,9 +150,8 @@ public class ArticleController {
 
 		int newArticleNum = articleService.doWrite(writeArgs);
 		request.setAttribute("board", board);
-		request.setAttribute("alertMsg", newArticleNum + "번 게시물이 생성되었습니다..");
-		request.setAttribute("replaceUrl", String.format("detail?num=%d", newArticleNum));
-		return "common/redirect";
+
+		return msgAndBack(request, newArticleNum + "번 게시물이 생성되었습니다.");
 	}
 
 	public String showModify(HttpServletRequest request, HttpServletResponse response) {
@@ -151,21 +166,16 @@ public class ArticleController {
 	}
 
 	public String doModify(HttpServletRequest request, HttpServletResponse response) {
-
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 		Article article = articleService.getForPrintArticle(articleNum);
 		if (article == null) {
-			request.setAttribute("alertMsg", articleNum + "번 게시물은 존재하지 않습니다.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
+			return msgAndBack(request, articleNum + "번 게시물은 존재하지 않습니다.");
 		}
 
 		int memberNum = (int) request.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
-			request.setAttribute("alertMsg", articleNum + "번 글의 수정 권한이 없습니다.");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
+			return msgAndBack(request, articleNum + "번 글의 수정 권한이 없습니다.");
 		}
 		String title = request.getParameter("title");
 		String body = request.getParameter("body");
@@ -187,16 +197,12 @@ public class ArticleController {
 		HttpSession session = request.getSession();
 
 		int articleNum = Integer.parseInt(request.getParameter("num"));
-
 		Article article = articleService.getForPrintArticle(articleNum);
 
 		int memberNum = (int) session.getAttribute("loginedMemberNum");
 
 		if (article.getMemberNum() != memberNum) {
-
-			request.setAttribute("alertMsg", articleNum + "번 글의 삭제 권한이 없습니다..");
-			request.setAttribute("historyBack", true);
-			return "common/redirect";
+			return msgAndBack(request, articleNum + "번 글의 삭제 권한이 없습니다.");
 		}
 
 		articleService.doDelete(articleNum);

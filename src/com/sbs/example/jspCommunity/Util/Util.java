@@ -44,6 +44,7 @@ public class Util {
 
 		return null;
 	}
+
 	public static int sendMail(String smtpServerId, String smtpServerPw, String from, String fromName, String to,
 			String title, String body) {
 
@@ -58,7 +59,7 @@ public class Util {
 		Session session = Session.getDefaultInstance(prop, auth);
 
 		MimeMessage msg = new MimeMessage(session);
-		
+
 		System.out.println(to);
 		try {
 			msg.setSentDate(new Date());
@@ -67,7 +68,7 @@ public class Util {
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			msg.setSubject(title, "UTF-8");
 			msg.setContent(body, "text/html; charset=UTF-8");
-			
+
 			Transport.send(msg);
 		} catch (AddressException ae) {
 			System.out.println("AddressException : " + ae.getMessage());
@@ -132,5 +133,19 @@ public class Util {
 			}
 		}
 		return defaultValue;
+	}
+
+	public static boolean isEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+
+		if (obj instanceof String) {
+			if (((String) obj).trim().length() == 0) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

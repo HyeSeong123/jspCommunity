@@ -54,7 +54,7 @@
 		<input type="hidden" name="num" value="${article.num}" />	
 		<input type="hidden" name="body" />
 		
-		<input	type="text" name="title" placeholder="수정할 제목을 입력해주세요">
+		<input	type="text" name="title" placeholder="수정할 제목을 입력해주세요" value="${article.title}">
 		<hr>
 		<div class="modify_body">
 				<script type="text/x-template">${article.body}</script>

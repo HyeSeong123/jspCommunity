@@ -50,7 +50,7 @@
 			<input type="text" name="title" placeholder="제목을 입력해주세요">
 			<hr />
 			<div class="write_body">
-				<script type="text/x-template"></script>
+				<script type="text/x-template">${article.body}</script>
 				<div class="toast-ui-editor"></div>
 			</div>
 			<hr />

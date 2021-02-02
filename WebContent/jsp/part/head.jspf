@@ -180,7 +180,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="../article/list?boardNum=3&page=1"
+							<a href="../article/list?boardNum=4&page=1"
 								class="flex flex-column top-menu-bar__content">
 								<span>
 									<i class="fas fa-feather-alt"></i>
@@ -264,7 +264,7 @@
 						<span>인포데스크</span>
 					</a>
 
-					<a href="../article/list?boardNum=1&page=2"
+					<a href="../article/list?boardNum=2&page=1"
 						class="block flex flex-ai-c flex-jc-c height-100p">
 						<span>
 							<i class="fas fa-road"></i>
@@ -272,7 +272,7 @@
 						<span>휴게소정보</span>
 					</a>
 
-					<a href="../article/list?boardNum=1&page=3"
+					<a href="../article/list?boardNum=3&page=1"
 						class="block flex flex-ai-c flex-jc-c height-100p">
 						<span>
 							<i class="fas fa-cannabis"></i>
@@ -280,7 +280,7 @@
 						<span>글그림마당</span>
 					</a>
 
-					<a href="../article/list?boardNum=1&page=4"
+					<a href="../article/list?boardNum=4&page=1"
 						class="block flex flex-ai-c flex-jc-c height-100p">
 						<span>
 							<i class="fas fa-feather-alt"></i>

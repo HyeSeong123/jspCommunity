@@ -38,28 +38,29 @@
 		}
 	</script>
 	<section class="loginPage__ flex flex-jc-c">
-		<section class="login-page flex flex-column flex-ai-c">
+		<section class="login-page find_login flex flex-column flex-ai-c">
 			<div class="">유실물 센터</div>
 			<form action="doFindLoginId" method="POST"
 				onsubmit="DoFindLoginIdForm__submit(this); return false;">
 				
 				<input type="hidden" name="" />
 				
-				<div class="">
+				
+				<div class="findLoginId__name">
 					<input type="text" name="name" placeholder="이름을 입력해주세요" />
 				</div>
 
-				<div class="">
+				<div class="findLoginId__email">
 					<input type="email" name="email" placeholder="가입시 입력한이메일을 입력해주세요" />
 				</div>
 				
-				<div class="">
-					<div class="">
+				<div class="findLoginId__buttons">
+					<div class="findLoginId__submit">
 						<input type="submit" value="아이디 찾기" />
 					</div>
 				</div>
 
-				<div class="">
+				<div class="return_button">
 					<button type="button" onclick="history.back()">되돌아가기</button>
 				</div>
 			</form>
