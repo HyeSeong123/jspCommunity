@@ -43,4 +43,10 @@ public class ArticleService {
 		return articleDao.getForPrintArticlesByBoard(boardNum, limitStart,limitCount, searchKeyword, searchKeywordType);
 	}
 
+	public int doArticleLike(int loginId, int articleNum) {
+		return articleDao.doArticleLike(loginId, articleNum);
+	}
+	public int doArticleUnLike(int loginId, int articleNum) {
+		return articleDao.doArticleUnLike(loginId, articleNum);
+	}
 }

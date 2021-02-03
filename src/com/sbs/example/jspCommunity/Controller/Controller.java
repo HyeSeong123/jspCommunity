@@ -15,7 +15,7 @@ public class Controller {
 		request.setAttribute("replaceUrl", replaceUrl);
 		return "common/redirect";
 	}
-	protected String join(HttpServletRequest request , ResultData resultData) {
+	protected String json(HttpServletRequest request , ResultData resultData) {
 		request.setAttribute("data", resultData);
 		return "common/json";
 	}

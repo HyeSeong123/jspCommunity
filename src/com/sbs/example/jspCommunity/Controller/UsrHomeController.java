@@ -16,15 +16,6 @@ public class UsrHomeController {
 	}
 
 	public String showMain(HttpServletRequest request, HttpServletResponse response) {
-		int memberNum = (int) request.getAttribute("loginedMemberNum");
-
-		System.out.printf("loginedId=%d\n", memberNum);
-
-		if (memberNum != 0) {
-			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
-
-			request.setAttribute("tempPassword", attr.getValue());
-		}
 		return "usr/home/main";
 	}
 }

@@ -6,38 +6,32 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
-import com.sbs.example.jspCommunity.Dto.Attr;
 import com.sbs.example.jspCommunity.Dto.Board;
+import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Service.AttrService;
+import com.sbs.example.jspCommunity.Service.MemberService;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class ArticleController extends Controller {
 
 	private ArticleService articleService;
 	private AttrService attrService;
+	private MemberService memberService;
 
 	public ArticleController() {
 		attrService = Container.attrService;
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public String showList(HttpServletRequest request, HttpServletResponse response) {
 		String searchKeyword = request.getParameter("searchKeyword");
 		String searchKeywordType = request.getParameter("searchKeywordType");
 		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
-
-		int memberNum = (int) request.getAttribute("loginedMemberNum");
-
-		if (memberNum != 0) {
-			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
-
-			request.setAttribute("tempPassword", attr.getValue());
-		}
 
 		Board board = articleService.getBoardNum(boardNum);
 
@@ -91,18 +85,9 @@ public class ArticleController extends Controller {
 	}
 
 	public String showDetail(HttpServletRequest request, HttpServletResponse response) {
-
-		int num = Integer.parseInt(request.getParameter("num"));
+		int num = Util.getAsInt(request.getParameter("num"), 0);
 
 		Article article = articleService.getForPrintArticle(num);
-
-		int memberNum = (int) request.getAttribute("loginedMemberNum");
-
-		if (memberNum != 0) {
-			Attr attr = attrService.getAttr("member", memberNum, "extra", "tempPassword");
-
-			request.setAttribute("tempPassword", attr.getValue());
-		}
 
 		if (article == null) {
 			return msgAndBack(request, num + "번 게시물은 존재하지 않습니다.");
@@ -113,8 +98,7 @@ public class ArticleController extends Controller {
 	}
 
 	public String showWrite(HttpServletRequest request, HttpServletResponse response) {
-
-		int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+		int boardNum = Util.getAsInt(request.getParameter("boardNum"), 0);
 
 		Board board = articleService.getBoardNum(boardNum);
 
@@ -124,21 +108,20 @@ public class ArticleController extends Controller {
 	}
 
 	public String doWrite(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = Util.getAsInt(request.getParameter("loginedMemberNum"), 0);
 
-		int memberNum = (int) request.getAttribute("loginedMemberNum");
-		
-		int boardNum = Util.getAsInt(request.getParameter("boardNum"),0);
-		
-		if(boardNum ==0) {
+		int boardNum = Util.getAsInt(request.getParameter("boardNum"), 0);
+
+		if (boardNum == 0) {
 			return msgAndBack(request, "게시판 번호를 입력해주세요.");
 		}
 		Board board = articleService.getBoardNum(boardNum);
 		String title = request.getParameter("title");
-		if(Util.isEmpty(title)) {
+		if (Util.isEmpty(title)) {
 			return msgAndBack(request, "제목을 입력해주세요.");
 		}
 		String body = request.getParameter("body");
-		if(Util.isEmpty(body)) {
+		if (Util.isEmpty(body)) {
 			return msgAndBack(request, "내용을 입력해주세요.");
 		}
 		Map<String, Object> writeArgs = new HashMap<>();
@@ -149,7 +132,6 @@ public class ArticleController extends Controller {
 		writeArgs.put("body", body);
 
 		int newArticleNum = articleService.doWrite(writeArgs);
-		request.setAttribute("board", board);
 
 		return msgAndBack(request, newArticleNum + "번 게시물이 생성되었습니다.");
 	}
@@ -188,18 +170,22 @@ public class ArticleController extends Controller {
 
 		articleService.doModify(modifyArgs);
 
-		request.setAttribute("alertMsg", articleNum + "번 게시물이 변경되었습니다..");
-		request.setAttribute("replaceUrl", String.format("detail?num=%d", articleNum));
-		return "common/redirect";
+		return msgAndReplace(request, articleNum + "번 게시물이 변경되엇습니다.", String.format("detail?num=%d", articleNum));
 	}
 
 	public String doDelete(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
+		int memberNum = Util.getAsInt(request.getParameter("loginedMemberNum"), 0);
+
+		if (memberNum == 0) {
+			return msgAndBack(request, "게시판 번호를 입력해주세요");
+		}
 
 		int articleNum = Integer.parseInt(request.getParameter("num"));
 		Article article = articleService.getForPrintArticle(articleNum);
 
-		int memberNum = (int) session.getAttribute("loginedMemberNum");
+		if (article == null) {
+			return msgAndBack(request, articleNum + "번 게시물은 존재하지 않습니다.");
+		}
 
 		if (article.getMemberNum() != memberNum) {
 			return msgAndBack(request, articleNum + "번 글의 삭제 권한이 없습니다.");
@@ -207,8 +193,43 @@ public class ArticleController extends Controller {
 
 		articleService.doDelete(articleNum);
 
-		request.setAttribute("alertMsg", articleNum + "번 게시물이 삭제되었습니다..");
-		request.setAttribute("replaceUrl", String.format("list?boardNum=%d", article.getBoardNum()));
-		return "common/redirect";
+		int boardNum = article.getBoardNum();
+
+		return msgAndReplace(request, articleNum + "번 게시물이 삭제되었습니다.", String.format("list?boardNum=%d", boardNum));
+	}
+
+	public String doArticleLike(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = Util.getAsInt(request.getAttribute("loginedMemberNum"), 0);
+
+		int articleNum = Integer.parseInt(request.getParameter("num"));
+
+		if (memberNum == 0) {
+			return msgAndReplace(request, "로그인 후 이용 해주세요", "../member/login");
+		}
+
+		int likeNum = articleService.doArticleLike(memberNum, articleNum);
+
+		if (likeNum == -1) {
+			return msgAndReplace(request, "좋아요가 취소되었습니다.", String.format("detail?num=%d", articleNum));
+		}
+		return msgAndReplace(request, "좋아요", String.format("detail?num=%d", articleNum));
+	}
+
+	public String doArticleUnLike(HttpServletRequest request, HttpServletResponse response) {
+		int memberNum = Util.getAsInt(request.getAttribute("loginedMemberNum"), 0);
+
+		int articleNum = Integer.parseInt(request.getParameter("num"));
+
+		if (memberNum == 0) {
+			return msgAndReplace(request, "로그인 후 이용 해주세요", "../member/login");
+		}
+
+		int likeNum = articleService.doArticleUnLike(memberNum, articleNum);
+
+		if (likeNum == -1) {
+			return msgAndReplace(request, "싫어요가 취소되었습니다.", String.format("detail?num=%d", articleNum));
+		}
+		return msgAndReplace(request, "싫어요", String.format("detail?num=%d", articleNum));
+
 	}
 }

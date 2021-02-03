@@ -51,7 +51,6 @@
 </head>
 
 <div class="bodycontent min-height-100vh flex flex-column">
-
 	<script>
 		let DoSearchForm__submited = false;
 		function DosearchFrom__submit(form) {

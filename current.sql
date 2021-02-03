@@ -30,14 +30,16 @@ CREATE TABLE `article` (
   `body` longtext NOT NULL,
   `views` int(10) unsigned NOT NULL DEFAULT 0,
   `hitsCount` int(10) unsigned NOT NULL DEFAULT 0,
+  `like` int(10) NOT NULL,
+  `unLike` int(10) NOT NULL,
   PRIMARY KEY (`num`)
 ) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article` */
 
-insert  into `article`(`num`,`regDate`,`updateDate`,`memberNum`,`boardNum`,`title`,`body`,`views`,`hitsCount`) values 
-(5,'2021-01-16 17:46:48','2021-01-16 17:46:48',1,1,'가나다라','가나다라',0,0),
-(8,'2021-01-16 23:41:54','2021-01-28 20:02:28',1,1,'1212','aSFAFAFS12',0,0);
+insert  into `article`(`num`,`regDate`,`updateDate`,`memberNum`,`boardNum`,`title`,`body`,`views`,`hitsCount`,`like`,`unLike`) values 
+(5,'2021-01-16 17:46:48','2021-01-16 17:46:48',1,1,'가나다라','가나다라',0,0,0,0),
+(8,'2021-01-16 23:41:54','2021-02-02 22:42:06',1,1,'1212','aSFAFAFS12',0,0,0,0);
 
 /*Table structure for table `attr` */
 
@@ -52,15 +54,16 @@ CREATE TABLE `attr` (
   `typeCode` char(30) NOT NULL,
   `type2Code` char(30) NOT NULL,
   `value` text NOT NULL,
+  `expireDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `relTypeCode` (`relTypeCode`,`relId`,`typeCode`,`type2Code`),
   KEY `relTypeCode_2` (`relTypeCode`,`typeCode`,`type2Code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `attr` */
 
-insert  into `attr`(`id`,`regDate`,`updateDate`,`relTypeCode`,`relId`,`typeCode`,`type2Code`,`value`) values 
-(3,'2021-02-01 10:42:49','2021-02-01 19:57:32','member',1,'extra','tempPassword','2');
+insert  into `attr`(`id`,`regDate`,`updateDate`,`relTypeCode`,`relId`,`typeCode`,`type2Code`,`value`,`expireDate`) values 
+(1,'2021-02-02 19:58:58','2021-02-02 23:08:08','member',1,'extra','isUsingTempPassword','0',NULL);
 
 /*Table structure for table `board` */
 
@@ -84,6 +87,23 @@ insert  into `board`(`boardNum`,`regDate`,`updateDate`,`code`,`name`) values
 (2,'2021-01-07 12:31:07','2021-01-07 12:31:07','guestBook','방명록'),
 (3,'2021-01-07 12:31:07','2021-01-07 12:31:07','Free','자유게시판');
 
+/*Table structure for table `like` */
+
+DROP TABLE IF EXISTS `like`;
+
+CREATE TABLE `like` (
+  `likeNum` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `regDate` datetime NOT NULL,
+  `updateDate` datetime NOT NULL,
+  `relTypeCode` char(20) NOT NULL,
+  `relId` int(10) unsigned NOT NULL,
+  `memberNum` int(10) unsigned NOT NULL,
+  `point` int(10) DEFAULT NULL,
+  PRIMARY KEY (`likeNum`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `like` */
+
 /*Table structure for table `member` */
 
 DROP TABLE IF EXISTS `member`;
@@ -106,7 +126,7 @@ CREATE TABLE `member` (
 /*Data for the table `member` */
 
 insert  into `member`(`memberNum`,`regDate`,`updateDate`,`name`,`nickname`,`email`,`loginId`,`loginPw`,`authLevel`,`phNum`) values 
-(1,'2021-01-25 12:44:00','2021-02-01 07:00:00','방혜성','baobab612','banggu1997@gmail.com','baobab612','ee79976c9380d5e337fc1c095ece8c8f22f91f306ceeb161fa51fecede2c4ba1',2,'010-8370-0420');
+(1,'2021-01-25 12:44:00','2021-02-02 11:00:00','방혜성','baobab612','banggu1997@gmail.com','baobab612','8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414',2,'010-8370-0420');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -47,6 +47,7 @@
 			<form action="doLogin" method="POST"
 				onsubmit="DoLoginForm__submit(this); return false;">
 				<input type="hidden" name="loginPwReal" />
+				<input type="hidden" name="afterLoginUrl" value="${param.afterLoginUrl}"/>
 				<div class="">
 					<input type="text" name="loginId" placeholder="아이디 입력" />
 				</div>

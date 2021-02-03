@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
+import com.sbs.example.jspCommunity.Dto.like;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 import com.sbs.example.jspCommunity.Util.SecSql;
 
@@ -163,4 +164,91 @@ public class ArticleDao {
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 
+	public int doArticleLike(int loginId, int articleNum) {
+		SecSql sql = new SecSql();
+
+		like like = dupLike(loginId, "article_like", articleNum);
+
+		if (like != null) {
+			sql.append("DELETE FROM `like`");
+			sql.append("WHERE 1");
+			sql.append("AND memberNum = ?", loginId);
+			sql.append("AND relTypeCode = 'article_like'");
+			sql.append("AND relId = ?", articleNum);
+			articleAddObject(articleNum, "`like`", -1);
+			MysqlUtil.delete(sql);
+			return -1;
+		}
+
+		sql.append("INSERT INTO `like`");
+		sql.append("SET regDate = DATE(NOW())");
+		sql.append(", updateDate = DATE(NOW())");
+		sql.append(", relTypeCode = 'article_like'");
+		sql.append(", relId = ?", articleNum);
+		sql.append(", memberNum = ?", loginId);
+		sql.append(", `point`='1'");
+		articleAddObject(articleNum, "`like`", +1);
+
+		return MysqlUtil.insert(sql);
+	}
+
+	public like dupLike(int loginId, String relTypeCode, int relId) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM `like`");
+		sql.append("WHERE 1");
+		sql.append("AND like.memberNum = ?", loginId);
+		sql.append("AND like.relTypeCode = ?", relTypeCode);
+		sql.append("AND like.relId = ?", relId);
+
+		Map<String, Object> likeMap = MysqlUtil.selectRow(sql);
+
+		if (likeMap.isEmpty()) {
+			return null;
+		}
+		return new like(likeMap);
+	}
+
+	public void articleAddObject(int loginId, String relTypeCode, int status) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE `article`");
+
+		if (status > 0) {
+			sql.append("SET " + relTypeCode + "=" + relTypeCode + "+1");
+		} else {
+			sql.append("SET " + relTypeCode + "=" + relTypeCode + "-1");
+		}
+		sql.append("WHERE num = ?", loginId);
+		System.out.println(sql);
+		MysqlUtil.update(sql);
+	}
+
+	public int doArticleUnLike(int loginId, int articleNum) {
+		SecSql sql = new SecSql();
+
+		like like = dupLike(loginId, "article_unlike", articleNum);
+
+		if (like != null) {
+			sql.append("DELETE FROM `like`");
+			sql.append("WHERE 1");
+			sql.append("AND memberNum = ?", loginId);
+			sql.append("AND relTypeCode = 'article_unLike'");
+			sql.append("AND relId = ?", articleNum);
+			articleAddObject(articleNum, "unLike", -1);
+			MysqlUtil.delete(sql);
+			return -1;
+		}
+
+		sql.append("INSERT INTO `like`");
+		sql.append("SET regDate = DATE(NOW())");
+		sql.append(", updateDate = DATE(NOW())");
+		sql.append(", relTypeCode = 'article_unLike'");
+		sql.append(", relId = ?", articleNum);
+		sql.append(", memberNum = ?", loginId);
+		sql.append(", `point`='1'");
+		articleAddObject(articleNum, "unLike", +1);
+
+		return MysqlUtil.insert(sql);
+	}
 }

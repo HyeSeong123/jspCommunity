@@ -20,20 +20,27 @@
 		<br />
 		작성자 : ${article.extra__writer}
 		<br />
+		좋아요 : ${article.like}
+		<br />
+		싫어요 : ${article.unLike}
 		<section class="detail__article-head">
 			<script type="text/x-template"># 제목: ${article.title}</script>
 			<div class="toast-ui-viewer"></div>
 		</section>
-		
+
 		<section class="detail__article-body">
-			<h1>내용:</h1>  
+			<h1>내용:</h1>
 			<script type="text/x-template">${article.body}</script>
 			<div class="toast-ui-viewer"></div>
 		</section>
-		
+
 		<hr />
 		<a href="modify?num=${article.num}">글 수정하기</a>
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>
 		<button type="button" onclick="history.back()">뒤로가기</button>
+		<div class="flex flex-column">
+			<a href="doLike?num=${article.num}">좋아요</a>
+			<a href="doUnLike?num=${article.num}">싫어요</a>
+		</div>
 	</div>
 	<%@ include file="../../part/foot.jspf"%>

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
+import com.sbs.example.jspCommunity.Util.Util;
 
 public abstract class dispatcherServlet extends HttpServlet {
 
@@ -85,6 +86,17 @@ public abstract class dispatcherServlet extends HttpServlet {
 		request.setAttribute("loginedMemberNum", loginedMemberNum);
 		request.setAttribute("loginedMember", loginedMember);
 
+		String currentUrl = request.getRequestURI();
+
+		if (request.getQueryString() != null) {
+			currentUrl += "?" + request.getQueryString();
+		}
+
+		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
+
+		request.setAttribute("currentUrl", currentUrl);
+		request.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
+
 		// 데이터 추가 인터셉터 끝
 
 		// 로그인 필요 필터링 인터셉터 시작
@@ -102,7 +114,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 		if (needToLoginactionUrls.contains(actionUrl)) {
 			if ((boolean) request.getAttribute("isLogined") == false) {
 				request.setAttribute("alertMsg", "로그인 후 이용해주세요.");
-				request.setAttribute("replaceUrl", "../member/login");
+				request.setAttribute("replaceUrl", "../member/login?afterLoginUrl=" + encodedCurrentUrl);
 
 				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(request, response);
@@ -126,7 +138,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 
 				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(request, response);
-			}	
+			}
 		}
 
 		// 로그인 필요 필터링 인터셉터 끝

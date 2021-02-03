@@ -72,16 +72,17 @@ public class MemberService {
 		modifyParam.put("loginPw", Util.sha256(tempPassword));
 		modify(modifyParam);
 
-		Attr attr = attrService.getAttr("member", actor.getMemberNum(), "extra", "tempPassword");
-
-		if (attr == null) {
-			attrService.setValue(actor.getMemberNum(), "member", "extra", "tempPassword", "1");
-		}
-		else if(attr!= null) {
-			attrService.updatePwValue("member", actor.getMemberNum(), "extra", "tempPassword","1");
-		}
+		setIsUsingTempPassword(actor.getMemberNum(), true);
 	}
 
+	public void setIsUsingTempPassword(int actorNum, boolean use) {
+		attrService.setValue("member__" + actorNum + "__extra__isUsingTempPassword", use , null);
+	}
+	
+	public boolean getIsUsingTempPassword(int actorNum) {
+		return attrService.getValueAsBoolean("member__" + actorNum + "__extra__isUsingTempPassword");
+	}
+	
 	private void modify(Map<String, Object> param) {
 		memberDao.modify(param);
 	}

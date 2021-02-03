@@ -66,7 +66,11 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = articleController.doModify(request, response);
 			} else if (actionMethodName.equals("doDelete")) {
 				jspPath = articleController.doDelete(request, response);
-			}
+			} else if (actionMethodName.equals("doLike")) {
+				jspPath = articleController.doArticleLike(request, response);
+			} else if (actionMethodName.equals("doUnLike")) {
+				jspPath = articleController.doArticleUnLike(request, response);
+			} 
 		} else if (ControllerName.equals("home")) {
 			UsrHomeController homeController = Container.homeController;
 			if (actionMethodName.equals("main")) {

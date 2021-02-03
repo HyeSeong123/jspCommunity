@@ -14,7 +14,9 @@ public class Article {
 	private String title;
 	private String body;
 	private int hitsCount;
-
+	private int like;
+	private int unLike;
+	
 	private String extra__writer;
 	private String extra__boardName;
 	private String extra__boardCode;
@@ -28,7 +30,8 @@ public class Article {
 		this.setTitle((String) map.get("title"));
 		this.setBody((String) map.get("body"));
 		this.setHitsCount((int) map.get("hitsCount"));
-
+		this.setLike((int) map.get("like"));
+		this.setUnLike((int) map.get("unLike"));
 		if (map.containsKey("extra__writer")) {
 			this.setExtra__writer((String) map.get("extra__writer"));
 		}
