@@ -23,9 +23,13 @@
 		좋아요 : ${article.like}
 		<br />
 		싫어요 : ${article.unLike}
-		<section class="detail__article-head">
+		<section class="detail__article-head flex flex-jc-ar">
 			<script type="text/x-template"># 제목: ${article.title}</script>
-			<div class="toast-ui-viewer"></div>
+			<div class="toast-ui-viewer flex flex-ai-c"></div>
+			<div class="flex flex-ai-c detail__like-unLike">
+				<a href="doLike?num=${article.num}"><i class="far fa-heart"></i></a>
+				<a href="doUnLike?num=${article.num}"><i class="fas fa-thumbs-down"></i></a>
+			</div>
 		</section>
 
 		<section class="detail__article-body">
@@ -38,9 +42,5 @@
 		<a href="modify?num=${article.num}">글 수정하기</a>
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>
 		<button type="button" onclick="history.back()">뒤로가기</button>
-		<div class="flex flex-column">
-			<a href="doLike?num=${article.num}">좋아요</a>
-			<a href="doUnLike?num=${article.num}">싫어요</a>
-		</div>
 	</div>
 	<%@ include file="../../part/foot.jspf"%>

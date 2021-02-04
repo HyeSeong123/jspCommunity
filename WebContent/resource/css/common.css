@@ -773,7 +773,10 @@ ul.news-list {
     color: #aaaab2;
     text-transform: uppercase
 }
-.writer{
+.writer,
+.like,
+.unLike 
+{
 	font-size : 15px;
 	color: #aaaab2;
 }
@@ -937,7 +940,13 @@ ul.news-list {
 }
 .info-list .news-list li p {
     padding-left: 20px;
-    width: 60%
+    width: 40%
+}
+.info-list .news-list li .like{
+	width : 10%;
+}
+.info-list .news-list li .unLike{
+	width : 10%;
 }
 .info-list .news-list li .writer {
 	width : 20%;
@@ -961,19 +970,26 @@ ul.news-list {
         margin-top: 20px
     }
     .info-list .news-list li .writer,
-    .info-list .news-list li .date,
-    .info-list .news-list li p {
+    .info-list .news-list li .date{
         width: 100%;
         padding-left: 0;
         display: block !important;
         text-align: left
     }
-    .info-list .news-list li p {
-        padding-top: 4px
+    .info-list .news-list li .title {
+        padding-top: 4px;
+        display : inline-block !important;
+        width : 20%;
+    }
+    .info-list .news-list li .like_unLike {
+        display : inline-block !important;
+        width : 30%;
+    }
+    .info-list .news-list li .like_unLike > span {
+        display : block !important;
+        width : 40%;
     }
 }
-
-
 .stalker-wrap {
     position: absolute;
     top: 0;
@@ -1194,6 +1210,11 @@ ul.news-list {
     transform : translateY(-20px) rotate(45deg);
   }
 }
-
 /* 상단 바 애니메이션 끝 */
 
+/* 게시물 상세화면 시작 */
+.detail__like-unLike > a{
+	margin : 0 20px;
+	font-size : 30px;
+}
+/* 게시물 상세화면 끝 */

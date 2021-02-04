@@ -25,7 +25,11 @@
 			<div class="constrain">
 				<span class="date">${article.regDate}</span>
 				<span class="writer">${article.extra__writer}</span>
-				<p>${article.title}</p>
+				<p class="title">${article.title}</p>
+				<div class="like_unLike">
+				<span class="like"><i class="far fa-heart"></i> ${article.like}</span>
+				<span class="unLike"><i class="fas fa-thumbs-down"></i> ${article.unLike}</span>
+				</div>
 			</div>
 			<div class="gradient-hover gradient-2"></div>
 		</a>
