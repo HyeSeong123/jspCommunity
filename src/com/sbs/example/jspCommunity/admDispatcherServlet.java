@@ -12,10 +12,13 @@ import com.sbs.example.jspCommunity.Controller.usrMemberController;
  */
 @WebServlet("/adm/*")
 public class admDispatcherServlet extends dispatcherServlet {
-	protected String doAction(HttpServletRequest request, HttpServletResponse response, String ControllerName, String actionMethodName) {
+	protected String doAction(HttpServletRequest request, HttpServletResponse response, String ControllerName,
+			String actionMethodName) {
 		String jspPath = null;
+
 		if (ControllerName.equals("member")) {
 			usrMemberController memberController = Container.usrMemberController;
+
 			if (actionMethodName.equals("list")) {
 				jspPath = memberController.showList(request, response);
 			}

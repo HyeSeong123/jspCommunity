@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
+import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Service.MemberService;
@@ -85,13 +86,14 @@ public class ArticleController extends Controller {
 
 	public String showDetail(HttpServletRequest request, HttpServletResponse response) {
 		int num = Util.getAsInt(request.getParameter("num"), 0);
+		Member loginedMember = (Member) request.getAttribute("loginedMember");
 
-		Article article = articleService.getForPrintArticle(num);
+		Article article = articleService.getForPrintArticle(num, loginedMember);
 
 		if (article == null) {
 			return msgAndBack(request, num + "번 게시물은 존재하지 않습니다.");
-
 		}
+		
 		request.setAttribute("article", article);
 		return "usr/article/detail";
 	}
@@ -205,8 +207,7 @@ public class ArticleController extends Controller {
 		if (memberNum == 0) {
 			return msgAndReplace(request, "로그인 후 이용 해주세요", "../member/login");
 		}
-		
-		
+
 		int likeNum = articleService.doArticleLike(memberNum, articleNum);
 
 		if (likeNum == -1) {

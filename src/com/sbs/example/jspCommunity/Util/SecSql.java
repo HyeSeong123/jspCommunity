@@ -58,6 +58,10 @@ public class SecSql {
 			}
 		}
 
+		if (MysqlUtil.isDevMode()) {
+			System.out.println("rawSql : " + getRawSql());
+		}
+
 		return stmt;
 	}
 

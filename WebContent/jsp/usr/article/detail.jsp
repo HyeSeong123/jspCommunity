@@ -20,15 +20,59 @@
 		<br />
 		작성자 : ${article.extra__writer}
 		<br />
-		좋아요 : ${article.like}
+		좋아요 : ${article.extra__likeOnlyPoint}
 		<br />
-		싫어요 : ${article.unLike}
+		싫어요 : ${article.extra__disLikeOnlyPoint}
+
 		<section class="detail__article-head flex flex-jc-ar">
 			<script type="text/x-template"># 제목: ${article.title}</script>
 			<div class="toast-ui-viewer flex flex-ai-c"></div>
 			<div class="flex flex-ai-c detail__like-unLike">
-				<a href="doLike?num=${article.num}"><i class="far fa-heart"></i></a>
-				<a href="doUnLike?num=${article.num}"><i class="fas fa-thumbs-down"></i></a>
+				<c:if test="${article.extra.actorCanLike}">
+					<a class="btn btn-primary"
+						href="../like/doLike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
+						onclick="if ( !confirm('`좋아요` 처리 하시겠습니까?') ) return false;">
+						<span>
+							<i class="fas fa-thumbs-up"></i>
+						</span>
+						<span>좋아요</span>
+					</a>
+				</c:if>
+
+				<c:if test="${article.extra.actorCanCancelLike}">
+					<a class="btn btn-info"
+						href="../like/doCancelLike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
+						onclick="if ( !confirm('`좋아요`를 취소 처리 하시겠습니까?') ) return false;">
+						<span>
+							<i class="fas fa-slash"></i>
+						</span>
+						<span>좋아요 취소</span>
+					</a>
+				</c:if>
+
+				<c:if test="${article.extra.actorCanDislike}">
+					<a class="btn btn-danger"
+						href="../like/doDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
+						onclick="if ( !confirm('`싫어요` 처리 하시겠습니까?') ) return false;">
+						<span>
+							<i class="fas fa-thumbs-down"></i>
+						</span>
+						<span>싫어요</span>
+					</a>
+				</c:if>
+
+				<c:if test="${article.extra.actorCanCancelDislike}">
+					<a class="btn btn-info"
+						href="../like/doCancelDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
+						onclick="if ( !confirm('`싫어요`를 취소 처리 하시겠습니까?') ) return false;">
+						<span>
+							<span>
+								<i class="fas fa-slash"></i>
+							</span>
+						</span>
+						<span>싫어요 취소</span>
+					</a>
+				</c:if>
 			</div>
 		</section>
 
@@ -37,8 +81,44 @@
 			<script type="text/x-template">${article.body}</script>
 			<div class="toast-ui-viewer"></div>
 		</section>
-
 		<hr />
+
+		<section class="detail__reply_write_box">
+			<script>
+				let DoWriteReplyForm__submited = false;
+				let DoWriteReplyForm__checkedLoingId = "";
+
+				function DoWriteReplyForm_submit(form) {
+					if (DoWriteReplyForm__submited) {
+						alert('처리중입니다.');
+						return;
+					}
+					form.title.value = form.title.value.trim();
+
+					if (form.title.value.length == 0) {
+						alert('제목을 입력해주세요.');
+						form.title.focus();
+
+						return;
+					}
+					const editor = $(form).find('.toast-ui-editor').data(
+							'data-toast-editor');
+					const body = editor.getMarkDown().trim();
+
+					if (body.length == 0) {
+						alert('내용을 입력해주세요.');
+						editor.focus();
+
+						return;
+					}
+
+					form.body.value = body;
+
+					form.submit();
+					DoWriteReplyForm__submited = true;
+				}
+			</script>
+		</section>
 		<a href="modify?num=${article.num}">글 수정하기</a>
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>
 		<button type="button" onclick="history.back()">뒤로가기</button>

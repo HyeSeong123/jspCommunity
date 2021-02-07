@@ -1,5 +1,6 @@
 package com.sbs.example.jspCommunity.Dto;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lombok.Data;
@@ -14,12 +15,15 @@ public class Article {
 	private String title;
 	private String body;
 	private int hitsCount;
-	private int like;
-	private int unLike;
+
+	private Map<String, Object> extra;
 	
 	private String extra__writer;
 	private String extra__boardName;
 	private String extra__boardCode;
+	private int extra__likePoint;
+	private int extra__likeOnlyPoint;
+	private int extra__disLikeOnlyPoint;
 
 	public Article(Map<String, Object> map) {
 		this.setNum((int) map.get("num"));
@@ -30,16 +34,31 @@ public class Article {
 		this.setTitle((String) map.get("title"));
 		this.setBody((String) map.get("body"));
 		this.setHitsCount((int) map.get("hitsCount"));
-		this.setLike((int) map.get("like"));
-		this.setUnLike((int) map.get("unLike"));
+		
 		if (map.containsKey("extra__writer")) {
-			this.setExtra__writer((String) map.get("extra__writer"));
+			this.extra__writer = (String) map.get("extra__writer");
 		}
+
 		if (map.containsKey("extra__boardName")) {
-			this.setExtra__boardName((String) map.get("extra__boardName"));
+			this.extra__boardName = (String) map.get("extra__boardName");
 		}
+
 		if (map.containsKey("extra__boardCode")) {
-			this.setExtra__boardCode((String) map.get("extra__boardCode"));
+			this.extra__boardCode = (String) map.get("extra__boardCode");
 		}
+
+		if (map.containsKey("extra__likePoint")) {
+			this.extra__likePoint = (int) map.get("extra__likePoint");
+		}
+
+		if (map.containsKey("extra__likeOnlyPoint")) {
+			this.extra__likeOnlyPoint = (int) map.get("extra__likeOnlyPoint");
+		}
+
+		if (map.containsKey("extra__disLikeOnlyPoint")) {
+			this.extra__disLikeOnlyPoint = (int) map.get("extra__disLikeOnlyPoint");
+		}
+
+		this.extra = new LinkedHashMap<>();
 	}
 }

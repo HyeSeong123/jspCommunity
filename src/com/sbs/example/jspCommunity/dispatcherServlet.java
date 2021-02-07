@@ -34,15 +34,22 @@ public abstract class dispatcherServlet extends HttpServlet {
 
 	public void run(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, Object> doBeforeActionRs = doBeforeAction(request, response);
+
 		if (doBeforeActionRs == null) {
 			return;
 		}
-		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("ControllerName"),
-				(String) doBeforeActionRs.get("actionMethodName"));
+		System.out.println("doBeforeActionRs(ControllerName)= " + doBeforeActionRs.get("ControllerName"));
+		System.out.println("doBeforeActionRs(actionMethodName)= " + doBeforeActionRs.get("actionMethodName"));
+		
+		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("ControllerName"), (String) doBeforeActionRs.get("actionMethodName"));
+
+		System.out.println("jspPath= " + jspPath);
+
 		if (jspPath == null) {
 			response.getWriter().append("jsp 정보가 없습니다.");
 			return;
 		}
+
 		doAfterAction(request, response, jspPath);
 	}
 
@@ -54,33 +61,39 @@ public abstract class dispatcherServlet extends HttpServlet {
 		String requestUri = request.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
 
-		if (requestUriBits.length < 5) {
+		int minBitsCount = 5;
+
+		if (App.isProductMode()) {
+			minBitsCount = 4;
+		}
+
+		if (requestUriBits.length < minBitsCount) {
 			response.getWriter().append("올바른 요청이 아닙니다.");
 			return null;
 		}
 
-		MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "jspCommunity");
-
-		String profilesActive = System.getProperty("spring.profiles.active");
-
-		boolean isProductionMode = false;
-
-		if (profilesActive != null && profilesActive.equals("production")) {
-			isProductionMode = true;
-		}
-
-		if (isProductionMode) {
-			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunity");
+		if (App.isProductMode()) {
+			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunityReal");
 		} else {
 			MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+			MysqlUtil.setDevMode(true);
 		}
 
-		String ControllerTypeName = requestUriBits[2];
-		String ControllerName = requestUriBits[3];
-		String actionMethodName = requestUriBits[4];
+		int controllerTypeNameIndex = 2;
+		int controllerNameIndex = 3;
+		int actionMethodNameIndex = 4;
 
-		String actionUrl = "/" + ControllerTypeName + "/" + ControllerName + "/" + actionMethodName;
-		System.out.printf("actionUrl=%s\n", actionUrl);
+		if (App.isProductMode()) {
+			controllerTypeNameIndex = 1;
+			controllerNameIndex = 2;
+			actionMethodNameIndex = 3;
+		}
+
+		String controllerTypeName = requestUriBits[controllerTypeNameIndex];
+		String controllerName = requestUriBits[controllerNameIndex];
+		String actionMethodName = requestUriBits[actionMethodNameIndex];
+
+		String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodName;
 
 		// 데이터 추가 인터셉터 끝
 
@@ -108,9 +121,15 @@ public abstract class dispatcherServlet extends HttpServlet {
 
 		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
 
+		System.out.println("encodedCurrentUrl = " + encodedCurrentUrl);
 		request.setAttribute("currentUrl", currentUrl);
 		request.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
 
+		Map<String, Object> param = Util.getParamMap(request);
+		String paramJson = Util.getJsonText(param);
+
+		request.setAttribute("paramMap", param);
+		request.setAttribute("paramJson", paramJson);
 		// 데이터 추가 인터셉터 끝
 
 		// 로그인 필요 필터링 인터셉터 시작
@@ -158,9 +177,9 @@ public abstract class dispatcherServlet extends HttpServlet {
 		// 로그인 필요 필터링 인터셉터 끝
 
 		Map<String, Object> rs = new HashMap<>();
-		rs.put("ControllerName", ControllerName);
+		rs.put("ControllerName", controllerName);
 		rs.put("actionMethodName", actionMethodName);
-
+		System.out.println("rs= " + rs);
 		return rs;
 	}
 
@@ -172,6 +191,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 		MysqlUtil.closeConnection();
 
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+		System.out.println("rd= " + rd);
 		rd.forward(request, response);
 	}
 }

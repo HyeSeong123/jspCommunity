@@ -1,5 +1,7 @@
 package com.sbs.example.jspCommunity.Util;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -67,7 +69,7 @@ public class MysqlUtil {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				throw new MysqlUtilException(e);
+				throw new MysqlUtilException(e, null);
 			}
 
 			Connection connection = null;
@@ -80,7 +82,7 @@ public class MysqlUtil {
 
 			} catch (SQLException e) {
 				closeConnection();
-				throw new MysqlUtilException(e);
+				throw new MysqlUtilException(e, null);
 			}
 		}
 
@@ -116,7 +118,13 @@ public class MysqlUtil {
 					String columnName = metaData.getColumnName(columnIndex + 1);
 					Object value = rs.getObject(columnName);
 
-					if (value instanceof Long) {
+					if (value instanceof BigDecimal) {
+						row.put(columnName, ((BigDecimal)value).intValue());
+					}
+					else if (value instanceof BigInteger) {
+						row.put(columnName, ((BigInteger)value).intValue());
+					}
+					else if (value instanceof Long) {
 						int numValue = (int) (long) value;
 						row.put(columnName, numValue);
 					} else if (value instanceof Timestamp) {
@@ -132,14 +140,14 @@ public class MysqlUtil {
 			}
 		} catch (SQLException e) {
 			closeConnection();
-			throw new MysqlUtilException(e);
+			throw new MysqlUtilException(e, sql);
 		} finally {
 			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					closeConnection();
-					throw new MysqlUtilException(e);
+					throw new MysqlUtilException(e, sql);
 				}
 			}
 
@@ -148,7 +156,7 @@ public class MysqlUtil {
 					stmt.close();
 				} catch (SQLException e) {
 					closeConnection();
-					throw new MysqlUtilException(e);
+					throw new MysqlUtilException(e, sql);
 				}
 			}
 		}
@@ -203,14 +211,14 @@ public class MysqlUtil {
 
 		} catch (SQLException e) {
 			closeConnection();
-			throw new MysqlUtilException(e);
+			throw new MysqlUtilException(e, sql);
 		} finally {
 			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					closeConnection();
-					throw new MysqlUtilException(e);
+					throw new MysqlUtilException(e, sql);
 				}
 			}
 
@@ -219,7 +227,7 @@ public class MysqlUtil {
 					stmt.close();
 				} catch (SQLException e) {
 					closeConnection();
-					throw new MysqlUtilException(e);
+					throw new MysqlUtilException(e, sql);
 				}
 			}
 
@@ -238,14 +246,14 @@ public class MysqlUtil {
 			affectedRows = stmt.executeUpdate();
 		} catch (SQLException e) {
 			closeConnection();
-			throw new MysqlUtilException(e);
+			throw new MysqlUtilException(e, sql);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					closeConnection();
-					throw new MysqlUtilException(e);
+					throw new MysqlUtilException(e, sql);
 				}
 			}
 		}

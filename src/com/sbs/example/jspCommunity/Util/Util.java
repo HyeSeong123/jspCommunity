@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -17,6 +19,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -157,5 +160,20 @@ public class Util {
 		} catch (UnsupportedEncodingException e) {
 			return str;
 		}
+	}
+
+	public static Map<String, Object> getParamMap(HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+
+		Enumeration<String> parameterNames = request.getParameterNames();
+
+		while (parameterNames.hasMoreElements()) {
+			String paramName = parameterNames.nextElement();
+			Object paramValue = request.getParameter(paramName);
+
+			param.put(paramName, paramValue);
+		}
+
+		return param;
 	}
 }

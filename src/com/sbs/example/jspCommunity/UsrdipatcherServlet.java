@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Controller.ArticleController;
 import com.sbs.example.jspCommunity.Controller.UsrHomeController;
+import com.sbs.example.jspCommunity.Controller.UsrLikeController;
 import com.sbs.example.jspCommunity.Controller.usrMemberController;
 
 /**
@@ -66,17 +67,29 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = articleController.doModify(request, response);
 			} else if (actionMethodName.equals("doDelete")) {
 				jspPath = articleController.doDelete(request, response);
-			} else if (actionMethodName.equals("doLike")) {
-				jspPath = articleController.doArticleLike(request, response);
-			} else if (actionMethodName.equals("doUnLike")) {
-				jspPath = articleController.doArticleUnLike(request, response);
-			} 
-		} else if (ControllerName.equals("home")) {
+			}
+
+		} else if (ControllerName.equals("like")) {
+			UsrLikeController usrlikeController = Container.usrLikeController;
+			if (actionMethodName.equals("doLike")) {
+				jspPath = usrlikeController.doLike(request, response);
+			} else if (actionMethodName.equals("doCancelLike")) {
+				jspPath = usrlikeController.doCancelLike(request, response);
+			} else if (actionMethodName.equals("doDislike")) {
+				jspPath = usrlikeController.doDislike(request, response);
+			} else if (actionMethodName.equals("doCancelDislike")) {
+				jspPath = usrlikeController.doCancelDislike(request, response);
+			}
+
+		}
+
+		else if (ControllerName.equals("home")) {
 			UsrHomeController homeController = Container.homeController;
 			if (actionMethodName.equals("main")) {
 				jspPath = homeController.showMain(request, response);
 			}
 		}
+		System.out.println("like__jspPath= " + jspPath);
 		return jspPath;
 	}
 }
