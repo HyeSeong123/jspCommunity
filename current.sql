@@ -98,11 +98,14 @@ CREATE TABLE `like` (
   `relTypeCode` char(20) NOT NULL,
   `relId` int(10) unsigned NOT NULL,
   `memberNum` int(10) unsigned NOT NULL,
-  `point` int(10) DEFAULT NULL,
+  `point` smallint(1) NOT NULL,
   PRIMARY KEY (`likeNum`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `like` */
+
+insert  into `like`(`likeNum`,`regDate`,`updateDate`,`relTypeCode`,`relId`,`memberNum`,`point`) values 
+(22,'2021-02-07 00:00:00','2021-02-07 00:00:00','article',8,1,-1);
 
 /*Table structure for table `member` */
 
@@ -127,6 +130,31 @@ CREATE TABLE `member` (
 
 insert  into `member`(`memberNum`,`regDate`,`updateDate`,`name`,`nickname`,`email`,`loginId`,`loginPw`,`authLevel`,`phNum`) values 
 (1,'2021-01-25 12:44:00','2021-02-02 11:00:00','방혜성','baobab612','banggu1997@gmail.com','baobab612','8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414',2,'010-8370-0420');
+
+/*Table structure for table `reply` */
+
+DROP TABLE IF EXISTS `reply`;
+
+CREATE TABLE `reply` (
+  `replyNum` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `regDate` datetime NOT NULL,
+  `updateDate` datetime NOT NULL,
+  `relTypeCode` char(20) NOT NULL,
+  `relId` int(10) unsigned NOT NULL,
+  `memberNum` int(10) unsigned NOT NULL,
+  `body` text NOT NULL,
+  PRIMARY KEY (`replyNum`),
+  KEY `relTypeCode` (`relTypeCode`,`relId`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `reply` */
+
+insert  into `reply`(`replyNum`,`regDate`,`updateDate`,`relTypeCode`,`relId`,`memberNum`,`body`) values 
+(13,'2021-02-09 00:00:00','2021-02-09 00:00:00','article',5,1,'asdads'),
+(14,'2021-02-09 00:00:00','2021-02-09 00:00:00','article',5,1,'asdda'),
+(15,'2021-02-09 00:00:00','2021-02-09 00:00:00','article',5,1,'asddasd'),
+(16,'2021-02-09 00:00:00','2021-02-09 00:00:00','article',5,1,'asdd'),
+(17,'2021-02-09 00:00:00','2021-02-09 00:00:00','article',5,1,'asdsad');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

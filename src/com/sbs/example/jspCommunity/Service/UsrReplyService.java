@@ -3,18 +3,18 @@ package com.sbs.example.jspCommunity.Service;
 import java.util.Map;
 
 import com.sbs.example.jspCommunity.Container.Container;
-import com.sbs.example.jspCommunity.Dao.UsrReplyDao;
+import com.sbs.example.jspCommunity.Dao.ReplyDao;
 
 public class UsrReplyService {
 
-	UsrReplyDao usrReplyDao;
+	ReplyDao replyDao;
 
 	public UsrReplyService() {
-		usrReplyDao = Container.usrReplyDao;
+		replyDao = Container.replyDao;
 	}
 
 	public int write(Map<String, Object> writeArgs) {
-		return usrReplyDao.write(writeArgs);
+		return replyDao.write(writeArgs);
 	}
 
 }

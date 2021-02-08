@@ -267,4 +267,21 @@ public class ArticleDao {
 		return MysqlUtil.insert(sql);
 	}
 
+	public Article getArticleById(int relId) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT A.*");
+		sql.append("FROM article as A");
+		sql.append("WHERE A.num = ? ",relId);
+		
+		Map<String,Object> map = MysqlUtil.selectRow(sql);
+		
+		if(map.isEmpty()) {
+			return null;
+		}
+		
+		return new Article(map);
+	}
+	
+	
 }

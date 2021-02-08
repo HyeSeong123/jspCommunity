@@ -28,7 +28,7 @@ public class UsrReplyController extends Controller {
 
 		int loginedMemberId = (int) request.getAttribute("loginedMemberNum");
 
-		String relTypeCode = request.getParameter("redirectUrl");
+		String relTypeCode = request.getParameter("relTypeCode");
 
 		if (relTypeCode == null) {
 			return msgAndBack(request, "관련데이터코드를 입력해주세요");
@@ -41,30 +41,31 @@ public class UsrReplyController extends Controller {
 		}
 
 		if (relTypeCode.equals("article")) {
-			Article article = articleService.getForPrintArticle(relId);
-
+			Article article = articleService.getArticleById(relId);
+			System.out.println(article);
 			if (article == null) {
 				return msgAndBack(request, relId + "번 게시물은 존재하지 않습니다.");
 			}
 		}
 
 		String body = request.getParameter("body");
-
+		System.out.println("body= " +body);
+		
 		if (Util.isEmpty(body)) {
 			return msgAndBack(request, "내용을 입력해주세요");
 		}
 
 		Map<String, Object> writeArgs = new HashMap<>();
-		writeArgs.put("loginedMemberId", loginedMemberId);
+		writeArgs.put("memberNum", loginedMemberId);
 		writeArgs.put("relId", relId);
 		writeArgs.put("relTypeCode", relTypeCode);
 		writeArgs.put("body", body);
-
+		
 		int newArticleNum = usrReplyService.write(writeArgs);
 
 		redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", newArticleNum + "");
 		
-		return msgAndReplace(request, newArticleNum + "번 댓글이 작성되었습니다..", request.getParameter("redirectUrl"));
+		return msgAndReplace(request, newArticleNum + "번 댓글이 작성되었습니다..", redirectUrl);
 	}
 
 	public String doModifyReply(HttpServletRequest request, HttpServletResponse response) {

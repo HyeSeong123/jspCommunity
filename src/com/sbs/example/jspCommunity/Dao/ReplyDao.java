@@ -5,7 +5,7 @@ import java.util.Map;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 import com.sbs.example.jspCommunity.Util.SecSql;
 
-public class UsrReplyDao {
+public class ReplyDao {
 
 	public int write(Map<String, Object> writeArgs) {
 		SecSql sql = new SecSql();
@@ -15,7 +15,7 @@ public class UsrReplyDao {
 		sql.append(", updateDate = DATE(NOW())");
 		sql.append(", relTypeCode = ?", writeArgs.get("relTypeCode"));
 		sql.append(", relId = ?", writeArgs.get("relId"));
-		sql.append(", memberNum = ?", writeArgs.get("actorId"));
+		sql.append(", memberNum = ?", writeArgs.get("memberNum"));
 		sql.append(", body = ?", writeArgs.get("body"));
 
 		return MysqlUtil.insert(sql);

@@ -10,7 +10,7 @@ import com.sbs.example.jspCommunity.Dao.ArticleDao;
 import com.sbs.example.jspCommunity.Dao.AttrDao;
 import com.sbs.example.jspCommunity.Dao.LikeDao;
 import com.sbs.example.jspCommunity.Dao.MemberDao;
-import com.sbs.example.jspCommunity.Dao.UsrReplyDao;
+import com.sbs.example.jspCommunity.Dao.ReplyDao;
 import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Service.EmailService;
@@ -41,11 +41,11 @@ public class Container {
 	
 	public static UsrReplyController usrReplyController;
 	public static UsrReplyService usrReplyService;
-	public static UsrReplyDao usrReplyDao;
+	public static ReplyDao replyDao;
 	static {
 		attrDao = new AttrDao();
 		likeDao = new LikeDao();
-		usrReplyDao = new UsrReplyDao();
+		replyDao = new ReplyDao();
 		memberDao = new MemberDao();
 		articleDao = new ArticleDao();
 

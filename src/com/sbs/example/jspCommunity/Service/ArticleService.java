@@ -80,4 +80,8 @@ public class ArticleService {
 	public int doArticleUnLike(int loginId, int articleNum) {
 		return articleDao.doArticleUnLike(loginId, articleNum);
 	}
+
+	public Article getArticleById(int relId) {
+		return articleDao.getArticleById(relId);
+	}
 }
