@@ -1045,6 +1045,27 @@ ul.news-list {
 	color : red;
 }
 /* 게시물 화면 끝 */
+
+/* 게시물 상세화면 시작 */
+.detail__like-unLike > a{
+	margin : 0 20px;
+	font-size : 30px;
+}
+@media (max-width: 880px) {
+	.detail__like-unLike > a{
+	font-size : 15px;
+	}
+	.toast-ui-viewer h1{
+	font-size : 19px;
+	}
+}
+/* 게시물 상세화면 끝 */
+
+/* 댓글 화면 시작 */
+.detail__reply_write_box{
+	margin-bottom: 20px;
+}
+/* 댓글 화면 끝 */
 /* 상단 바 애니메이션 시작 */
 .menu-trigger span.type11:nth-of-type(1) {
   -webkit-animation : menu-bar11-01 .5s forwards;
@@ -1211,10 +1232,3 @@ ul.news-list {
   }
 }
 /* 상단 바 애니메이션 끝 */
-
-/* 게시물 상세화면 시작 */
-.detail__like-unLike > a{
-	margin : 0 20px;
-	font-size : 30px;
-}
-/* 게시물 상세화면 끝 */

@@ -80,10 +80,16 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 			} else if (actionMethodName.equals("doCancelDislike")) {
 				jspPath = usrlikeController.doCancelDislike(request, response);
 			}
-
-		}
-
-		else if (ControllerName.equals("home")) {
+		} else if (ControllerName.equals("reply")) {
+			UsrReplyController usrReplyController = Container.usrReplyController;
+			if (actionMethodName.equals("doWriteReply")) {
+				jspPath = usrReplyController.doWriteReply(request, response);
+			} else if (actionMethodName.equals("doModifyReply")) {
+				jspPath = usrReplyController.doModifyReply(request, response);
+			} else if (actionMethodName.equals("doDeleteReply")) {
+				jspPath = usrReplyController.doDeleteReply(request, response);
+			}
+		} else if (ControllerName.equals("home")) {
 			UsrHomeController homeController = Container.homeController;
 			if (actionMethodName.equals("main")) {
 				jspPath = homeController.showMain(request, response);

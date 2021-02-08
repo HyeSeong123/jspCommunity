@@ -92,18 +92,8 @@
 						alert('처리중입니다.');
 						return;
 					}
-					form.title.value = form.title.value.trim();
-
-					if (form.title.value.length == 0) {
-						alert('제목을 입력해주세요.');
-						form.title.focus();
-
-						return;
-					}
-					const editor = $(form).find('.toast-ui-editor').data(
-							'data-toast-editor');
+					const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
 					const body = editor.getMarkDown().trim();
-
 					if (body.length == 0) {
 						alert('내용을 입력해주세요.');
 						editor.focus();
@@ -117,6 +107,16 @@
 					DoWriteReplyForm__submited = true;
 				}
 			</script>
+			<form class="con" action="../reply/doWriteReply" method="POST" onsubmit="DoWriteReplyForm__submit(this); return false;" >
+			<input type="hidden" name="articleNum" value="${article.num}">
+			<input type="hidden" name="body">
+			
+			<div class="detail__reply_body">
+				<script type="text/x-template">${article.body}</script>
+				<div class="toast-ui-editor" data-height=200></div>
+			</div>
+			</form>
+			
 		</section>
 		<a href="modify?num=${article.num}">글 수정하기</a>
 		<a href="list?boardNum=${article.boardNum}">목록으로 이동</a>
