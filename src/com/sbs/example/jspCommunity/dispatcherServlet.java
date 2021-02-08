@@ -38,12 +38,8 @@ public abstract class dispatcherServlet extends HttpServlet {
 		if (doBeforeActionRs == null) {
 			return;
 		}
-		System.out.println("doBeforeActionRs(ControllerName)= " + doBeforeActionRs.get("ControllerName"));
-		System.out.println("doBeforeActionRs(actionMethodName)= " + doBeforeActionRs.get("actionMethodName"));
 		
 		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("ControllerName"), (String) doBeforeActionRs.get("actionMethodName"));
-
-		System.out.println("jspPath= " + jspPath);
 
 		if (jspPath == null) {
 			response.getWriter().append("jsp 정보가 없습니다.");
@@ -120,8 +116,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 		}
 
 		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
-
-		System.out.println("encodedCurrentUrl = " + encodedCurrentUrl);
+		
 		request.setAttribute("currentUrl", currentUrl);
 		request.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
 
@@ -179,7 +174,6 @@ public abstract class dispatcherServlet extends HttpServlet {
 		Map<String, Object> rs = new HashMap<>();
 		rs.put("ControllerName", controllerName);
 		rs.put("actionMethodName", actionMethodName);
-		System.out.println("rs= " + rs);
 		return rs;
 	}
 
@@ -191,7 +185,6 @@ public abstract class dispatcherServlet extends HttpServlet {
 		MysqlUtil.closeConnection();
 
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
-		System.out.println("rd= " + rd);
 		rd.forward(request, response);
 	}
 }

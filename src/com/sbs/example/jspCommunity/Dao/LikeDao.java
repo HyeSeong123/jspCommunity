@@ -14,7 +14,6 @@ public class LikeDao {
 		sql.append("AND L.relId = ?", relId);
 		sql.append("AND L.memberNum = ?", memberId);
 
-		System.out.println("dislike= " + sql);
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 

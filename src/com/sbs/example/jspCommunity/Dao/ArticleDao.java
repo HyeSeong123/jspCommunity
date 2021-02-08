@@ -23,7 +23,7 @@ public class ArticleDao {
 		sql.append(", B.code AS extra__boardCode");
 		sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
 		sql.append(", IFNULL(SUM(IF(L.point > 0, L.point, 0)), 0) AS extra__likeOnlyPoint");
-		sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__dislikeOnlyPoint");
+		sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__disLikeOnlyPoint");
 		sql.append("FROM article as A");
 		sql.append("INNER JOIN `member` AS M");
 		sql.append("ON A.memberNum = M.memberNum");
@@ -67,15 +67,15 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 		sql.append("SELECT A.*");
-		sql.append(", M.name AS extra__writer\r");
-		sql.append(", B.name AS extra__boardName\r");
-		sql.append(", B.code AS extra__boardCode\r");
+		sql.append(", M.name AS extra__writer");
+		sql.append(", B.name AS extra__boardName");
+		sql.append(", B.code AS extra__boardCode");
 		sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
 		sql.append(", IFNULL(SUM(IF(L.point > 0, L.point, 0)), 0) AS extra__likeOnlyPoint");
-		sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__dislikeOnlyPoint");
-		sql.append("FROM article as A\r");
-		sql.append("INNER JOIN `member` AS M\r");
-		sql.append("ON A.memberNum = M.memberNum\r");
+		sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__disLikeOnlyPoint");
+		sql.append("FROM article as A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberNum = M.memberNum");
 		sql.append("INNER JOIN `board` AS B\r");
 		sql.append("ON A.boardNum = B.boardNum");
 		sql.append("LEFT JOIN `like` AS L");
@@ -85,7 +85,6 @@ public class ArticleDao {
 		sql.append("GROUP BY A.num");
 
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
-
 		if (articleMap.isEmpty()) {
 			return null;
 		}

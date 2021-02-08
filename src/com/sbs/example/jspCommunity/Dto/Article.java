@@ -17,7 +17,7 @@ public class Article {
 	private int hitsCount;
 
 	private Map<String, Object> extra;
-	
+
 	private String extra__writer;
 	private String extra__boardName;
 	private String extra__boardCode;
@@ -34,7 +34,7 @@ public class Article {
 		this.setTitle((String) map.get("title"));
 		this.setBody((String) map.get("body"));
 		this.setHitsCount((int) map.get("hitsCount"));
-		
+
 		if (map.containsKey("extra__writer")) {
 			this.extra__writer = (String) map.get("extra__writer");
 		}
