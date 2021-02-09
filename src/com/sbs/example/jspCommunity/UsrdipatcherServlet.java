@@ -95,7 +95,6 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = homeController.showMain(request, response);
 			}
 		}
-		System.out.println("like__jspPath= " + jspPath);
 		return jspPath;
 	}
 }

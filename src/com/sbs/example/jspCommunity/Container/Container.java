@@ -16,7 +16,7 @@ import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Service.EmailService;
 import com.sbs.example.jspCommunity.Service.LikeService;
 import com.sbs.example.jspCommunity.Service.MemberService;
-import com.sbs.example.jspCommunity.Service.UsrReplyService;
+import com.sbs.example.jspCommunity.Service.ReplyService;
 
 public class Container {
 
@@ -40,7 +40,7 @@ public class Container {
 	public static UsrLikeController usrLikeController;
 	
 	public static UsrReplyController usrReplyController;
-	public static UsrReplyService usrReplyService;
+	public static ReplyService replyService;
 	public static ReplyDao replyDao;
 	static {
 		attrDao = new AttrDao();
@@ -51,7 +51,7 @@ public class Container {
 
 		attrService = new AttrService();
 		likeService = new LikeService();
-		usrReplyService = new UsrReplyService();
+		replyService = new ReplyService();
 		emailService = new EmailService();
 		memberService = new MemberService();
 		articleService = new ArticleService();

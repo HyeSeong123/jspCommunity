@@ -10,16 +10,16 @@ import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Controller.Controller;
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Service.ArticleService;
-import com.sbs.example.jspCommunity.Service.UsrReplyService;
+import com.sbs.example.jspCommunity.Service.ReplyService;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class UsrReplyController extends Controller {
 
-	private UsrReplyService usrReplyService;
+	private ReplyService replyService;
 	private ArticleService articleService;
 
 	public UsrReplyController() {
-		usrReplyService = Container.usrReplyService;
+		replyService = Container.replyService;
 		articleService = Container.articleService;
 	}
 
@@ -61,7 +61,7 @@ public class UsrReplyController extends Controller {
 		writeArgs.put("relTypeCode", relTypeCode);
 		writeArgs.put("body", body);
 		
-		int newArticleNum = usrReplyService.write(writeArgs);
+		int newArticleNum = replyService.write(writeArgs);
 
 		redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", newArticleNum + "");
 		

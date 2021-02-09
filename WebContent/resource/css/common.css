@@ -1065,6 +1065,9 @@ ul.news-list {
 .detail__reply_write_box{
 	margin-bottom: 20px;
 }
+.button_write{
+	margin-top : 10px;
+}
 /* 댓글 화면 끝 */
 /* 상단 바 애니메이션 시작 */
 .menu-trigger span.type11:nth-of-type(1) {

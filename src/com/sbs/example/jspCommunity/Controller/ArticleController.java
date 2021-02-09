@@ -11,9 +11,11 @@ import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
 import com.sbs.example.jspCommunity.Dto.Member;
+import com.sbs.example.jspCommunity.Dto.Reply;
 import com.sbs.example.jspCommunity.Service.ArticleService;
 import com.sbs.example.jspCommunity.Service.AttrService;
 import com.sbs.example.jspCommunity.Service.MemberService;
+import com.sbs.example.jspCommunity.Service.ReplyService;
 import com.sbs.example.jspCommunity.Util.Util;
 
 public class ArticleController extends Controller {
@@ -21,9 +23,11 @@ public class ArticleController extends Controller {
 	private ArticleService articleService;
 	private AttrService attrService;
 	private MemberService memberService;
+	private ReplyService replyService;
 
 	public ArticleController() {
 		attrService = Container.attrService;
+		replyService = Container.replyService;
 		articleService = Container.articleService;
 		memberService = Container.memberService;
 	}
@@ -93,8 +97,15 @@ public class ArticleController extends Controller {
 		if (article == null) {
 			return msgAndBack(request, num + "번 게시물은 존재하지 않습니다.");
 		}
-		
+
 		request.setAttribute("article", article);
+
+		List<Reply> replies = replyService.getForPrintReplies("article", article.getNum());
+		
+		System.out.println(replies);
+		
+		request.setAttribute("replies", replies);
+
 		return "usr/article/detail";
 	}
 
