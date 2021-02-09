@@ -39,7 +39,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 			return;
 		}
 		
-		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("ControllerName"), (String) doBeforeActionRs.get("actionMethodName"));
+		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("controllerName"), (String) doBeforeActionRs.get("actionMethodName"));
 
 		if (jspPath == null) {
 			response.getWriter().append("jsp 정보가 없습니다.");
@@ -53,7 +53,9 @@ public abstract class dispatcherServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
-
+		
+		String profilesActive = System.getProperty("spring.profiles.active");
+		
 		String requestUri = request.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
 
@@ -64,10 +66,11 @@ public abstract class dispatcherServlet extends HttpServlet {
 		}
 
 		if (requestUriBits.length < minBitsCount) {
-			response.getWriter().append("올바른 요청이 아닙니다.");
+			response.getWriter().append("올바른 요청이 아닙니다. <br/>");
+			response.getWriter().append("minBitsCount= " + minBitsCount);
+			response.getWriter().append("profilesActive= " + profilesActive);
 			return null;
 		}
-
 		if (App.isProductMode()) {
 			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunityReal");
 		} else {
@@ -144,7 +147,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 				request.setAttribute("alertMsg", "로그인 후 이용해주세요.");
 				request.setAttribute("replaceUrl", "../member/login?afterLoginUrl=" + encodedCurrentUrl);
 
-				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher(getJspDirPath() + "/common/redirect.jsp");
 				rd.forward(request, response);
 			}
 		}
@@ -164,7 +167,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 				request.setAttribute("alertMsg", "로그아웃 후 이용해주세요.");
 				request.setAttribute("historyBack", true);
 
-				RequestDispatcher rd = request.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher(getJspDirPath() + "/common/redirect.jsp");
 				rd.forward(request, response);
 			}
 		}
@@ -172,7 +175,7 @@ public abstract class dispatcherServlet extends HttpServlet {
 		// 로그인 필요 필터링 인터셉터 끝
 
 		Map<String, Object> rs = new HashMap<>();
-		rs.put("ControllerName", controllerName);
+		rs.put("controllerName", controllerName);
 		rs.put("actionMethodName", actionMethodName);
 		return rs;
 	}
@@ -184,7 +187,10 @@ public abstract class dispatcherServlet extends HttpServlet {
 			throws ServletException, IOException {
 		MysqlUtil.closeConnection();
 
-		RequestDispatcher rd = request.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+		RequestDispatcher rd = request.getRequestDispatcher( getJspDirPath() + "/" + jspPath + ".jsp");
 		rd.forward(request, response);
+	}
+	private String getJspDirPath() {
+		return "/WEB-INF/jsp";
 	}
 }

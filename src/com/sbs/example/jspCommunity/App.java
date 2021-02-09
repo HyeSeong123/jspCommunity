@@ -37,7 +37,7 @@ public class App {
 	public static String getAppUrl() {
 		String appUrl = getSiteProtocol() + "://" + getSiteDomain();
 
-		if (getSitePort() != 8083 && getSitePort() != 443) {
+		if (getSitePort() != 80 && getSitePort() != 443) {
 			appUrl += ":" + getSitePort();
 		}
 
