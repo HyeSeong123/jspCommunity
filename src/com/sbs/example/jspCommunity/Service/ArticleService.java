@@ -84,4 +84,8 @@ public class ArticleService {
 	public Article getArticleById(int relId) {
 		return articleDao.getArticleById(relId);
 	}
+
+	public Map<String, Object> getArticleLikeAvailable(int num, int loginedMemberNum) {
+		return articleDao.getArticleLikeAvailable(num,loginedMemberNum);
+	}
 }

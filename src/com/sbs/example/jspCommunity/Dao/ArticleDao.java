@@ -1,12 +1,14 @@
+
 package com.sbs.example.jspCommunity.Dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
-import com.sbs.example.jspCommunity.Dto.like;
+import com.sbs.example.jspCommunity.Dto.Like;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 import com.sbs.example.jspCommunity.Util.SecSql;
 
@@ -68,6 +70,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("SELECT A.*");
 		sql.append(", M.name AS extra__writer");
+		sql.append(", REPLACE(A.regDate,'00:00:00','')");
 		sql.append(", B.name AS extra__boardName");
 		sql.append(", B.code AS extra__boardCode");
 		sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
@@ -112,12 +115,13 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO article");
-		sql.append("SET regDate = NOW(),");
-		sql.append("updateDate = NOW(),");
+		sql.append("SET regDate = DATE(NOW()),");
+		sql.append("updateDate = DATE(NOW()),");
 		sql.append("boardNum = ?,", writeArgs.get("boardNum"));
 		sql.append("memberNum = ?,", writeArgs.get("memberNum"));
 		sql.append("title = ?,", writeArgs.get("title"));
 		sql.append("body = ?", writeArgs.get("body"));
+		
 		return MysqlUtil.insert(sql);
 	}
 
@@ -182,7 +186,7 @@ public class ArticleDao {
 	public int doArticleLike(int loginId, int articleNum) {
 		SecSql sql = new SecSql();
 
-		like like = dupLike(loginId, "article_like", articleNum);
+		Like like = dupLike(loginId, "article_like", articleNum);
 
 		if (like != null) {
 			sql.append("DELETE FROM `like`");
@@ -207,7 +211,7 @@ public class ArticleDao {
 		return MysqlUtil.insert(sql);
 	}
 
-	public like dupLike(int loginId, String relTypeCode, int relId) {
+	public Like dupLike(int loginId, String relTypeCode, int relId) {
 		SecSql sql = new SecSql();
 
 		sql.append("SELECT * FROM `like`");
@@ -221,7 +225,7 @@ public class ArticleDao {
 		if (likeMap.isEmpty()) {
 			return null;
 		}
-		return new like(likeMap);
+		return new Like(likeMap);
 	}
 
 	public void articleAddObject(int loginId, String relTypeCode, int status) {
@@ -242,7 +246,7 @@ public class ArticleDao {
 	public int doArticleUnLike(int loginId, int articleNum) {
 		SecSql sql = new SecSql();
 
-		like like = dupLike(loginId, "article_unlike", articleNum);
+		Like like = dupLike(loginId, "article_unlike", articleNum);
 
 		if (like != null) {
 			sql.append("DELETE FROM `like`");
@@ -281,6 +285,28 @@ public class ArticleDao {
 		}
 		
 		return new Article(map);
+	}
+
+	public Map<String, Object> getArticleLikeAvailable(int num, int loginedMemberNum) {
+		Article article = getForPrintArticle(num);
+		
+		Map<String, Object> rs = new HashMap<>();
+		
+		/*
+		if(article.getMemberNum() == loginedMemberNum) {
+			rs.put("resultCode", "F-1");
+			rs.put("msg", "본인은 추천 할 수 없습니다.");
+			
+			return rs;
+		}
+		*/
+		
+
+		
+		rs.put("resultCode", "S-1");
+		rs.put("msg", "성공");
+		
+		return rs;
 	}
 	
 	

@@ -5,7 +5,7 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class like {
+public class Like {
 
 	private int likeNum;
 	private String regDate;
@@ -15,7 +15,7 @@ public class like {
 	private int memberNum;
 	private int point;
 
-	public like(Map<String, Object> map) {
+	public Like(Map<String, Object> map) {
 		this.setLikeNum((int) map.get("likeNum"));
 		this.setRegDate((String) map.get("regDate"));
 		this.setUpdateDate((String) map.get("updateDate"));

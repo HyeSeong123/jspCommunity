@@ -48,11 +48,11 @@
 				onsubmit="DoLoginForm__submit(this); return false;">
 				<input type="hidden" name="loginPwReal" />
 				<input type="hidden" name="afterLoginUrl" value="${param.afterLoginUrl}"/>
-				<div class="">
+				<div class="form__input1">
 					<input type="text" name="loginId" placeholder="아이디 입력" />
 				</div>
 
-				<div class="">
+				<div class="form__input2"> 
 					<input type="password" name="loginPw" placeholder="비밀번호 입력" />
 				</div>
 					<div class="submit-cover button_base b07_3d_double_roll">

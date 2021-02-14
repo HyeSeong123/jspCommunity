@@ -46,12 +46,12 @@
 				<input type="hidden" name="" />
 				
 				
-				<div class="findLoginId__name">
+				<div class="findLoginId__name form__input1">
 					<input type="text" name="name" placeholder="이름을 입력해주세요" />
 				</div>
 
-				<div class="findLoginId__email">
-					<input type="email" name="email" placeholder="가입시 입력한이메일을 입력해주세요" />
+				<div class="findLoginId__email form__input2">
+					<input type="email" name="email" placeholder="이메일을 입력해주세요" />
 				</div>
 				
 				<div class="findLoginId__buttons">

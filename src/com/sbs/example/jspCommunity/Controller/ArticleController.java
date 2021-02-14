@@ -101,9 +101,7 @@ public class ArticleController extends Controller {
 		request.setAttribute("article", article);
 
 		List<Reply> replies = replyService.getForPrintReplies("article", article.getNum());
-		
-		System.out.println(replies);
-		
+
 		request.setAttribute("replies", replies);
 
 		return "usr/article/detail";
@@ -133,6 +131,7 @@ public class ArticleController extends Controller {
 			return msgAndBack(request, "제목을 입력해주세요.");
 		}
 		String body = request.getParameter("body");
+
 		if (Util.isEmpty(body)) {
 			return msgAndBack(request, "내용을 입력해주세요.");
 		}
@@ -145,7 +144,7 @@ public class ArticleController extends Controller {
 
 		int newArticleNum = articleService.doWrite(writeArgs);
 
-		return msgAndBack(request, newArticleNum + "번 게시물이 생성되었습니다.");
+		return msgAndReplace(request, newArticleNum + "번 게시물이 생성되었습니다.", String.format("detail?num=%d", newArticleNum));
 	}
 
 	public String showModify(HttpServletRequest request, HttpServletResponse response) {

@@ -1,5 +1,8 @@
 package com.sbs.example.jspCommunity.Dao;
 
+import java.util.Map;
+
+import com.sbs.example.jspCommunity.Dto.Like;
 import com.sbs.example.jspCommunity.Util.MysqlUtil;
 import com.sbs.example.jspCommunity.Util.SecSql;
 
@@ -42,5 +45,21 @@ public class LikeDao {
 
 		return MysqlUtil.delete(sql);
 	}
-
+	
+	public Like likeforPrint(int actorNum) {
+		
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT *");
+		sql.append("FROM `like`");
+		sql.append("WHERE memberNum = ?", actorNum);
+		
+		Map<String,Object> likeMap = MysqlUtil.selectRow(sql);
+		
+		if (likeMap.isEmpty()) {
+			return null;
+		}
+		System.out.println("likeMap=" + likeMap);
+		return new Like(likeMap);
+	}
 }

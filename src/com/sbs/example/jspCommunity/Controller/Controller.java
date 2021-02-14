@@ -17,6 +17,7 @@ public class Controller {
 	}
 	protected String json(HttpServletRequest request , ResultData resultData) {
 		request.setAttribute("data", resultData);
+		System.out.println("resultData= " + resultData);
 		return "common/json";
 	}
 }

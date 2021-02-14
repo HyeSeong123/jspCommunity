@@ -58,7 +58,7 @@
 					btnLoginIdDupCheck.focus();
 					return false;
 				}
-				
+
 				form.loginPw.value = form.loginPw.value.trim();
 
 				if (form.loginPw.value.length == 0) {

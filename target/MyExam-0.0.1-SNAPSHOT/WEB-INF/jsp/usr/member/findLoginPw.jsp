@@ -45,12 +45,12 @@
 				
 				<input type="hidden" name="" />
 				
-				<div class="input__findLogin-form findLogin_input input_opt1">
+				<div class="input__findLogin-form form__input1">
 					<input type="text" name="loginId" placeholder="아이디를 입력해주세요" />
 				</div>
 
-				<div class="input__findLoginEmail-form findLogin_input input_opt1">
-					<input type="email" name="email" placeholder="회원님의 이메일주소를 입력해주세요" />
+				<div class="input__findLoginEmail-form form__input2">
+					<input type="email" name="email" placeholder="이메일주소를 입력해주세요" />
 				</div>
 				<div class="findLogin__buttons">
 					<div class="findLoginId__submit">

@@ -28,6 +28,7 @@ public class Util {
 	public static String getJsonText(Object obj) {
 		ObjectMapper mapper = new ObjectMapper();
 		String rs = "";
+		System.out.println("obj= " + obj);
 		try {
 			rs = mapper.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {

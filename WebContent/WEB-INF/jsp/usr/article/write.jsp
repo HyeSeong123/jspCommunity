@@ -10,6 +10,7 @@
 	<h2>${pageTitle}게시물추가</h2>
 
 	<div>
+	
 		<script>
 			let DoWriteForm__submited = false;
 			let DoWriteForm__checkedLoingId = "";
@@ -27,8 +28,9 @@
 
 					return;
 				}
+				
 				const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
-				const body = editor.getMarkDown().trim();
+				const body = editor.getMarkdown().trim();
 
 				if (body.length == 0) {
 					alert('내용을 입력해주세요.');
@@ -43,8 +45,9 @@
 				DoWriteForm__submited = true;
 			}
 		</script>
+		
 		<form action="doWrite" method="POST" onsubmit="DoWriteForm_submit(this); return false;">
-			<input type="hidden" name="memberNum" value="${sessionScope.loginMemberId}">
+			<input type="hidden" name="loginedMemberNum" value="${loginedMemberNum}">
 			<input type="hidden" name="boardNum" value="${board.boardNum}">
 			<input type="hidden" name="body" />
 			<input type="text" name="title" placeholder="제목을 입력해주세요">

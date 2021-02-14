@@ -91,7 +91,6 @@ public abstract class dispatcherServlet extends HttpServlet {
 		String controllerTypeName = requestUriBits[controllerTypeNameIndex];
 		String controllerName = requestUriBits[controllerNameIndex];
 		String actionMethodName = requestUriBits[actionMethodNameIndex];
-
 		String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodName;
 
 		// 데이터 추가 인터셉터 끝

@@ -3,6 +3,7 @@ package com.sbs.example.jspCommunity.Service;
 import com.sbs.example.jspCommunity.Container.Container;
 import com.sbs.example.jspCommunity.Dao.LikeDao;
 import com.sbs.example.jspCommunity.Dto.Article;
+import com.sbs.example.jspCommunity.Dto.Like;
 import com.sbs.example.jspCommunity.Dto.Member;
 
 public class LikeService {
@@ -13,15 +14,16 @@ public class LikeService {
 		likeDao = Container.likeDao;
 	}
 
-	public void setLikePoint(String relTypeCode, int relId, int actorId, int point) {
+	public int setLikePoint(String relTypeCode, int relId, int actorId, int point) {
 		if (point == 0) {
-			likeDao.removePoint(relTypeCode, relId, actorId);
+			return likeDao.removePoint(relTypeCode, relId, actorId);
 		} else {
-			likeDao.setLikePoint(relTypeCode, relId, actorId, point);
+			return likeDao.setLikePoint(relTypeCode, relId, actorId, point);
 		}
-
 	}
-
+	public int getPoint(String relTypeCode, int relId, int actorNum) {
+		return likeDao.getPoint(relTypeCode, relId, actorNum);
+	}
 	public boolean actorCanLike(Article article, Member actor) {
 		return likeDao.getPoint("article", article.getNum(), actor.getMemberNum()) == 0;
 	}
@@ -36,5 +38,8 @@ public class LikeService {
 
 	public boolean actorCanCancelDislike(Article article, Member actor) {
 		return likeDao.getPoint("article", article.getNum(), actor.getMemberNum()) < 0;
+	}
+	public Like likeforPrint(int actorNum) {
+		return likeDao.likeforPrint(actorNum);
 	}
 }

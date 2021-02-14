@@ -79,7 +79,9 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = usrlikeController.doDislike(request, response);
 			} else if (actionMethodName.equals("doCancelDislike")) {
 				jspPath = usrlikeController.doCancelDislike(request, response);
-			}
+			}  else if (actionMethodName.equals("getLikeCount")) {
+				jspPath = usrlikeController.getLikeCount(request, response);
+			} 
 		} else if (ControllerName.equals("reply")) {
 			UsrReplyController usrReplyController = Container.usrReplyController;
 			if (actionMethodName.equals("doWriteReply")) {
@@ -95,6 +97,7 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = homeController.showMain(request, response);
 			}
 		}
+		System.out.println("japPath=" + jspPath);
 		return jspPath;
 	}
 }

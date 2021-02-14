@@ -50,7 +50,7 @@
 	</script>
 	<span>수정</span> <br> <br>
 	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
-		<input type="hidden" name="memberNum" value="${sessionScope.loginedMemberId}">
+		<input type="hidden" name="memberNum" value="${loginedMemberNum}">
 		<input type="hidden" name="num" value="${article.num}" />	
 		<input type="hidden" name="body" />
 		

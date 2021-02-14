@@ -85,7 +85,9 @@ public class usrMemberController extends Controller {
 		joinArgs.put("email", email);
 		joinArgs.put("phNum", phNum);
 
-		return msgAndBack(request, loginId + "님의 회원가입을 환영합니다.");
+		memberService.doJoin(joinArgs);
+		
+		return msgAndReplace(request, loginId + "님의 회원가입을 환영합니다.","../home/main");
 	}
 
 	public String showLogin(HttpServletRequest request, HttpServletResponse response) {
@@ -135,7 +137,7 @@ public class usrMemberController extends Controller {
 
 	public String getLoginIdDup(HttpServletRequest request, HttpServletResponse response) {
 		String loginId = request.getParameter("loginId");
-
+		System.out.println("loginId =" + loginId);
 		Member member = memberService.getMemberByLoginId(loginId);
 
 		String resultCode = null;
@@ -144,7 +146,12 @@ public class usrMemberController extends Controller {
 		if (member != null) {
 			resultCode = "F-1";
 			msg = "이미 사용중인 로그인 아이디 입니다.";
-		} else {
+		}
+		else if (loginId.length() == 0) {
+			resultCode = "F-2";
+			msg = "아이디를 입력해주세요.";
+		}
+		else {
 			resultCode = "S-1";
 			msg = "사용 가능한 로그인 아이디 입니다.";
 		}
