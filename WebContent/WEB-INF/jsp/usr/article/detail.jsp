@@ -27,6 +27,7 @@
 						$('.like-point').empty().append(newLikePoint);
 					}
 					const num = ${article.num};
+					
 					function DoLikeForm() {
 						$.post(
 							"../like/getLikeCount",
@@ -35,6 +36,9 @@
 								num
 							},
 							function(data){
+								if(data.resultCode.substr(0,2) == 'F-'){
+									alert(data.msg);
+								} 
 								if(data.resultCode.substr(0,2) == 'S-'){
 									article__updateLikePoint(data.body);
 								}
@@ -42,39 +46,39 @@
 							"json"
 						);
 					}
+					function DoCancleLikeForm() {
+						$.post(
+							"../like/getCancleLikeCount",
+							{
+								"relTypeCode" : "article",
+								num
+							},
+							function(data){
+								if(data.resultCode.substr(0,2) == 'F-'){
+									alert(data.msg);
+								} 
+								if(data.resultCode.substr(0,2) == 'S-'){
+									article__updateLikePoint(data.body);
+								}
+							},
+							"json"
+						);
+					}
+
 				</script>
+					
+					<c:if test="${isLogined}">
+						<a href="#" class="btn btn-like" onclick="DoLikeForm(this); return false;">
+							<i class="fas fa-heart"></i>
+						</a>	
 				
-				<c:if test="${article.extra.actorCanLike}">
-					<a class="btn btn-like" onclick="DoLikeForm(this); return false;" type="button">
-						<i class="far fa-heart"></i>
-					</a>	
 						<span class="like-point"> ${article.extra__likeOnlyPoint} </span>
-
-					<a class="btn btn-unlike"
-						href="../like/doDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`싫어요` 처리 하시겠습니까?') ) return false;"> <span>
-							<i class="fas fa-thumbs-down"></i>
-					</span> <span> ${article.extra__disLikeOnlyPoint} </span>
-					</a>
-				</c:if>
-
-				<c:if test="${article.extra.actorCanCancelLike}">
-					<a class="btn btn-info"
-						href="../like/doCancelLike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`좋아요`를 취소 처리 하시겠습니까?') ) return false;">
-						<span> <i class="fas fa-heart"></i> ${article.extra__likeOnlyPoint}	</span>
-					</a>
-				</c:if>
-
-				<c:if test="${article.extra.actorCanCancelDislike}">
-					<a class="btn btn-info"
-						href="../like/doCancelDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`싫어요`를 취소 처리 하시겠습니까?') ) return false;">
-						<span> <span> <i class="fas fa-slash"></i>
-						</span>
-					</span> <span>싫어요 취소</span>
-					</a>
-				</c:if>
+						
+						<a class="btn btn-like like_cancle" href="#" onclick="DoCancleLikeForm(this); return false;">
+							<i class="far fa-heart"></i>
+						</a>
+					</c:if>
+ 					
 			</div>
 			
 			<div class="detail__article__button flex flex-column flex-jc-c">
@@ -133,7 +137,7 @@
 							DoWriteReplyForm__submited = true;
 						}
 					</script>
-					<form class="con" action="../reply/doWriteReply" method="POST"
+					<form class="con detail__replyBox" action="../reply/doWriteReply" method="POST"
 						onsubmit="DoWriteReplyForm_submit(this); return false;">
 						<input type="hidden" name="redirectUrl" value="${currentUrl}">
 						<input type="hidden" name="relTypeCode" value="article">
@@ -149,26 +153,24 @@
 			</c:if>
 			
 	
-			<section class="detail__reply_list con-min-width">
+			<section class="detail__reply_cover con-min-width">
 				<div class="con">
-					
+					<div class="detail__reply_list_box">
 					<c:forEach items="${replies}" var = "reply">
-						<span>${reply.regDate}</span>
-						<span>${reply.extra__writer}</span>
-						<c:if test="${article.extra.actorCanLike}">
-							<span>${reply.extra__likeOnlyPoint}</span>
-							<span>${reply.extra__dislikeOnlyPoint}</span>
-						</c:if>
-						<div class="detail__reply_body-list">
-							<script type="text/x-template">${reply.body}</script>
-							<div class="toast-ui-viewer"></div>
-						</div>
+							<div class="detail__reply_list">
+							<span class="reply_list_in reply_list__writer">${reply.extra__writer}</span>
+							<span class="reply_list_in reply_list__body">${reply.body}</span>
+							<span class="reply_list_in reply_list__updateDate">${reply.updateDate}</span>
+							</div>
 					</c:forEach>
+					</div>
 				</div>
 			</section>
 		</section>
-	</section>
-		<a href="list?boardNum=${article.boardNum}">목록</a>
-		<button type="button" onclick="history.back()">뒤로가기</button>
+	
+		<div>
+			<a href="list?boardNum=${article.boardNum}">목록</a>
+			<button type="button" onclick="history.back()">뒤로가기</button>
+		</div>
 	</div>
 	<%@ include file="../../part/foot.jspf"%>

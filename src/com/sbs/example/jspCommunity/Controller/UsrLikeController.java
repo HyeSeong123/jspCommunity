@@ -47,51 +47,6 @@ public class UsrLikeController extends Controller {
 		return msgAndReplace(request, "좋아요 처리되었습니다.", request.getParameter("redirectUrl"));
 	}
 
-	public String getLikeCount(HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> rs = new HashMap<>();
-
-		int num = Util.getAsInt(request.getParameter("num"), 0);
-		int actorId = (int) request.getAttribute("loginedMemberNum");
-
-		Map<String, Object> articleLikeAvailableRs = articleService.getArticleLikeAvailable(num, actorId);
-		String resultCode = "";
-		String msg = "";
-
-		if (((String) articleLikeAvailableRs.get("resultCode")).startsWith("F-")) {
-			resultCode = (String) articleLikeAvailableRs.get("resultCode");
-			msg = (String) articleLikeAvailableRs.get("msg");
-
-			return json(request, new ResultData(resultCode, msg));
-
-		}
-		String relTypeCode = request.getParameter("relTypeCode");
-
-		int relId = Util.getAsInt(request.getParameter("relId"), 0);
-
-		System.out.println("relTypeCode= " + relTypeCode);
-		System.out.println("relId= " + relId);
-
-		Like like = likeService.likeforPrint(actorId);
-		
-		int canLike = 0;
-		
-		if (like == null) {
-			likeService.setLikePoint(relTypeCode, num, actorId, 1);
-			canLike = 1;
-		}
-		
-		request.setAttribute("canLike", canLike);
-		
-		Article article = articleService.getForPrintArticle(num);
-
-		int likePoint = article.getExtra__likeOnlyPoint();
-
-		resultCode = "S-1";
-		msg = "전송";
-
-		return json(request, new ResultData(resultCode, msg, likePoint));
-	}
-
 	public String doCancelLike(HttpServletRequest request, HttpServletResponse response) {
 		String relTypeCode = request.getParameter("relTypeCode");
 
@@ -150,6 +105,86 @@ public class UsrLikeController extends Controller {
 		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
 
 		return msgAndReplace(request, "싫어요가 취소 처리됐습니다.", request.getParameter("redirectUrl"));
+	}
+
+	public String getLikeCount(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> rs = new HashMap<>();
+
+		int num = Util.getAsInt(request.getParameter("num"), 0);
+		int actorId = (int) request.getAttribute("loginedMemberNum");
+
+		Map<String, Object> articleLikeAvailableRs = articleService.getArticleLikeAvailable(num, actorId);
+		String resultCode = "";
+		String msg = "";
+
+		if (((String) articleLikeAvailableRs.get("resultCode")).startsWith("F-")) {
+			resultCode = (String) articleLikeAvailableRs.get("resultCode");
+			msg = (String) articleLikeAvailableRs.get("msg");
+
+			return json(request, new ResultData(resultCode, msg));
+		}
+		String relTypeCode = request.getParameter("relTypeCode");
+
+		int relId = Util.getAsInt(request.getParameter("relId"), 0);
+		
+		int canLike = likeService.CanLikeArticle(relTypeCode, actorId, num);
+
+		if(canLike == 1) {
+			resultCode = "F-2";
+			msg = "이미 좋아요를 누르셨습니다.";
+			return json(request, new ResultData(resultCode, msg));
+		}
+		likeService.setLikePoint(relTypeCode, num, actorId, 1);
+		
+		Article article = articleService.getForPrintArticle(num);
+
+		int likePoint = article.getExtra__likeOnlyPoint();
+
+		resultCode = "S-1";
+		msg = "전송";
+
+		return json(request, new ResultData(resultCode, msg, likePoint));
+	}
+	
+	public String getCancleLikeCount(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> rs = new HashMap<>();
+
+		int num = Util.getAsInt(request.getParameter("num"), 0);
+		int actorId = (int) request.getAttribute("loginedMemberNum");
+
+		Map<String, Object> articleLikeAvailableRs = articleService.getArticleLikeAvailable(num, actorId);
+		String resultCode = "";
+		String msg = "";
+
+		if (((String) articleLikeAvailableRs.get("resultCode")).startsWith("F-")) {
+			resultCode = (String) articleLikeAvailableRs.get("resultCode");
+			msg = (String) articleLikeAvailableRs.get("msg");
+
+			return json(request, new ResultData(resultCode, msg));
+
+		}
+		String relTypeCode = request.getParameter("relTypeCode");
+
+		int relId = Util.getAsInt(request.getParameter("relId"), 0);
+
+		int canLike = likeService.CanLikeArticle(relTypeCode, actorId, num);
+
+		if(canLike == -1) {
+			resultCode = "F-2";
+			msg = "좋아요를 누른 적 없습니다.";
+			return json(request, new ResultData(resultCode, msg));
+		}
+		
+		likeService.setLikePoint(relTypeCode, num, actorId, 0);
+		
+		Article article = articleService.getForPrintArticle(num);
+
+		int likePoint = article.getExtra__likeOnlyPoint();
+
+		resultCode = "S-1";
+		msg = "전송";
+
+		return json(request, new ResultData(resultCode, msg, likePoint));
 	}
 
 }

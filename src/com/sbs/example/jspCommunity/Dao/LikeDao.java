@@ -62,4 +62,23 @@ public class LikeDao {
 		System.out.println("likeMap=" + likeMap);
 		return new Like(likeMap);
 	}
+
+	public int CanLikeArticle(String relTypeCode, int loginedMemberNum, int num) {
+		
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT *");
+		sql.append("FROM `like`");
+		sql.append("WHERE 1");
+		sql.append("AND relTypeCode = ?", relTypeCode);
+		sql.append("AND memberNum = ?", loginedMemberNum);
+		sql.append("AND relId = ? ", num);
+		
+		Map<String,Object> likeMap = MysqlUtil.selectRow(sql);
+		
+		if (likeMap.isEmpty()) {
+			return -1;
+		}
+		return 1;
+	}
 }

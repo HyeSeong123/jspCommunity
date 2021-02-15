@@ -301,8 +301,6 @@ public class ArticleDao {
 		}
 		*/
 		
-
-		
 		rs.put("resultCode", "S-1");
 		rs.put("msg", "성공");
 		

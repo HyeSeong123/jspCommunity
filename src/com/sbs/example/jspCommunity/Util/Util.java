@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -176,5 +177,9 @@ public class Util {
 		}
 
 		return param;
+	}
+
+	public static String getNowDateStr() {
+		return new SimpleDateFormat("yyyy-MM--dd HH:mm:ss").format(new Date());
 	}
 }

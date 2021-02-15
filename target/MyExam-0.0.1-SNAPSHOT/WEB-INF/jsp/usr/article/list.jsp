@@ -8,11 +8,9 @@
 <body>
 
 	<h1>게시판 이름: ${pageTitle}</h1>
-	
-	<a href="../home/main">메인</a>
-	<a href="<c:url value="write?boardNum="/>${param.boardNum}">글 쓰기</a>
-	<br>
-	<br>
+	<div class="list__button">
+		<a class="list__writeArticle" href="<c:url value="write?boardNum="/>${param.boardNum}">글 쓰기</a>
+	</div>
 	<section class="info-list">
 	<ul class="news-list">
 	<c:forEach var="article" items="${articles}">

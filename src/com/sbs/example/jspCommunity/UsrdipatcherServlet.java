@@ -81,6 +81,8 @@ public class UsrdipatcherServlet extends dispatcherServlet {
 				jspPath = usrlikeController.doCancelDislike(request, response);
 			}  else if (actionMethodName.equals("getLikeCount")) {
 				jspPath = usrlikeController.getLikeCount(request, response);
+			}  else if (actionMethodName.equals("getCancleLikeCount")) {
+				jspPath = usrlikeController.getCancleLikeCount(request, response);
 			} 
 		} else if (ControllerName.equals("reply")) {
 			UsrReplyController usrReplyController = Container.usrReplyController;

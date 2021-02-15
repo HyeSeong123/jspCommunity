@@ -38,8 +38,9 @@ public abstract class dispatcherServlet extends HttpServlet {
 		if (doBeforeActionRs == null) {
 			return;
 		}
-		
-		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("controllerName"), (String) doBeforeActionRs.get("actionMethodName"));
+
+		String jspPath = doAction(request, response, (String) doBeforeActionRs.get("controllerName"),
+				(String) doBeforeActionRs.get("actionMethodName"));
 
 		if (jspPath == null) {
 			response.getWriter().append("jsp 정보가 없습니다.");
@@ -53,9 +54,9 @@ public abstract class dispatcherServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
-		
+
 		String profilesActive = System.getProperty("spring.profiles.active");
-		
+
 		String requestUri = request.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
 
@@ -118,10 +119,25 @@ public abstract class dispatcherServlet extends HttpServlet {
 		}
 
 		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
-		
+
 		request.setAttribute("currentUrl", currentUrl);
 		request.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
-
+		
+		String siteName = "휴게소";
+		String subject = "휴게소 모음 사이트";
+		String siteDescription = "휴게소 정보를 모아두는 사이트 입니다..";
+		String siteDomain = "comu.baobab612.com";
+		String siteMainUrl = "https://comu.baobab612.com";
+		String currentDate = Util.getNowDateStr().replace("", "T");
+		
+		
+		
+		request.setAttribute("site-name", siteName);
+		request.setAttribute("site-subject", subject);
+		request.setAttribute("current-date", currentDate);
+		request.setAttribute("site-description", siteDescription);
+		request.setAttribute("site-main-url", siteMainUrl);
+		
 		Map<String, Object> param = Util.getParamMap(request);
 		String paramJson = Util.getJsonText(param);
 
@@ -186,9 +202,10 @@ public abstract class dispatcherServlet extends HttpServlet {
 			throws ServletException, IOException {
 		MysqlUtil.closeConnection();
 
-		RequestDispatcher rd = request.getRequestDispatcher( getJspDirPath() + "/" + jspPath + ".jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(getJspDirPath() + "/" + jspPath + ".jsp");
 		rd.forward(request, response);
 	}
+
 	private String getJspDirPath() {
 		return "/WEB-INF/jsp";
 	}

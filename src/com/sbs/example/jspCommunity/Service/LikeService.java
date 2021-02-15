@@ -27,7 +27,7 @@ public class LikeService {
 	public boolean actorCanLike(Article article, Member actor) {
 		return likeDao.getPoint("article", article.getNum(), actor.getMemberNum()) == 0;
 	}
-
+	
 	public boolean actorCanCancelLike(Article article, Member actor) {
 		return likeDao.getPoint("article", article.getNum(), actor.getMemberNum()) > 0;
 	}
@@ -41,5 +41,9 @@ public class LikeService {
 	}
 	public Like likeforPrint(int actorNum) {
 		return likeDao.likeforPrint(actorNum);
+	}
+
+	public int CanLikeArticle(String relTypeCode, int loginedMemberNum, int num) {
+		return likeDao.CanLikeArticle(relTypeCode,loginedMemberNum,num);
 	}
 }

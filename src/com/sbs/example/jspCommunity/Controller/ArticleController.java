@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.jspCommunity.Container.Container;
+import com.sbs.example.jspCommunity.Service.LikeService;
 import com.sbs.example.jspCommunity.Dto.Article;
 import com.sbs.example.jspCommunity.Dto.Board;
+import com.sbs.example.jspCommunity.Dto.Like;
 import com.sbs.example.jspCommunity.Dto.Member;
 import com.sbs.example.jspCommunity.Dto.Reply;
 import com.sbs.example.jspCommunity.Service.ArticleService;
@@ -20,12 +22,14 @@ import com.sbs.example.jspCommunity.Util.Util;
 
 public class ArticleController extends Controller {
 
-	private ArticleService articleService;
 	private AttrService attrService;
-	private MemberService memberService;
 	private ReplyService replyService;
+	private LikeService likeService;
+	private MemberService memberService;
+	private ArticleService articleService;
 
 	public ArticleController() {
+		likeService = Container.likeService;
 		attrService = Container.attrService;
 		replyService = Container.replyService;
 		articleService = Container.articleService;
@@ -91,15 +95,25 @@ public class ArticleController extends Controller {
 	public String showDetail(HttpServletRequest request, HttpServletResponse response) {
 		int num = Util.getAsInt(request.getParameter("num"), 0);
 		Member loginedMember = (Member) request.getAttribute("loginedMember");
-
+		
+		int loginedMemberNum = 0;
+		
+		if(loginedMember != null) {
+			loginedMemberNum = loginedMember.getMemberNum();
+		}
 		Article article = articleService.getForPrintArticle(num, loginedMember);
 
 		if (article == null) {
 			return msgAndBack(request, num + "번 게시물은 존재하지 않습니다.");
 		}
 
+		int likeCount = likeService.CanLikeArticle("article", loginedMemberNum, num);
+		System.out.println("likeCount= " + likeCount);
+		
 		request.setAttribute("article", article);
-
+		
+		request.setAttribute("likeCount", likeCount);
+		
 		List<Reply> replies = replyService.getForPrintReplies("article", article.getNum());
 
 		request.setAttribute("replies", replies);

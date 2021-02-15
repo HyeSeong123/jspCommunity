@@ -55,5 +55,40 @@ public class ReplyDao {
 		return replies;
 
 	}
+	
+	public List<Reply> getForPrintRepliesCount(String relTypeCode, int relId, int limitStart, int limitCount) {
 
+		List<Reply> replies = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT R.*");
+		sql.append(", M.name AS extra__writer");
+		sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
+		sql.append(", IFNULL(SUM(IF(L.point > 0, L.point, 0)), 0) AS extra__likeOnlyPoint");
+		sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__dislikeOnlyPoint");
+		sql.append("FROM reply AS R");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON R.memberNum = M.memberNum");
+		sql.append("LEFT JOIN `like` AS L");
+		sql.append("ON L.relTypeCode = 'article'");
+		sql.append("AND R.replyNum = L.relId");
+		sql.append("WHERE 1");
+		sql.append("AND R.relTypeCode = ?", relTypeCode);
+		sql.append("AND R.relId = ?", relId);
+		sql.append("GROUP BY R.replyNum");
+		sql.append("ORDER BY R.replyNum DESC");
+
+		if (limitCount != -1) {
+			sql.append("LIMIT ?, ?", limitStart, limitCount);
+		}
+
+		List<Map<String, Object>> mapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> map : mapList) {
+			replies.add(new Reply(map));
+		}
+
+		return replies;
+
+	}
 }

@@ -767,6 +767,15 @@ ul.news-list {
     list-style: none;
     list-style-position: inherit;
 }
+.list__writeArticle{
+	padding : 15px 20px;
+	background-color : brown;
+	color : white;
+	border-radius: 50px;
+}
+.list__button{
+	text-align: right;
+}
 .date,
 .location {
     font-size: 11px;
@@ -1051,10 +1060,6 @@ ul.news-list {
 	margin : 0 20px;
 	font-size : 20px;
 }
-.btn-unlike{
-	margin : 0 20px;
-	font-size : 20px;
-}
 .detail__article-head{
 	height : 120px;
 }
@@ -1154,12 +1159,29 @@ ul.news-list {
 	border : 2px solid #afafaf;
 	border-radius: 7px;
 	margin : 0 20px;
-	
 }
-
 .button_write{
 	margin-top : 10px;
 }
+.detail__replyBox{
+	margin-bottom: 20px;
+}
+.detail__reply_list{
+	border-bottom : 1px solid #eee;
+	height : 50px;
+	line-height: 50px;
+	vertical-align: middle;
+}
+.reply_list_in{
+	display : inline-block;
+}
+.reply_list__writer{
+	width : 100px;
+}
+.reply_list__body{
+	width : 500px;
+}
+
 @media (max-width: 1200px) {
 	.detail__top1 {
 		display : flex;

@@ -11,6 +11,7 @@
 	<div>
 		
 		<section class="detail__article-head flex flex-jc-ar">
+		
 			<script type="text/x-template"># 제목: ${article.title}</script>
 			<div class="toast-ui-viewer flex flex-ai-c"></div>
 			<div class="flex flex-ai-c detail__like-unLike">
@@ -19,48 +20,73 @@
 					<span class="btn-like" title="로그인 후 클릭할 수 있습니다."> <i class="far fa-heart"></i> ${article.extra__likeOnlyPoint} </span>
 					<span class="btn-unlike" title="로그인 후 클릭할 수 있습니다."> <i class="fas fa-thumbs-down"></i> ${article.extra__disLikeOnlyPoint} </span>
 				</c:if>
-			
-				<c:if test="${article.extra.actorCanLike}">
-					<a class="btn btn-like"
-						href="../like/doLike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`좋아요` 처리 하시겠습니까?') ) return false;">
-						<span> <i class="far fa-heart"></i> </span>
-						<span> ${article.extra__likeOnlyPoint} </span>
-					</a>
+				
+				<script>
+					// 좋아요
+					function article__updateLikePoint(newLikePoint){
+						$('.like-point').empty().append(newLikePoint);
+					}
+					const num = ${article.num};
+					
+					function DoLikeForm() {
+						$.post(
+							"../like/getLikeCount",
+							{
+								"relTypeCode" : "article",
+								num
+							},
+							function(data){
+								if(data.resultCode.substr(0,2) == 'F-'){
+									alert(data.msg);
+								} 
+								if(data.resultCode.substr(0,2) == 'S-'){
+									article__updateLikePoint(data.body);
+								}
+							},
+							"json"
+						);
+					}
+					function DoCancleLikeForm() {
+						$.post(
+							"../like/getCancleLikeCount",
+							{
+								"relTypeCode" : "article",
+								num
+							},
+							function(data){
+								if(data.resultCode.substr(0,2) == 'F-'){
+									alert(data.msg);
+								} 
+								if(data.resultCode.substr(0,2) == 'S-'){
+									article__updateLikePoint(data.body);
+								}
+							},
+							"json"
+						);
+					}
 
-					<a class="btn btn-unlike"
-						href="../like/doDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`싫어요` 처리 하시겠습니까?') ) return false;"> <span>
-							<i class="fas fa-thumbs-down"></i>
-					</span> <span> ${article.extra__disLikeOnlyPoint} </span>
-					</a>
-				</c:if>
-
-				<c:if test="${article.extra.actorCanCancelLike}">
-					<a class="btn btn-info"
-						href="../like/doCancelLike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`좋아요`를 취소 처리 하시겠습니까?') ) return false;">
-						<span> <i class="fas fa-heart"></i>
-					</span> <span>좋아요 취소</span>
-					</a>
-				</c:if>
-
-				<c:if test="${article.extra.actorCanCancelDislike}">
-					<a class="btn btn-info"
-						href="../like/doCancelDislike?relTypeCode=article&relId=${article.num}&redirectUrl=${encodedCurrentUrl}"
-						onclick="if ( !confirm('`싫어요`를 취소 처리 하시겠습니까?') ) return false;">
-						<span> <span> <i class="fas fa-slash"></i>
-						</span>
-					</span> <span>싫어요 취소</span>
-					</a>
-				</c:if>
+				</script>
+					
+					<c:if test="${isLogined}">
+						<a href="#" class="btn btn-like" onclick="DoLikeForm(this); return false;">
+							<i class="fas fa-heart"></i>
+						</a>	
+				
+						<span class="like-point"> ${article.extra__likeOnlyPoint} </span>
+						
+						<a class="btn btn-like like_cancle" href="#" onclick="DoCancleLikeForm(this); return false;">
+							<i class="far fa-heart"></i>
+						</a>
+					</c:if>
+ 					
 			</div>
 			
 			<div class="detail__article__button flex flex-column flex-jc-c">
 				<a class="del_button button_type1" onclick="if ( confirm('정말 삭제하시겠습니까?') == false) {return false; };"
 				href="doDelete?num=${article.num}">글 삭제</a>
 				<a class="modify_button button_type1" href="modify?num=${article.num}">글 수정</a>
-			</div> 
+			</div>
+			
 		</section>
 		
 		<div class="detail__top1 flex flex-jc-ar">
@@ -111,7 +137,7 @@
 							DoWriteReplyForm__submited = true;
 						}
 					</script>
-					<form class="con" action="../reply/doWriteReply" method="POST"
+					<form class="con detail__replyBox" action="../reply/doWriteReply" method="POST"
 						onsubmit="DoWriteReplyForm_submit(this); return false;">
 						<input type="hidden" name="redirectUrl" value="${currentUrl}">
 						<input type="hidden" name="relTypeCode" value="article">
@@ -127,26 +153,24 @@
 			</c:if>
 			
 	
-			<section class="detail__reply_list con-min-width">
+			<section class="detail__reply_cover con-min-width">
 				<div class="con">
-					
+					<div class="detail__reply_list_box">
 					<c:forEach items="${replies}" var = "reply">
-						<span>${reply.regDate}</span>
-						<span>${reply.extra__writer}</span>
-						<c:if test="${article.extra.actorCanLike}">
-							<span>${reply.extra__likeOnlyPoint}</span>
-							<span>${reply.extra__dislikeOnlyPoint}</span>
-						</c:if>
-						<div class="detail__reply_body-list">
-							<script type="text/x-template">${reply.body}</script>
-							<div class="toast-ui-viewer"></div>
-						</div>
+							<div class="detail__reply_list">
+							<span class="reply_list_in reply_list__writer">${reply.extra__writer}</span>
+							<span class="reply_list_in reply_list__body">${reply.body}</span>
+							<span class="reply_list_in reply_list__updateDate">${reply.updateDate}</span>
+							</div>
 					</c:forEach>
+					</div>
 				</div>
 			</section>
 		</section>
-	</section>
-		<a href="list?boardNum=${article.boardNum}">목록</a>
-		<button type="button" onclick="history.back()">뒤로가기</button>
+	
+		<div>
+			<a href="list?boardNum=${article.boardNum}">목록</a>
+			<button type="button" onclick="history.back()">뒤로가기</button>
+		</div>
 	</div>
 	<%@ include file="../../part/foot.jspf"%>
